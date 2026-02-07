@@ -259,8 +259,6 @@ Remove-Item create_landmark_cases.py, fetch_real_cases.py, real_cases_to_scrape.
 - [CanLII](https://www.canlii.org) - Canadian Legal Information Institute
 - [Deel Lab for Global Employment](https://www.deel.com/research) - Research initiative
 
-## 🏆 LLM x Law Hackathon
-
 This system is designed for the LLM x Law Hackathon, addressing challenges in:
 - Legal document retrieval and analysis
 - Worker misclassification detection
@@ -271,5 +269,3 @@ This system is designed for the LLM x Law Hackathon, addressing challenges in:
 MIT License - See LICENSE file for details.
 
 ---
-
-Built with ❤️ for the Deel Lab for Global Employment
