@@ -38,7 +38,7 @@ A comprehensive legal AI platform for employment law analysis, featuring:
 
 ```bash
 # Clone repository
-git clone https://github.com/deel/legal-ai-system.git
+git clone https://github.com/johnnietse/deel-legal-ai.git
 cd legal-ai-system
 
 # Create virtual environment
