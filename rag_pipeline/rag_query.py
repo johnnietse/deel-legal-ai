@@ -1,0 +1,221 @@
+# RAG Pipeline - Query Interface
+"""
+RAG query interface for legal document retrieval and response generation.
+
+Combines:
+- Semantic search via Pinecone
+- Context assembly with source citations
+- Response generation via Gemini
+"""
+
+import sys
+import logging
+from pathlib import Path
+from typing import List, Dict, Any, Optional
+from dataclasses import dataclass
+
+# Add parent directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat
+from rag_pipeline.pinecone_client import PineconeClient, SearchResult
+
+# Setup logging
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class RAGResponse:
+    """Response from RAG query"""
+    query: str
+    answer: str
+    sources: List[Dict[str, Any]]
+    confidence: str
+    
+
+class LegalRAGQuery:
+    """
+    RAG query interface for legal document Q&A.
+    
+    Features:
+    - Semantic search over legal documents
+    - Context-aware response generation
+    - Source citation formatting
+    - Legal section filtering
+    """
+    
+    def __init__(
+        self,
+        embeddings: Optional[GeminiEmbeddings] = None,
+        chat: Optional[GeminiChat] = None,
+        pinecone: Optional[PineconeClient] = None
+    ):
+        self.embeddings = embeddings or GeminiEmbeddings()
+        self.chat = chat or GeminiChat()
+        self.pinecone = pinecone or PineconeClient()
+        
+        # Ensure Pinecone is connected
+        self.pinecone.connect()
+    
+    def _format_sources(self, results: List[SearchResult]) -> List[Dict[str, Any]]:
+        """Format search results as source citations"""
+        sources = []
+        for i, result in enumerate(results):
+            source = {
+                "index": i + 1,
+                "id": result.id,
+                "score": round(result.score, 3),
+                "excerpt": result.content[:500] + "..." if len(result.content) > 500 else result.content,
+            }
+            
+            # Add metadata
+            if result.metadata:
+                source["case_name"] = result.metadata.get("case_name", "Unknown")
+                source["citation"] = result.metadata.get("primary_citation", "")
+                source["court"] = result.metadata.get("court", "")
+                source["jurisdiction"] = result.metadata.get("jurisdiction", "")
+                source["legal_section"] = result.metadata.get("legal_section", "")
+            
+            sources.append(source)
+        
+        return sources
+    
+    def query(
+        self,
+        question: str,
+        top_k: int = 5,
+        namespace: str = "",
+        filter: Optional[Dict[str, Any]] = None,
+        include_analysis: bool = True
+    ) -> RAGResponse:
+        """
+        Query the legal knowledge base.
+        
+        Args:
+            question: Legal question to answer
+            top_k: Number of relevant documents to retrieve
+            namespace: Pinecone namespace to search
+            filter: Metadata filter (e.g., {"jurisdiction": "ON"})
+            include_analysis: Whether to generate analysis response
+            
+        Returns:
+            RAGResponse with answer and sources
+        """
+        # Generate query embedding
+        logger.info(f"Processing query: {question[:50]}...")
+        query_result = self.embeddings.embed_text(question)
+        
+        if not query_result.embedding:
+            logger.error("Failed to generate query embedding")
+            return RAGResponse(
+                query=question,
+                answer="Error: Could not process your question. Please try again.",
+                sources=[],
+                confidence="low"
+            )
+        
+        # Search Pinecone
+        search_results = self.pinecone.search(
+            query_vector=query_result.embedding,
+            top_k=top_k,
+            namespace=namespace,
+            filter=filter
+        )
+        
+        if not search_results:
+            return RAGResponse(
+                query=question,
+                answer="No relevant legal documents found in the knowledge base for your question.",
+                sources=[],
+                confidence="low"
+            )
+        
+        # Format sources
+        sources = self._format_sources(search_results)
+        
+        # Determine confidence based on top scores
+        avg_score = sum(r.score for r in search_results) / len(search_results)
+        confidence = "high" if avg_score > 0.8 else "medium" if avg_score > 0.6 else "low"
+        
+        # Generate response if requested
+        if include_analysis:
+            context = [r.content for r in search_results]
+            answer = self.chat.generate_with_context(question, context)
+        else:
+            answer = "See sources below for relevant legal information."
+        
+        return RAGResponse(
+            query=question,
+            answer=answer,
+            sources=sources,
+            confidence=confidence
+        )
+    
+    def query_worker_classification(
+        self,
+        facts: str,
+        jurisdiction: str = "ON"
+    ) -> RAGResponse:
+        """
+        Specialized query for worker classification analysis.
+        
+        Args:
+            facts: Description of the working relationship
+            jurisdiction: Legal jurisdiction (default: Ontario)
+            
+        Returns:
+            RAGResponse with classification analysis
+        """
+        # Build specialized prompt
+        prompt = f"""Analyze the following worker classification scenario under {jurisdiction} employment law:
+
+FACTS:
+{facts}
+
+Based on the legal precedents in the knowledge base, analyze:
+1. Whether the worker is likely an employee or independent contractor
+2. Key factors supporting this classification
+3. Relevant legal tests (e.g., Sagaz test)
+4. Potential risks if misclassified"""
+        
+        return self.query(
+            question=prompt,
+            top_k=8,
+            filter={"jurisdiction": jurisdiction} if jurisdiction else None
+        )
+
+
+def main():
+    """Test the RAG query interface"""
+    print("\n" + "="*60)
+    print("TESTING LEGAL RAG QUERY")
+    print("="*60)
+    
+    try:
+        rag = LegalRAGQuery()
+        
+        # Test query
+        response = rag.query(
+            "What factors determine if a worker is an employee or independent contractor in Ontario?",
+            top_k=3
+        )
+        
+        print(f"\n📝 Query: {response.query}")
+        print(f"\n📊 Confidence: {response.confidence}")
+        print(f"\n📖 Sources: {len(response.sources)}")
+        
+        for source in response.sources:
+            print(f"\n   Source {source['index']}: {source.get('case_name', 'Unknown')}")
+            print(f"   Score: {source['score']}")
+            print(f"   Excerpt: {source['excerpt'][:100]}...")
+        
+        print(f"\n💬 Answer:\n{response.answer}")
+        
+    except Exception as e:
+        print(f"\n❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()

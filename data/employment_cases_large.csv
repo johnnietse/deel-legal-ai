@@ -1,0 +1,1256 @@
+Caseid,URL,Case Name,Supervision/review of work,Ability to hire employees,Delegation of tasks,Ownership of tools,Chance of profit,Risk of loss,Exclusivity of services,Who sets the work hours,Where the work is performed,Is the worker required to wear a uniform?,Outcome
+1,https://canlii.org/en/on/onsc/2024/case1174,King v. Summit Solutions,Minimal,Yes,Limited,Worker,Yes,Yes,Limited,Worker,Various locations,No,Independent Contractor
+2,https://canlii.org/en/on/onsc/2020/case405,Taylor v. Innovative Solutions,Moderate,No,No,Employer,Limited,Limited,Yes,Mixed,Factory floor,Yes,Employee
+3,https://canlii.org/en/on/onsc/2023/case1023,Jones v. Horizon Inc.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Various locations,No,Independent Contractor
+4,https://canlii.org/en/on/onsc/2021/case1221,Robinson v. Horizon Group,High,No,Limited,Mixed,No,Limited,Mostly,Employer,Employer premises,Yes,Employee
+5,https://canlii.org/en/on/onsc/2024/case874,Jackson v. Western Technology Ltd.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+6,https://canlii.org/en/on/onsc/2020/case40,Nguyen v. Regional Construction Solutions,Moderate,No,Limited,Mixed,No,No,Yes,Employer,Company office,Yes,Employee
+7,https://canlii.org/en/on/onsc/2023/case1208,Singh v. Eastern Healthcare Holdings,Minimal,Yes,Yes,Mixed,Yes,Yes,Mostly,Mixed,Remote,No,Independent Contractor
+8,https://canlii.org/en/on/onsc/2020/case925,Robinson v. Elite Real Estate Corp.,Low,Limited,Yes,Worker,Yes,Limited,No,Mixed,Hybrid,No,Independent Contractor
+9,https://canlii.org/en/on/onsc/2021/case556,Hill v. Northern Solutions,Moderate,No,No,Employer,Limited,No,Yes,Employer,Store location,Sometimes,Employee
+10,https://canlii.org/en/on/onsc/2022/case727,Roberts v. National Transportation Corp.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+11,https://canlii.org/en/on/onsc/2023/case23,Chen v. Elite Holdings,Moderate,Limited,Limited,Employer,Limited,No,Yes,Employer,Branch office,Yes,Employee
+12,https://canlii.org/en/on/onsc/2021/case696,Perez v. Horizon LLC,Minimal,Limited,Limited,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+13,https://canlii.org/en/on/onsc/2022/case782,Garcia v. Apex Healthcare Ltd.,Moderate,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Multiple client locations,No,Independent Contractor
+14,https://canlii.org/en/on/onsc/2023/case518,Rivera v. Pacific Hospitality Inc.,High,No,No,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+15,https://canlii.org/en/on/onsc/2024/case299,Singh v. Advanced Hospitality Holdings,High,No,No,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+16,https://canlii.org/en/on/onsc/2022/case472,Adams v. Apex Media Group,Moderate,No,No,Employer,Limited,No,Mostly,Employer,Corporate HQ,Sometimes,Employee
+17,https://canlii.org/en/on/onsc/2021/case831,Hall v. Atlantic Real Estate Corp.,Low,Limited,Yes,Worker,Limited,Limited,No,Worker,Various locations,No,Independent Contractor
+18,https://canlii.org/en/on/onsc/2020/case220,Kim v. Allied LLC,High,Limited,Limited,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+19,https://canlii.org/en/on/onsc/2023/case593,Hill v. National Financial Ltd.,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+20,https://canlii.org/en/on/onsc/2023/case1033,Mitchell v. National Telecom Services,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+21,https://canlii.org/en/on/onsc/2022/case577,Hernandez v. Innovative LLC,High,No,Limited,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+22,https://canlii.org/uber/2024/case1,Heller v. Uber Technologies Inc.,Moderate,No,No,Worker,Limited,Limited,No,Worker,Various locations,No,Independent Contractor
+23,https://canlii.org/en/on/onsc/2021/case1041,Hall v. Prime Solutions,Minimal,Limited,Limited,Worker,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+24,https://canlii.org/en/on/onsc/2021/case916,Hernandez v. United Education Holdings,Low,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Own premises,No,Independent Contractor
+25,https://canlii.org/en/on/onsc/2022/case367,Smith v. XYZ Ltd.,High,No,No,Employer,Limited,No,Yes,Employer,Hotel,Sometimes,Employee
+26,https://canlii.org/en/on/onsc/2022/case637,Hernandez v. Western Manufacturing Co.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+27,https://canlii.org/en/on/onsc/2021/case1011,Adams v. Innovative Healthcare Inc.,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Various locations,No,Independent Contractor
+28,https://canlii.org/en/on/onsc/2022/case1007,Hill v. Horizon Healthcare Ltd.,Minimal,Yes,Yes,Worker,Limited,Yes,No,Mixed,Client sites,No,Independent Contractor
+29,https://canlii.org/en/on/onsc/2023/case833,Hernandez v. Elite Healthcare Ltd.,Minimal,Yes,Limited,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+30,https://canlii.org/en/on/onsc/2021/case426,Garcia v. XYZ Telecom Inc.,Moderate,Limited,No,Mixed,No,No,Yes,Employer,Regional office,Yes,Employee
+31,https://canlii.org/en/on/onsc/2021/case86,Sanchez v. ABC Media Services,High,No,No,Employer,No,No,Mostly,Employer,Warehouse,Yes,Employee
+32,https://canlii.org/en/on/onsc/2021/case1086,Adams v. Pacific Logistics Group,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+33,https://canlii.org/en/on/onsc/2023/case673,Kim v. ABC Consulting Ltd.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Home office,No,Independent Contractor
+34,https://canlii.org/en/on/onsc/2021/case81,Perez v. Elite Corp.,High,Limited,No,Employer,No,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+35,https://canlii.org/en/on/onsc/2024/case844,Wright v. Apex Education Solutions,Minimal,Yes,Yes,Mixed,Limited,Yes,Limited,Worker,Home office,No,Independent Contractor
+36,https://canlii.org/en/on/onsc/2023/case1118,Thomas v. Metropolitan Insurance Corp.,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+37,https://canlii.org/en/on/onsc/2021/case386,Davis v. Premier Transportation Inc.,Moderate,Limited,Limited,Mixed,Limited,No,Yes,Employer,Branch office,Yes,Employee
+38,https://canlii.org/en/on/onsc/2021/case1251,Sanchez v. United Group,Moderate,Yes,Yes,Mixed,Limited,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+39,https://canlii.org/en/on/onsc/2020/case815,Hall v. Atlantic Retail Inc.,Moderate,Limited,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+40,https://canlii.org/en/on/onsc/2021/case671,Brown v. Allied Healthcare Group,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+41,https://canlii.org/en/on/onsc/2023/case403,Adams v. Prime Technology Corp.,Moderate,No,No,Employer,No,Limited,Yes,Employer,Hotel,Yes,Employee
+42,https://canlii.org/en/on/onsc/2024/case774,Miller v. XYZ Corp.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+43,https://canlii.org/en/on/onsc/2023/case433,Carter v. Pacific Group,High,No,Limited,Employer,No,Limited,Yes,Employer,School,Yes,Employee
+44,https://canlii.org/en/on/onsc/2020/case280,Wilson v. Advanced Inc.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+45,https://canlii.org/en/on/onsc/2020/case505,Hill v. Eastern Inc.,High,Limited,No,Employer,Limited,Limited,Yes,Employer,Hotel,Sometimes,Employee
+46,https://canlii.org/en/on/onsc/2022/case942,Martinez v. Advanced Manufacturing Group,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+47,https://canlii.org/en/on/onsc/2022/case222,Wright v. Global Telecom Solutions,Moderate,No,No,Employer,No,No,Mostly,Employer,Hospital,Yes,Employee
+48,https://canlii.org/en/on/onsc/2021/case1081,Wright v. NextGen LLC,Moderate,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Coworking space,No,Independent Contractor
+49,https://canlii.org/en/on/onsc/2022/case462,Walker v. Strategic Logistics Solutions,Moderate,No,No,Employer,No,No,Yes,Employer,School,Yes,Employee
+50,https://canlii.org/en/on/onsc/2024/case709,Walker v. Regional Consulting Ltd.,Minimal,Yes,Yes,Mixed,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+51,https://canlii.org/en/on/onsc/2020/case130,Adams v. Metropolitan Holdings,High,Limited,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+52,https://canlii.org/en/on/onsc/2024/case779,Martinez v. Strategic Services,Moderate,Limited,Limited,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+53,https://canlii.org/en/on/onsc/2024/case1009,Flores v. Allied LLC,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+54,https://canlii.org/en/on/onsc/2022/case827,Nguyen v. NextGen Transportation Inc.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+55,https://canlii.org/en/on/onsc/2020/case415,Miller v. Horizon LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+56,https://canlii.org/en/on/onsc/2020/case1060,Walker v. Elite Group,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Client sites,No,Independent Contractor
+57,https://canlii.org/en/on/onsc/2020/case1080,Lopez v. Elite Education LLC,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+58,https://canlii.org/en/on/onsc/2022/case682,Rivera v. Elite Real Estate Solutions,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+59,https://canlii.org/en/on/onsc/2024/case189,White v. Southern Group,High,No,No,Employer,No,Limited,Yes,Employer,Employer premises,Yes,Employee
+60,https://canlii.org/en/on/onsc/2024/case514,Hill v. Premier Real Estate Holdings,High,Limited,No,Employer,Limited,No,Yes,Mixed,Factory floor,Yes,Employee
+61,https://canlii.org/en/on/onsc/2022/case687,Martin v. Pacific Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+62,https://canlii.org/en/on/onsc/2022/case867,Perez v. Modern Solutions,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Own premises,Sometimes,Independent Contractor
+63,https://canlii.org/en/on/onsc/2020/case630,Perez v. National Inc.,Moderate,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Home office,Sometimes,Independent Contractor
+64,https://canlii.org/en/on/onsc/2022/case7,Sanchez v. Atlantic LLC,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+65,https://canlii.org/en/on/onsc/2021/case621,Nelson v. Apex Group,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+66,https://canlii.org/en/on/onsc/2021/case421,Moore v. Southern Corp.,High,No,Limited,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+67,https://canlii.org/en/on/onsc/2022/case282,Clark v. Premier Holdings,High,No,Limited,Employer,No,Limited,Yes,Employer,Hospital,Yes,Employee
+68,https://canlii.org/en/on/onsc/2023/case873,Wong v. First Legal Solutions,Low,Yes,Limited,Worker,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+69,https://canlii.org/en/on/onsc/2023/case528,Ramirez v. Elite Energy Solutions,High,No,No,Employer,No,Limited,Mostly,Employer,Restaurant,Sometimes,Employee
+70,https://canlii.org/en/on/onsc/2022/case1222,Carter v. Atlantic Retail Corp.,Low,Limited,Yes,Mixed,Limited,Yes,No,Mixed,Hybrid,No,Independent Contractor
+71,https://canlii.org/en/on/onsc/2020/case315,O'Brien v. Global Media Services,Moderate,Limited,No,Employer,No,No,Yes,Employer,School,Yes,Employee
+72,https://canlii.org/en/on/onsc/2022/case412,Taylor v. Pinnacle Ltd.,Moderate,No,Limited,Employer,No,No,Yes,Mixed,Employer premises,Yes,Employee
+73,https://canlii.org/en/on/onsc/2024/case294,King v. Allied Solutions,High,No,No,Employer,No,No,Mostly,Employer,Call center,Yes,Employee
+74,https://canlii.org/en/on/onsc/2020/case490,King v. Advanced Solutions,High,No,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+75,https://canlii.org/en/on/onsc/2023/case373,Sanchez v. Apex Services,High,No,No,Employer,Limited,No,Yes,Employer,Warehouse,Yes,Employee
+76,https://canlii.org/en/on/onsc/2024/case889,Kim v. Dynamic Technology Solutions,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+77,https://canlii.org/en/on/onsc/2024/case384,Taylor v. Community Financial Group,High,Limited,No,Employer,No,Limited,Yes,Employer,Hospital,Yes,Employee
+78,https://canlii.org/en/on/onsc/2024/case274,Smith v. Southern Ltd.,Moderate,No,No,Mixed,No,No,Yes,Employer,Warehouse,Yes,Employee
+79,https://canlii.org/en/on/onsc/2021/case636,Baker v. First Technology Solutions,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+80,https://canlii.org/en/on/onsc/2023/case1183,Thompson v. Summit Technology Inc.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+81,https://canlii.org/en/on/onsc/2022/case992,Lewis v. Dynamic Hospitality Holdings,Minimal,Limited,Yes,Worker,Limited,Yes,No,Worker,Hybrid,No,Independent Contractor
+82,https://canlii.org/en/on/onsc/2023/case43,Young v. Strategic Telecom Corp.,High,No,No,Mixed,No,No,Yes,Employer,Warehouse,Yes,Employee
+83,https://canlii.org/en/on/onsc/2020/case170,Mitchell v. Metropolitan LLC,High,No,Limited,Employer,Limited,No,Yes,Employer,Call center,Yes,Employee
+84,https://canlii.org/en/on/onsc/2020/case1195,Jackson v. First Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+85,https://canlii.org/en/on/onsc/2024/case599,Jackson v. First Manufacturing Solutions,High,No,No,Mixed,No,No,Mostly,Employer,School,Yes,Employee
+86,https://canlii.org/en/on/onsc/2021/case201,Taylor v. Western Healthcare Co.,High,Limited,No,Employer,No,No,Yes,Mixed,Employer premises,Yes,Employee
+87,https://canlii.org/en/on/onsc/2020/case940,Lee v. Premier Solutions,Moderate,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Client sites,No,Independent Contractor
+88,https://canlii.org/en/on/onsc/2023/case1163,Jones v. Northern LLC,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+89,https://canlii.org/en/on/onsc/2021/case1151,Garcia v. Pacific Solutions,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Multiple client locations,No,Independent Contractor
+90,https://canlii.org/en/on/onsc/2021/case661,Carter v. Summit Logistics Inc.,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Various locations,No,Independent Contractor
+91,https://canlii.org/en/on/onsc/2021/case26,Smith v. Strategic Solutions,Moderate,Limited,Limited,Employer,Limited,No,Yes,Mixed,Call center,Yes,Employee
+92,https://canlii.org/en/on/onsc/2020/case790,Hernandez v. ABC Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+93,https://canlii.org/en/on/onsc/2020/case825,Hernandez v. Regional Technology Services,Minimal,Limited,Yes,Worker,Yes,Limited,Limited,Worker,Home office,No,Independent Contractor
+94,https://canlii.org/en/on/onsc/2023/case393,Carter v. Summit Transportation Solutions,Moderate,No,No,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+95,https://canlii.org/en/on/onsc/2023/case233,Lopez v. NextGen Solutions,High,No,Limited,Employer,No,No,Yes,Employer,Warehouse,Sometimes,Employee
+96,https://canlii.org/en/on/onsc/2023/case33,Jones v. Allied Construction Ltd.,High,No,No,Employer,Limited,Limited,Yes,Employer,Restaurant,Yes,Employee
+97,https://canlii.org/en/on/onsc/2020/case255,Williams v. Metropolitan Construction LLC,High,No,No,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+98,https://canlii.org/en/on/onsc/2020/case805,Flores v. United Healthcare Solutions,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+99,https://canlii.org/en/on/onsc/2020/case660,Nelson v. Dynamic Corp.,Low,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Various locations,Sometimes,Independent Contractor
+100,https://canlii.org/en/on/onsc/2022/case677,Mitchell v. Innovative Inc.,Moderate,Yes,Limited,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+101,https://canlii.org/en/on/onsc/2021/case36,Jackson v. Modern Manufacturing Corp.,High,Limited,No,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+102,https://canlii.org/en/on/onsc/2023/case328,Wong v. Global Services,Moderate,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+103,https://canlii.org/en/on/onsc/2022/case887,Miller v. Atlantic Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+104,https://canlii.org/en/on/onsc/2023/case1188,King v. Southern Logistics LLC,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+105,https://canlii.org/en/on/onsc/2022/case552,Harris v. Western LLC,High,No,No,Employer,No,No,Yes,Mixed,School,Yes,Employee
+106,https://canlii.org/en/on/onsc/2024/case439,Garcia v. Horizon Manufacturing Group,Moderate,Limited,No,Mixed,No,No,Yes,Employer,Factory floor,Yes,Employee
+107,https://canlii.org/en/on/onsc/2024/case894,Anderson v. Eastern Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+108,https://canlii.org/en/on/onsc/2023/case243,Rodriguez v. Community Real Estate Corp.,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+109,https://canlii.org/en/on/onsc/2020/case120,Green v. Community Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+110,https://canlii.org/en/on/onsc/2021/case331,Davis v. Atlantic Corp.,High,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+111,https://canlii.org/en/on/onsc/2021/case491,Flores v. Apex Holdings,High,No,No,Employer,Limited,Limited,Yes,Employer,Employer premises,Yes,Employee
+112,https://canlii.org/en/on/onsc/2023/case278,Hill v. Prime LLC,High,No,No,Employer,No,Limited,Mostly,Employer,Store location,Sometimes,Employee
+113,https://canlii.org/en/on/onsc/2023/case573,Singh v. XYZ Holdings,High,No,No,Employer,No,Limited,Yes,Employer,Store location,Yes,Employee
+114,https://canlii.org/en/on/onsc/2023/case158,Jones v. Northern Legal Holdings,Moderate,Limited,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+115,https://canlii.org/en/on/onsc/2022/case312,Mitchell v. United Corp.,Moderate,No,No,Employer,Limited,No,Yes,Mixed,Regional office,Yes,Employee
+116,https://canlii.org/en/on/onsc/2021/case1,Thompson v. Southern Technology Corp.,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+117,https://canlii.org/en/on/onsc/2023/case3,Mitchell v. Modern Services,High,Limited,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+118,https://canlii.org/en/on/onsc/2021/case986,Perez v. Pinnacle Ltd.,Low,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Various locations,No,Independent Contractor
+119,https://canlii.org/en/on/onsc/2021/case391,Smith v. Apex Technology Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+120,https://canlii.org/en/on/onsc/2024/case429,Torres v. Allied Group,High,No,No,Employer,No,No,Mostly,Employer,Store location,Yes,Employee
+121,https://canlii.org/en/on/onsc/2020/case75,Thompson v. Metropolitan Holdings,High,No,Limited,Employer,Limited,Limited,Mostly,Employer,Regional office,Sometimes,Employee
+122,https://canlii.org/en/on/onsc/2023/case1113,Perez v. Eastern Legal LLC,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+123,https://canlii.org/en/on/onsc/2024/case344,Scott v. Western Transportation Group,Moderate,No,No,Mixed,No,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+124,https://canlii.org/en/on/onsc/2020/case870,Walker v. Pinnacle Education Group,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+125,https://canlii.org/en/on/onsc/2021/case576,Hernandez v. Innovative Solutions,Moderate,No,No,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+126,https://canlii.org/en/on/onsc/2021/case816,Lewis v. Community Group,Minimal,Limited,Yes,Worker,Yes,Yes,Limited,Worker,On the road,No,Independent Contractor
+127,https://canlii.org/en/on/onsc/2020/case565,Scott v. Northern Insurance LLC,High,Limited,Limited,Employer,Limited,Limited,Yes,Mixed,Regional office,Yes,Employee
+128,https://canlii.org/en/on/onsc/2022/case587,Green v. First Services,Moderate,No,Limited,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+129,https://canlii.org/en/on/onsc/2020/case210,Torres v. National Education Group,High,No,Limited,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+130,https://canlii.org/en/on/onsc/2022/case957,Allen v. Modern Inc.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Home office,Sometimes,Independent Contractor
+131,https://canlii.org/en/on/onsc/2022/case1087,Wong v. ABC LLC,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+132,https://canlii.org/en/on/onsc/2024/case839,Johnson v. Modern Co.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+133,https://canlii.org/en/on/onsc/2020/case435,Miller v. Northern Pharmaceutical Co.,High,Limited,Limited,Employer,Limited,No,Yes,Employer,School,Yes,Employee
+134,https://canlii.org/en/on/onsc/2020/case60,Anderson v. United Pharmaceutical Solutions,Moderate,No,Limited,Employer,No,No,Yes,Mixed,Warehouse,Yes,Employee
+135,https://canlii.org/en/on/onsc/2021/case726,Hernandez v. Central Manufacturing LLC,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Multiple client locations,Sometimes,Independent Contractor
+136,https://canlii.org/en/on/onsc/2024/case234,Johnson v. Atlantic Services,Moderate,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+137,https://canlii.org/en/on/onsc/2021/case481,Rodriguez v. Western Inc.,Moderate,Limited,No,Employer,No,Limited,Yes,Employer,Hospital,Yes,Employee
+138,https://canlii.org/en/on/onsc/2022/case672,Clark v. Allied Telecom Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+139,https://canlii.org/en/on/onsc/2023/case838,Clark v. Northern Consulting Solutions,Minimal,Limited,Limited,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+140,https://canlii.org/en/on/onsc/2022/case52,Torres v. NextGen Pharmaceutical LLC,High,No,No,Employer,No,Limited,Yes,Employer,Employer premises,Yes,Employee
+141,https://canlii.org/en/on/onsc/2023/case713,Rivera v. Elite LLC,Minimal,Limited,Yes,Worker,Yes,Yes,Limited,Worker,On the road,No,Independent Contractor
+142,https://canlii.org/en/on/onsc/2022/case127,Nelson v. Horizon Pharmaceutical Services,High,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+143,https://canlii.org/en/on/onsc/2022/case37,Clark v. Regional Manufacturing Holdings,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Factory floor,Yes,Employee
+144,https://canlii.org/en/on/onsc/2021/case1226,Sanchez v. Pinnacle Co.,Moderate,No,No,Mixed,No,No,Yes,Employer,School,Yes,Employee
+145,https://canlii.org/en/on/onsc/2023/case1018,Patel v. Prime Education Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,Sometimes,Independent Contractor
+146,https://canlii.org/en/on/onsc/2020/case555,Williams v. Metropolitan Services,Moderate,No,No,Mixed,No,No,Yes,Employer,Store location,Sometimes,Employee
+147,https://canlii.org/en/on/onsc/2023/case763,Allen v. Premier Manufacturing Inc.,Low,Limited,Yes,Worker,Limited,Yes,No,Mixed,On the road,Sometimes,Independent Contractor
+148,https://canlii.org/en/on/onsc/2021/case286,Thomas v. XYZ Ltd.,High,Limited,No,Employer,No,No,Mostly,Employer,Hotel,Yes,Employee
+149,https://canlii.org/en/on/onsc/2020/case20,Ramirez v. Advanced Inc.,Moderate,No,Limited,Employer,No,No,Mostly,Employer,Corporate HQ,Yes,Employee
+150,https://canlii.org/en/on/onsc/2022/case187,Walker v. Regional Real Estate Solutions,High,Limited,No,Mixed,No,No,Yes,Employer,Retail location,Yes,Employee
+151,https://canlii.org/en/on/onsc/2021/case781,Williams v. Dynamic Corp.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+152,https://canlii.org/en/on/onsc/2021/case756,Jones v. Community Real Estate Ltd.,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Various locations,No,Independent Contractor
+153,https://canlii.org/en/on/onsc/2020/case755,Young v. Apex Legal Solutions,Low,Limited,Limited,Worker,Limited,Limited,No,Worker,On the road,No,Independent Contractor
+154,https://canlii.org/en/on/onsc/2022/case952,Flores v. First Pharmaceutical Holdings,Minimal,Limited,Yes,Mixed,Limited,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+155,https://canlii.org/en/on/onsc/2020/case145,Miller v. Prime Healthcare Solutions,Moderate,No,No,Employer,No,Limited,Yes,Employer,Store location,Yes,Employee
+156,https://canlii.org/en/on/onsc/2021/case676,Wright v. Global Insurance Co.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,Sometimes,Independent Contractor
+157,https://canlii.org/en/on/onsc/2021/case996,Lewis v. Innovative Transportation Solutions,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+158,https://canlii.org/en/on/onsc/2021/case376,Wright v. Community Transportation Services,Moderate,No,No,Mixed,Limited,No,Yes,Employer,Call center,Sometimes,Employee
+159,https://canlii.org/en/on/onsc/2020/case1135,Perez v. XYZ Inc.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+160,https://canlii.org/en/on/onsc/2024/case484,Scott v. Western Holdings,High,Limited,No,Employer,No,No,Yes,Mixed,Regional office,Sometimes,Employee
+161,https://canlii.org/en/on/onsc/2024/case864,Gonzalez v. Western Pharmaceutical LLC,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Client sites,Sometimes,Independent Contractor
+162,https://canlii.org/en/on/onsc/2020/case945,Garcia v. Western Ltd.,Low,Yes,Yes,Mixed,Yes,Yes,Limited,Mixed,Coworking space,No,Independent Contractor
+163,https://canlii.org/en/on/onsc/2022/case22,Brown v. Global Energy Holdings,High,No,Limited,Employer,No,Limited,Yes,Employer,Warehouse,Yes,Employee
+164,https://canlii.org/en/on/onsc/2022/case347,Hall v. Horizon Telecom Ltd.,High,No,Limited,Employer,No,No,Yes,Employer,School,Yes,Employee
+165,https://canlii.org/en/on/onsc/2023/case753,Campbell v. Pinnacle Manufacturing Inc.,Minimal,Limited,Yes,Mixed,Limited,Yes,Limited,Worker,Own premises,No,Independent Contractor
+166,https://canlii.org/en/on/onsc/2024/case49,Nguyen v. Eastern Manufacturing Co.,High,No,No,Employer,No,No,Mostly,Employer,Hotel,Sometimes,Employee
+167,https://canlii.org/en/on/onsc/2021/case406,Thompson v. Allied Hospitality LLC,Moderate,No,Limited,Employer,No,No,Yes,Employer,Retail location,Sometimes,Employee
+168,https://canlii.org/en/on/onsc/2024/case1029,Hernandez v. United Corp.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+169,https://canlii.org/en/on/onsc/2022/case557,Jackson v. ABC Media Group,Moderate,Limited,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+170,https://canlii.org/en/on/onsc/2024/case669,King v. Eastern Telecom Ltd.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,Sometimes,Independent Contractor
+171,https://canlii.org/en/on/onsc/2020/case560,Flores v. Summit Technology Group,High,No,No,Employer,No,Limited,Yes,Employer,Store location,Yes,Employee
+172,https://canlii.org/en/on/onsc/2023/case263,Davis v. Horizon Energy Holdings,High,No,Limited,Employer,Limited,No,Yes,Employer,Corporate HQ,Yes,Employee
+173,https://canlii.org/en/on/onsc/2022/case937,Kim v. Allied Pharmaceutical Inc.,Minimal,Limited,Limited,Worker,Limited,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+174,https://canlii.org/en/on/onsc/2024/case634,Walker v. XYZ Hospitality Ltd.,Minimal,Yes,Yes,Worker,Limited,Yes,No,Mixed,Home office,No,Independent Contractor
+175,https://canlii.org/en/on/onsc/2022/case172,Rivera v. Central Services,High,No,No,Employer,Limited,No,Yes,Employer,Call center,Yes,Employee
+176,https://canlii.org/en/on/onsc/2024/case999,Hall v. Prime Group,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+177,https://canlii.org/en/on/onsc/2021/case811,Walker v. Atlantic Manufacturing LLC,Low,Limited,Yes,Worker,Limited,Limited,No,Worker,Remote,No,Independent Contractor
+178,https://canlii.org/en/on/onsc/2022/case847,Hill v. Community Legal Group,Minimal,Yes,Yes,Mixed,Limited,Limited,No,Worker,Multiple client locations,No,Independent Contractor
+179,https://canlii.org/en/on/onsc/2024/case1014,Jones v. Eastern Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+180,https://canlii.org/en/on/onsc/2022/case722,Thomas v. Regional Telecom Services,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+181,https://canlii.org/en/on/onsc/2022/case87,Williams v. ABC Inc.,Moderate,No,No,Employer,No,Limited,Yes,Employer,Company office,Yes,Employee
+182,https://canlii.org/en/on/onsc/2021/case6,Martinez v. Modern Retail Holdings,High,No,No,Mixed,No,No,Yes,Employer,School,Yes,Employee
+183,https://canlii.org/en/on/onsc/2023/case503,Kim v. XYZ Real Estate Services,Moderate,No,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+184,https://canlii.org/en/on/onsc/2023/case348,Martinez v. Modern Logistics Co.,High,No,Limited,Employer,No,Limited,Yes,Employer,Company office,Yes,Employee
+185,https://canlii.org/en/on/onsc/2020/case580,Adams v. Dynamic Legal Group,Moderate,Limited,Limited,Employer,No,Limited,Mostly,Employer,Hotel,Sometimes,Employee
+186,https://canlii.org/en/on/onsc/2020/case390,Brown v. Pacific Group,Moderate,No,Limited,Employer,Limited,No,Yes,Employer,Hotel,Yes,Employee
+187,https://canlii.org/en/on/onsc/2021/case381,Jones v. Community Consulting Co.,Moderate,Limited,Limited,Employer,Limited,No,Yes,Employer,Retail location,Yes,Employee
+188,https://canlii.org/en/on/onsc/2022/case927,Jackson v. Summit Pharmaceutical Corp.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+189,https://canlii.org/en/on/onsc/2021/case216,Hernandez v. Strategic Construction LLC,High,No,Limited,Employer,No,No,Mostly,Employer,Call center,Sometimes,Employee
+190,https://canlii.org/en/on/onsc/2023/case793,Lee v. Atlantic LLC,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Various locations,No,Independent Contractor
+191,https://canlii.org/en/on/onsc/2020/case610,Kim v. XYZ Services,Minimal,Yes,Limited,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+192,https://canlii.org/en/on/onsc/2024/case509,Wong v. Horizon Services,High,No,Limited,Employer,No,No,Yes,Mixed,Branch office,Sometimes,Employee
+193,https://canlii.org/en/on/onsc/2022/case227,Roberts v. First Financial Inc.,Moderate,No,No,Employer,Limited,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+194,https://canlii.org/en/on/onsc/2022/case832,Clark v. First Education Corp.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+195,https://canlii.org/en/on/onsc/2024/case974,Jones v. National Consulting Services,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+196,https://canlii.org/en/on/onsc/2021/case716,King v. Global Insurance Solutions,Minimal,Yes,Limited,Worker,Yes,Yes,Limited,Mixed,Home office,Sometimes,Independent Contractor
+197,https://canlii.org/en/on/onsc/2021/case1156,Carter v. Dynamic Telecom Services,Moderate,Limited,Limited,Mixed,Yes,Limited,No,Worker,Home office,No,Independent Contractor
+198,https://canlii.org/en/on/onsc/2020/case340,Green v. Community Services,High,No,No,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+199,https://canlii.org/en/on/onsc/2023/case68,Sanchez v. Western Healthcare Inc.,High,Limited,No,Employer,No,Limited,Yes,Employer,Call center,Yes,Employee
+200,https://canlii.org/en/on/onsc/2023/case633,Torres v. Innovative Logistics Services,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Remote,Sometimes,Independent Contractor
+201,https://canlii.org/en/on/onsc/2021/case586,Davis v. United Ltd.,Moderate,Limited,No,Employer,Limited,Limited,Mostly,Employer,Warehouse,Sometimes,Employee
+202,https://canlii.org/en/on/onsc/2020/case35,Allen v. Premier Inc.,High,No,No,Mixed,No,Limited,Yes,Mixed,Retail location,Sometimes,Employee
+203,https://canlii.org/en/on/onsc/2023/case928,Chen v. Regional Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+204,https://canlii.org/en/on/onsc/2021/case456,Moore v. Dynamic Inc.,High,No,No,Employer,No,No,Yes,Mixed,School,Yes,Employee
+205,https://canlii.org/en/on/onsc/2024/case224,Lee v. Regional Logistics Services,High,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+206,https://canlii.org/en/on/onsc/2021/case886,Mitchell v. United Education Ltd.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Home office,No,Independent Contractor
+207,https://canlii.org/en/on/onsc/2021/case751,Martin v. Strategic Holdings,Minimal,Limited,Yes,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+208,https://canlii.org/en/on/onsc/2022/case182,Johnson v. Northern Telecom Services,Moderate,No,No,Employer,No,No,Yes,Mixed,School,Yes,Employee
+209,https://canlii.org/en/on/onsc/2020/case780,Torres v. Advanced Group,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+210,https://canlii.org/en/on/onsc/2022/case1162,Lee v. Pacific Insurance LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+211,https://canlii.org/it/2024/case1,Peterson v. Tech Solutions Corp.,Low,Yes,Yes,Worker,Yes,Yes,Mostly,Worker,Remote,No,Independent Contractor
+212,https://canlii.org/en/on/onsc/2023/case708,Wong v. Apex Services,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+213,https://canlii.org/en/on/onsc/2022/case467,Harris v. Metropolitan Education Corp.,High,No,Limited,Employer,No,No,Yes,Employer,Retail location,Sometimes,Employee
+214,https://canlii.org/en/on/onsc/2020/case590,Scott v. Western Transportation Inc.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+215,https://canlii.org/en/on/onsc/2022/case862,Mitchell v. Western Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+216,https://canlii.org/en/on/onsc/2023/case1238,Nelson v. Metropolitan Inc.,Low,Limited,Yes,Mixed,Yes,Yes,Mostly,Mixed,Remote,No,Independent Contractor
+217,https://canlii.org/en/on/onsc/2024/case159,Lewis v. Northern Solutions,High,No,Limited,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+218,https://canlii.org/en/on/onsc/2020/case1110,Kim v. Central Insurance Services,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+219,https://canlii.org/en/on/onsc/2020/case615,Martin v. Prime Pharmaceutical Ltd.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+220,https://canlii.org/en/on/onsc/2024/case819,Garcia v. National Holdings,Moderate,Limited,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+221,https://canlii.org/en/on/onsc/2022/case302,Martin v. NextGen Group,High,Limited,Limited,Mixed,No,No,Yes,Mixed,Call center,Yes,Employee
+222,https://canlii.org/en/on/onsc/2020/case1095,Jones v. Central Pharmaceutical Group,Minimal,Yes,Limited,Worker,Yes,Yes,Limited,Worker,Coworking space,No,Independent Contractor
+223,https://canlii.org/en/on/onsc/2024/case464,Patel v. First Holdings,Moderate,Limited,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+224,https://canlii.org/en/on/onsc/2020/case240,Chen v. Allied Pharmaceutical Inc.,Moderate,No,No,Employer,Limited,No,Mostly,Employer,Corporate HQ,Yes,Employee
+225,https://canlii.org/en/on/onsc/2024/case254,Lee v. Prime Corp.,Moderate,Limited,No,Mixed,No,No,Yes,Employer,Retail location,Yes,Employee
+226,https://canlii.org/en/on/onsc/2023/case308,King v. Community Construction Group,High,No,No,Mixed,No,No,Yes,Employer,Retail location,Yes,Employee
+227,https://canlii.org/en/on/onsc/2022/case277,Green v. First Hospitality Services,High,No,No,Employer,No,No,Yes,Employer,Factory floor,Sometimes,Employee
+228,https://canlii.org/en/on/onsc/2024/case739,Perez v. Advanced Legal LLC,Low,Limited,Yes,Worker,Limited,Yes,No,Mixed,Home office,No,Independent Contractor
+229,https://canlii.org/en/on/onsc/2022/case2,Chen v. Regional Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Hotel,Sometimes,Employee
+230,https://canlii.org/en/on/onsc/2022/case997,Davis v. Central Technology Group,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+231,https://canlii.org/en/on/onsc/2024/case939,Hernandez v. Community Healthcare Corp.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+232,https://canlii.org/en/on/onsc/2023/case508,Davis v. Innovative Retail LLC,High,Limited,Limited,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+233,https://canlii.org/en/on/onsc/2022/case757,Anderson v. NextGen Telecom Ltd.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+234,https://canlii.org/en/on/onsc/2023/case13,Davis v. National Pharmaceutical Inc.,High,No,Limited,Employer,Limited,No,Yes,Employer,Retail location,Sometimes,Employee
+235,https://canlii.org/en/on/onsc/2022/case1047,Hernandez v. Global Real Estate Inc.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Client sites,Sometimes,Independent Contractor
+236,https://canlii.org/en/on/onsc/2022/case512,Baker v. Regional Ltd.,High,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+237,https://canlii.org/en/on/onsc/2023/case188,Moore v. ABC Solutions,Moderate,Limited,No,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+238,https://canlii.org/en/on/onsc/2022/case327,Miller v. Eastern LLC,High,No,Limited,Employer,No,No,Yes,Mixed,Regional office,Yes,Employee
+239,https://canlii.org/en/on/onsc/2020/case1250,Adams v. First Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+240,https://canlii.org/en/on/onsc/2023/case578,Robinson v. Elite Services,Moderate,No,No,Employer,Limited,No,Yes,Mixed,Store location,Sometimes,Employee
+241,https://canlii.org/en/on/onsc/2024/case809,Flores v. United Ltd.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+242,https://canlii.org/en/on/onsc/2021/case646,Wong v. Modern Pharmaceutical LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+243,https://canlii.org/en/on/onsc/2020/case305,Singh v. Premier Solutions,High,No,No,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+244,https://canlii.org/en/on/onsc/2020/case880,Kim v. Strategic Ltd.,Low,Yes,Limited,Worker,Limited,Limited,No,Mixed,On the road,No,Independent Contractor
+245,https://canlii.org/en/on/onsc/2022/case487,Torres v. Global Group,High,No,Limited,Mixed,No,No,Yes,Employer,Hotel,Yes,Employee
+246,https://canlii.org/en/on/onsc/2024/case1144,Campbell v. National Co.,Low,Yes,Limited,Worker,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+247,https://canlii.org/en/on/onsc/2021/case531,Harris v. United Corp.,Moderate,No,Limited,Employer,No,No,Yes,Mixed,Regional office,Yes,Employee
+248,https://canlii.org/en/on/onsc/2024/case1254,Garcia v. Northern Ltd.,Minimal,Yes,Yes,Worker,Yes,Limited,Mostly,Worker,Client sites,No,Independent Contractor
+249,https://canlii.org/en/on/onsc/2024/case644,Martin v. Prime Co.,Low,Limited,Yes,Mixed,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+250,https://canlii.org/en/on/onsc/2021/case486,Robinson v. ABC Manufacturing Inc.,High,No,No,Employer,Limited,No,Yes,Employer,Warehouse,Yes,Employee
+251,https://canlii.org/en/on/onsc/2023/case1038,Davis v. First Group,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+252,https://canlii.org/en/on/onsc/2021/case476,Garcia v. Western Media LLC,High,No,No,Employer,Limited,No,Yes,Employer,School,Sometimes,Employee
+253,https://canlii.org/en/on/onsc/2020/case455,Patel v. Atlantic Construction LLC,High,No,No,Employer,No,Limited,Yes,Employer,Regional office,Yes,Employee
+254,https://canlii.org/en/on/onsc/2022/case502,O'Brien v. Pacific Consulting Co.,High,No,No,Employer,Limited,No,Yes,Employer,Factory floor,Yes,Employee
+255,https://canlii.org/en/on/onsc/2022/case1077,Thompson v. Modern Hospitality Ltd.,Low,Limited,Yes,Worker,Yes,Limited,Limited,Worker,Multiple client locations,No,Independent Contractor
+256,https://canlii.org/en/on/onsc/2023/case768,King v. Elite Ltd.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+257,https://canlii.org/en/on/onsc/2021/case91,Gonzalez v. NextGen Legal Group,High,No,Limited,Employer,No,Limited,Yes,Employer,Restaurant,Yes,Employee
+258,https://canlii.org/truck/2024/case1,Williams v. National Trucking Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+259,https://canlii.org/en/on/onsc/2024/case374,Lewis v. Premier Telecom Ltd.,High,Limited,No,Employer,No,No,Mostly,Mixed,Factory floor,Yes,Employee
+260,https://canlii.org/en/on/onsc/2022/case482,Rodriguez v. Advanced Co.,High,No,No,Employer,No,Limited,Yes,Mixed,Hospital,Yes,Employee
+261,https://canlii.org/en/on/onsc/2024/case389,Young v. Apex Construction Holdings,High,Limited,No,Mixed,No,No,Yes,Employer,Regional office,Sometimes,Employee
+262,https://canlii.org/en/on/onsc/2020/case745,Adams v. Regional Consulting Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+263,https://canlii.org/en/on/onsc/2024/case469,Taylor v. Community Construction Solutions,High,No,Limited,Mixed,No,No,Yes,Employer,Employer premises,Yes,Employee
+264,https://canlii.org/en/on/onsc/2022/case662,Gonzalez v. NextGen Manufacturing Ltd.,Moderate,Limited,Yes,Worker,Limited,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+265,https://canlii.org/en/on/onsc/2020/case930,Harris v. Eastern Hospitality Corp.,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,Own premises,No,Independent Contractor
+266,https://canlii.org/en/on/onsc/2021/case146,Moore v. Community Hospitality LLC,High,No,Limited,Employer,Limited,No,Yes,Employer,Store location,Yes,Employee
+267,https://canlii.org/en/on/onsc/2022/case622,Roberts v. Summit Solutions,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+268,https://canlii.org/en/on/onsc/2024/case519,Green v. Western Media Co.,High,No,No,Mixed,No,No,Yes,Employer,Retail location,Yes,Employee
+269,https://canlii.org/en/on/onsc/2020/case1015,Thompson v. United Financial Ltd.,Minimal,Yes,Limited,Mixed,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+270,https://canlii.org/en/on/onsc/2024/case1169,Jones v. Allied Energy Ltd.,Low,Yes,Limited,Worker,Yes,Yes,Limited,Mixed,Multiple client locations,No,Independent Contractor
+271,https://canlii.org/en/on/onsc/2020/case175,Patel v. Community Group,Moderate,No,No,Mixed,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+272,https://canlii.org/en/on/onsc/2022/case407,Roberts v. Atlantic Logistics Services,High,No,Limited,Mixed,Limited,No,Mostly,Employer,Corporate HQ,Yes,Employee
+273,https://canlii.org/en/on/onsc/2023/case958,Wright v. United Media Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+274,https://canlii.org/en/on/onsc/2021/case526,Miller v. Eastern LLC,Moderate,Limited,No,Employer,No,No,Yes,Mixed,Employer premises,Yes,Employee
+275,https://canlii.org/en/on/onsc/2020/case1235,Chen v. Strategic Hospitality Corp.,Moderate,No,No,Mixed,No,No,Mostly,Mixed,Warehouse,Yes,Employee
+276,https://canlii.org/en/on/onsc/2021/case501,Torres v. Horizon Legal Group,High,No,Limited,Mixed,Limited,No,Yes,Mixed,Hospital,Yes,Employee
+277,https://canlii.org/en/on/onsc/2020/case620,Gonzalez v. Apex Solutions,Moderate,Limited,Limited,Worker,Limited,Limited,No,Worker,Remote,No,Independent Contractor
+278,https://canlii.org/en/on/onsc/2020/case1100,Johnson v. Atlantic LLC,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+279,https://canlii.org/en/on/onsc/2024/case139,Hall v. Atlantic Holdings,Moderate,No,No,Employer,No,Limited,Yes,Employer,Branch office,Yes,Employee
+280,https://canlii.org/en/on/onsc/2023/case618,Thomas v. Metropolitan Retail Inc.,Minimal,Limited,Yes,Mixed,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+281,https://canlii.org/en/on/onsc/2020/case1255,Kim v. Pacific Group,Moderate,Limited,Limited,Worker,Yes,Yes,Mostly,Worker,Various locations,No,Independent Contractor
+282,https://canlii.org/en/on/onsc/2022/case17,Smith v. Modern Co.,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,School,Sometimes,Employee
+283,https://canlii.org/en/on/onsc/2023/case888,Young v. Pinnacle Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+284,https://canlii.org/en/on/onsc/2020/case1130,Clark v. Metropolitan Transportation Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+285,https://canlii.org/en/on/onsc/2020/case980,Williams v. ABC LLC,Low,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+286,https://canlii.org/en/on/onsc/2023/case333,Martin v. Southern Group,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+287,https://canlii.org/en/on/onsc/2023/case213,Clark v. NextGen Ltd.,Moderate,No,No,Mixed,Limited,No,Yes,Employer,Call center,Yes,Employee
+288,https://canlii.org/en/on/onsc/2022/case877,Hall v. Southern LLC,Minimal,Yes,Limited,Worker,Yes,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+289,https://canlii.org/en/on/onsc/2022/case257,Rodriguez v. Pinnacle Co.,Moderate,No,No,Employer,No,No,Yes,Employer,School,Yes,Employee
+290,https://canlii.org/en/on/onsc/2024/case94,Wong v. United Ltd.,Moderate,No,No,Employer,No,Limited,Mostly,Employer,Regional office,Sometimes,Employee
+291,https://canlii.org/en/on/onsc/2024/case964,Robinson v. Pinnacle Manufacturing Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+292,https://canlii.org/en/on/onsc/2021/case471,Jones v. Allied Hospitality Holdings,High,No,No,Employer,No,Limited,Yes,Employer,Regional office,Yes,Employee
+293,https://canlii.org/en/on/onsc/2020/case600,Rivera v. Allied Co.,Moderate,No,No,Mixed,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+294,https://canlii.org/en/on/onsc/2020/case15,Campbell v. Prime Inc.,High,Limited,No,Employer,No,No,Yes,Employer,Branch office,Sometimes,Employee
+295,https://canlii.org/en/on/onsc/2021/case1216,Gonzalez v. NextGen Holdings,Moderate,Limited,No,Mixed,No,No,Mostly,Mixed,Branch office,Yes,Employee
+296,https://canlii.org/en/on/onsc/2022/case97,Nelson v. Prime Transportation Inc.,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Branch office,Yes,Employee
+297,https://canlii.org/en/on/onsc/2021/case901,King v. Strategic LLC,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+298,https://canlii.org/en/on/onsc/2022/case507,Kim v. United Energy Corp.,High,No,Limited,Mixed,Limited,No,Yes,Employer,Hotel,Yes,Employee
+299,https://canlii.org/en/on/onsc/2024/case214,O'Brien v. Metropolitan Holdings,Moderate,No,No,Employer,No,No,Yes,Mixed,Warehouse,Yes,Employee
+300,https://canlii.org/en/on/onsc/2021/case701,Jackson v. United Holdings,Low,Yes,Yes,Worker,Yes,Limited,Limited,Worker,On the road,No,Independent Contractor
+301,https://canlii.org/en/on/onsc/2022/case962,Campbell v. Southern Telecom Solutions,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+302,https://canlii.org/en/on/onsc/2022/case1122,Young v. Elite Pharmaceutical Ltd.,Moderate,Limited,Yes,Worker,Yes,Limited,No,Mixed,Own premises,No,Independent Contractor
+303,https://canlii.org/en/on/onsc/2021/case761,Baker v. Horizon Energy Co.,Minimal,Yes,Yes,Worker,Limited,Limited,No,Worker,Client sites,No,Independent Contractor
+304,https://canlii.org/en/on/onsc/2020/case1170,Moore v. Allied Consulting Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Hybrid,Sometimes,Independent Contractor
+305,https://canlii.org/en/on/onsc/2022/case157,Lewis v. ABC Logistics Ltd.,High,No,Limited,Employer,No,No,Yes,Employer,Hospital,Sometimes,Employee
+306,https://canlii.org/en/on/onsc/2022/case1242,Carter v. Global Corp.,Moderate,Limited,Limited,Employer,No,Limited,Yes,Mixed,Store location,Yes,Employee
+307,https://canlii.org/en/on/onsc/2022/case822,Scott v. Pinnacle Legal Ltd.,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+308,https://canlii.org/en/on/onsc/2022/case907,Perez v. Premier Hospitality Ltd.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+309,https://canlii.org/en/on/onsc/2021/case611,Rivera v. Community Construction Corp.,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Own premises,No,Independent Contractor
+310,https://canlii.org/en/on/onsc/2023/case718,Lee v. Metropolitan Ltd.,Minimal,Yes,Yes,Mixed,Yes,Limited,No,Mixed,On the road,No,Independent Contractor
+311,https://canlii.org/en/on/onsc/2023/case28,Green v. Apex Ltd.,High,Limited,Limited,Mixed,No,No,Mostly,Employer,Regional office,Yes,Employee
+312,https://canlii.org/en/on/onsc/2023/case1133,Flores v. Eastern Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Client sites,No,Independent Contractor
+313,https://canlii.org/en/on/onsc/2021/case261,Campbell v. Pinnacle Holdings,Moderate,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+314,https://canlii.org/en/on/onsc/2020/case100,King v. Pinnacle Group,High,No,No,Mixed,Limited,Limited,Yes,Employer,Store location,Yes,Employee
+315,https://canlii.org/en/on/onsc/2020/case440,Garcia v. Regional Manufacturing Solutions,High,No,No,Employer,Limited,No,Yes,Employer,Hospital,Yes,Employee
+316,https://canlii.org/en/on/onsc/2024/case694,Young v. Metropolitan Real Estate Inc.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+317,https://canlii.org/en/on/onsc/2023/case448,Lewis v. Pinnacle Services,High,Limited,Limited,Mixed,Limited,No,Yes,Mixed,Retail location,Yes,Employee
+318,https://canlii.org/en/on/onsc/2022/case452,O'Brien v. Horizon Ltd.,Moderate,Limited,No,Mixed,No,No,Mostly,Employer,Hospital,Yes,Employee
+319,https://canlii.org/en/on/onsc/2024/case1149,Garcia v. Allied Group,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+320,https://canlii.org/en/on/onsc/2020/case1025,Mitchell v. United Co.,Minimal,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Home office,No,Independent Contractor
+321,https://canlii.org/en/on/onsc/2024/case814,Thomas v. Summit Insurance Solutions,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+322,https://canlii.org/en/on/onsc/2021/case666,Clark v. Pacific Consulting Holdings,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+323,https://canlii.org/en/on/onsc/2023/case203,Lewis v. National Retail Solutions,High,Limited,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+324,https://canlii.org/en/on/onsc/2020/case300,Scott v. Premier Co.,High,No,No,Employer,No,No,Yes,Mixed,Branch office,Yes,Employee
+325,https://canlii.org/en/on/onsc/2021/case776,Jackson v. Dynamic Logistics LLC,Low,Yes,Limited,Worker,Limited,Limited,Limited,Worker,Client sites,Sometimes,Independent Contractor
+326,https://canlii.org/en/on/onsc/2024/case649,Mitchell v. Dynamic Retail Services,Low,Yes,Yes,Mixed,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+327,https://canlii.org/en/on/onsc/2024/case579,Walker v. Innovative Inc.,Moderate,No,Limited,Employer,No,No,Yes,Mixed,Store location,Yes,Employee
+328,https://canlii.org/en/on/onsc/2023/case1233,Torres v. Dynamic Technology Co.,Minimal,Limited,Yes,Mixed,Yes,Yes,Mostly,Mixed,Client sites,No,Independent Contractor
+329,https://canlii.org/en/on/onsc/2020/case160,Scott v. Central Holdings,High,No,Limited,Mixed,No,Limited,Yes,Employer,Call center,Yes,Employee
+330,https://canlii.org/en/on/onsc/2021/case581,Sanchez v. Southern Co.,Moderate,No,Limited,Mixed,No,No,Mostly,Employer,Branch office,Yes,Employee
+331,https://canlii.org/en/on/onsc/2022/case922,Baker v. Summit Technology Inc.,Moderate,Yes,Yes,Worker,Limited,Yes,No,Mixed,Coworking space,No,Independent Contractor
+332,https://canlii.org/en/on/onsc/2021/case221,Chen v. Community LLC,High,No,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+333,https://canlii.org/en/on/onsc/2022/case737,Sanchez v. Dynamic Technology Services,Minimal,Limited,Yes,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+334,https://canlii.org/en/on/onsc/2023/case603,Anderson v. Western Holdings,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,On the road,No,Independent Contractor
+335,https://canlii.org/en/on/onsc/2023/case868,Sanchez v. Eastern Hospitality Holdings,Moderate,Yes,Yes,Worker,Yes,Limited,No,Worker,Multiple client locations,No,Independent Contractor
+336,https://canlii.org/en/on/onsc/2024/case19,Nelson v. Dynamic Media Services,High,No,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+337,https://canlii.org/en/on/onsc/2023/case493,Miller v. Global Telecom Inc.,High,No,No,Mixed,No,No,Yes,Employer,Employer premises,Yes,Employee
+338,https://canlii.org/en/on/onsc/2021/case806,Nguyen v. Regional Energy Solutions,Low,Yes,Yes,Mixed,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+339,https://canlii.org/en/on/onsc/2023/case303,Martin v. First Group,High,Limited,No,Employer,Limited,No,Yes,Employer,Factory floor,Yes,Employee
+340,https://canlii.org/en/on/onsc/2022/case112,Campbell v. Northern Financial LLC,High,No,No,Employer,No,No,Mostly,Mixed,Store location,Yes,Employee
+341,https://canlii.org/en/on/onsc/2022/case1237,Patel v. Western Solutions,High,No,No,Mixed,No,Limited,Yes,Employer,Store location,Sometimes,Employee
+342,https://canlii.org/en/on/onsc/2024/case954,Lopez v. XYZ Corp.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+343,https://canlii.org/en/on/onsc/2021/case951,Lewis v. Western Inc.,Minimal,Yes,Limited,Worker,Limited,Yes,Limited,Mixed,On the road,No,Independent Contractor
+344,https://canlii.org/en/on/onsc/2020/case335,Wilson v. Prime Retail LLC,Moderate,Limited,Limited,Employer,No,No,Mostly,Employer,Employer premises,Yes,Employee
+345,https://canlii.org/en/on/onsc/2023/case788,Hill v. Western Financial Ltd.,Moderate,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Home office,No,Independent Contractor
+346,https://canlii.org/en/on/onsc/2024/case1124,Lewis v. Dynamic Solutions,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+347,https://canlii.org/en/on/onsc/2023/case73,Hill v. NextGen LLC,High,No,No,Mixed,No,No,Mostly,Employer,Branch office,Yes,Employee
+348,https://canlii.org/en/on/onsc/2021/case236,Nguyen v. United Co.,Moderate,No,Limited,Mixed,No,No,Yes,Employer,School,Yes,Employee
+349,https://canlii.org/en/on/onsc/2022/case597,Anderson v. Elite LLC,Moderate,Limited,Limited,Mixed,No,No,Yes,Mixed,Retail location,Yes,Employee
+350,https://canlii.org/en/on/onsc/2021/case1166,Hernandez v. Innovative LLC,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+351,https://canlii.org/en/on/onsc/2020/case820,Singh v. Modern Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+352,https://canlii.org/en/on/onsc/2023/case168,Lopez v. Regional LLC,Moderate,No,No,Employer,No,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+353,https://canlii.org/en/on/onsc/2024/case869,Nguyen v. Elite Healthcare Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+354,https://canlii.org/en/on/onsc/2020/case910,Thompson v. Regional Holdings,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Home office,Sometimes,Independent Contractor
+355,https://canlii.org/en/on/onsc/2022/case147,King v. National Inc.,High,No,Limited,Employer,Limited,No,Yes,Mixed,Regional office,Yes,Employee
+356,https://canlii.org/en/on/onsc/2022/case1062,Flores v. Southern Inc.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+357,https://canlii.org/en/on/onsc/2024/case359,Martin v. Community Co.,Moderate,No,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+358,https://canlii.org/en/on/onsc/2024/case534,Anderson v. National Inc.,Moderate,Limited,Limited,Employer,No,No,Yes,Mixed,Store location,Yes,Employee
+359,https://canlii.org/en/on/onsc/2024/case244,Nguyen v. Pinnacle Services,Moderate,No,No,Mixed,No,No,Yes,Employer,Branch office,Yes,Employee
+360,https://canlii.org/en/on/onsc/2022/case702,Taylor v. Apex Healthcare Services,Minimal,Limited,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+361,https://canlii.org/en/on/onsc/2020/case1190,Miller v. Northern Financial Inc.,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+362,https://canlii.org/en/on/onsc/2023/case1123,Rodriguez v. Southern Legal Co.,Low,Yes,Yes,Mixed,Yes,Yes,Limited,Mixed,On the road,Sometimes,Independent Contractor
+363,https://canlii.org/en/on/onsc/2023/case623,Carter v. ABC Holdings,Low,Yes,Limited,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+364,https://canlii.org/en/on/onsc/2022/case717,Rivera v. Elite Media Corp.,Moderate,Yes,Limited,Mixed,Yes,Limited,Limited,Mixed,Own premises,No,Independent Contractor
+365,https://canlii.org/en/on/onsc/2022/case1037,Brown v. Regional Group,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Own premises,No,Independent Contractor
+366,https://canlii.org/en/on/onsc/2022/case987,Roberts v. Dynamic Pharmaceutical Solutions,Low,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+367,https://canlii.org/en/on/onsc/2022/case872,Perez v. Eastern Media Corp.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+368,https://canlii.org/en/on/onsc/2020/case730,Flores v. Prime Healthcare Corp.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+369,https://canlii.org/en/on/onsc/2022/case977,Chen v. Northern Construction Group,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+370,https://canlii.org/en/on/onsc/2021/case271,Johnson v. Global Corp.,High,Limited,Limited,Mixed,Limited,No,Yes,Employer,Factory floor,Yes,Employee
+371,https://canlii.org/en/on/onsc/2020/case375,Thompson v. Community Ltd.,High,No,No,Employer,No,Limited,Yes,Mixed,Call center,Sometimes,Employee
+372,https://canlii.org/en/on/onsc/2021/case906,Green v. ABC LLC,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+373,https://canlii.org/en/on/onsc/2023/case998,Jones v. First Group,Low,Limited,Limited,Mixed,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+374,https://canlii.org/en/on/onsc/2021/case56,Martinez v. Advanced Insurance Group,Moderate,No,Limited,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+375,https://canlii.org/en/on/onsc/2020/case235,Robinson v. Regional Co.,High,No,Limited,Mixed,Limited,Limited,Yes,Mixed,Corporate HQ,Yes,Employee
+376,https://canlii.org/en/on/onsc/2021/case896,Walker v. XYZ Group,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+377,https://canlii.org/en/on/onsc/2023/case1083,Jackson v. United Media Holdings,Minimal,Yes,Yes,Worker,Limited,Limited,No,Worker,Client sites,No,Independent Contractor
+378,https://canlii.org/en/on/onsc/2020/case915,Roberts v. Innovative Manufacturing Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+379,https://canlii.org/en/on/onsc/2024/case1084,Ramirez v. Dynamic Corp.,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+380,https://canlii.org/en/on/onsc/2023/case438,Moore v. Prime LLC,Moderate,No,Limited,Employer,No,No,Yes,Employer,Hotel,Sometimes,Employee
+381,https://canlii.org/en/on/onsc/2021/case841,Thomas v. United Technology Holdings,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Multiple client locations,No,Independent Contractor
+382,https://canlii.org/en/on/onsc/2023/case78,Campbell v. NextGen Inc.,Moderate,No,No,Employer,No,No,Mostly,Employer,Store location,Yes,Employee
+383,https://canlii.org/en/on/onsc/2023/case773,O'Brien v. Horizon Ltd.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+384,https://canlii.org/en/on/onsc/2023/case163,Brown v. Atlantic Co.,High,No,No,Mixed,Limited,No,Yes,Employer,Retail location,Sometimes,Employee
+385,https://canlii.org/en/on/onsc/2020/case710,Flores v. Premier Healthcare Co.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+386,https://canlii.org/en/on/onsc/2022/case667,Rivera v. Pacific Media Solutions,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Home office,No,Independent Contractor
+387,https://canlii.org/en/on/onsc/2024/case979,Chen v. First Real Estate Solutions,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,Client sites,Sometimes,Independent Contractor
+388,https://canlii.org/en/on/onsc/2023/case318,Martin v. Global Construction Co.,High,No,Limited,Mixed,Limited,No,Yes,Mixed,Hotel,Yes,Employee
+389,https://canlii.org/en/on/onsc/2020/case715,Mitchell v. Dynamic Consulting Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Home office,No,Independent Contractor
+390,https://canlii.org/en/on/onsc/2020/case1005,Chen v. Regional LLC,Moderate,Yes,Yes,Worker,Limited,Yes,No,Mixed,Various locations,No,Independent Contractor
+391,https://canlii.org/en/on/onsc/2021/case396,Brown v. Apex Inc.,Moderate,No,No,Employer,No,Limited,Yes,Employer,Store location,Yes,Employee
+392,https://canlii.org/en/on/onsc/2024/case884,Perez v. Elite Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+393,https://canlii.org/en/on/onsc/2023/case863,O'Brien v. ABC Retail Group,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+394,https://canlii.org/en/on/onsc/2021/case191,Garcia v. Modern Corp.,High,Limited,Limited,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+395,https://canlii.org/en/on/onsc/2021/case1196,Anderson v. Atlantic Holdings,Low,Yes,Yes,Mixed,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+396,https://canlii.org/en/on/onsc/2020/case500,Mitchell v. Pinnacle Real Estate Ltd.,Moderate,No,No,Mixed,Limited,No,Yes,Employer,Warehouse,Yes,Employee
+397,https://canlii.org/en/on/onsc/2020/case535,Gonzalez v. Central Manufacturing Ltd.,High,No,Limited,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+398,https://canlii.org/en/on/onsc/2023/case843,Gonzalez v. Eastern Holdings,Low,Limited,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+399,https://canlii.org/en/on/onsc/2023/case498,Gonzalez v. Western Education Corp.,High,No,No,Employer,No,No,Yes,Employer,Company office,Sometimes,Employee
+400,https://canlii.org/en/on/onsc/2021/case371,King v. Southern Real Estate Inc.,Moderate,No,No,Employer,Limited,No,Mostly,Employer,Call center,Yes,Employee
+401,https://canlii.org/en/on/onsc/2021/case21,Kim v. Southern LLC,High,No,No,Employer,Limited,No,Yes,Mixed,School,Sometimes,Employee
+402,https://canlii.org/en/on/onsc/2020/case995,Martin v. Northern Group,Moderate,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+403,https://canlii.org/en/on/onsc/2020/case795,Jones v. Regional Technology Corp.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+404,https://canlii.org/en/on/onsc/2020/case480,O'Brien v. Prime Construction Holdings,High,No,Limited,Employer,Limited,No,Yes,Employer,Hotel,Yes,Employee
+405,https://canlii.org/en/on/onsc/2021/case1001,Thompson v. Modern Ltd.,Low,Limited,Limited,Worker,Yes,Yes,Limited,Worker,Multiple client locations,No,Independent Contractor
+406,https://canlii.org/en/on/onsc/2021/case721,O'Brien v. Allied Real Estate LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+407,https://canlii.org/en/on/onsc/2023/case898,Murphy v. Metropolitan Group,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+408,https://canlii.org/en/on/onsc/2023/case678,Allen v. Advanced Technology Holdings,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+409,https://canlii.org/en/on/onsc/2024/case459,Nguyen v. United Telecom LLC,High,No,No,Employer,Limited,No,Yes,Mixed,Retail location,Yes,Employee
+410,https://canlii.org/en/on/onsc/2021/case706,King v. Allied Corp.,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+411,https://canlii.org/en/on/onsc/2024/case594,Nelson v. Western Co.,High,No,Limited,Employer,No,No,Yes,Employer,School,Sometimes,Employee
+412,https://canlii.org/en/on/onsc/2024/case1244,Nguyen v. Western Ltd.,Moderate,Yes,Yes,Worker,Yes,Limited,No,Mixed,Remote,No,Independent Contractor
+413,https://canlii.org/en/on/onsc/2022/case217,Young v. Western Energy Group,High,Limited,No,Employer,No,Limited,Yes,Mixed,Regional office,Yes,Employee
+414,https://canlii.org/en/on/onsc/2020/case30,Green v. Global Services,High,No,No,Employer,No,Limited,Yes,Employer,Regional office,Yes,Employee
+415,https://canlii.org/en/on/onsc/2022/case117,Mitchell v. Metropolitan Corp.,High,No,No,Employer,Limited,No,Mostly,Employer,Regional office,Sometimes,Employee
+416,https://canlii.org/en/on/onsc/2024/case269,King v. First Corp.,Moderate,Limited,No,Mixed,Limited,No,Yes,Employer,Retail location,Yes,Employee
+417,https://canlii.org/en/on/onsc/2023/case378,Williams v. Dynamic Real Estate Inc.,High,No,No,Employer,No,No,Mostly,Employer,Branch office,Yes,Employee
+418,https://canlii.org/en/on/onsc/2020/case1175,Roberts v. Pacific Corp.,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+419,https://canlii.org/en/on/onsc/2023/case558,Patel v. Western Energy Solutions,High,No,No,Employer,Limited,No,Yes,Employer,Call center,Yes,Employee
+420,https://canlii.org/en/on/onsc/2024/case29,Patel v. Apex Inc.,High,No,Limited,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+421,https://canlii.org/en/on/onsc/2022/case212,O'Brien v. Eastern Co.,High,No,No,Employer,Limited,No,Yes,Employer,Store location,Yes,Employee
+422,https://canlii.org/en/on/onsc/2022/case742,Martinez v. Summit Education LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+423,https://canlii.org/en/on/onsc/2020/case625,Miller v. ABC Construction Co.,Low,Yes,Yes,Mixed,Limited,Limited,No,Worker,On the road,No,Independent Contractor
+424,https://canlii.org/en/on/onsc/2023/case338,Thompson v. Metropolitan Energy Services,High,No,Limited,Employer,Limited,No,Yes,Employer,Company office,Yes,Employee
+425,https://canlii.org/en/on/onsc/2021/case861,Rivera v. Atlantic Holdings,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+426,https://canlii.org/en/on/onsc/2021/case281,Lopez v. Northern Solutions,High,No,No,Employer,No,No,Yes,Mixed,Company office,Yes,Employee
+427,https://canlii.org/en/on/onsc/2020/case1000,Jones v. XYZ Solutions,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+428,https://canlii.org/en/on/onsc/2020/case605,Nguyen v. ABC Holdings,Moderate,Limited,Yes,Mixed,Yes,Limited,No,Mixed,Home office,Sometimes,Independent Contractor
+429,https://canlii.org/en/on/onsc/2020/case1035,Smith v. National Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,Sometimes,Independent Contractor
+430,https://canlii.org/en/on/onsc/2021/case1141,Smith v. NextGen Real Estate Group,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+431,https://canlii.org/en/on/onsc/2023/case258,Jones v. Central Group,High,No,No,Employer,Limited,No,Yes,Employer,School,Sometimes,Employee
+432,https://canlii.org/en/on/onsc/2024/case219,Murphy v. Prime Consulting Co.,High,Limited,Limited,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+433,https://canlii.org/en/on/onsc/2022/case47,Chen v. Prime Consulting Group,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+434,https://canlii.org/en/on/onsc/2020/case985,Wright v. Elite Inc.,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,Remote,No,Independent Contractor
+435,https://canlii.org/en/on/onsc/2021/case431,Ramirez v. Global Retail Solutions,Moderate,No,Limited,Employer,Limited,No,Mostly,Employer,Employer premises,Yes,Employee
+436,https://canlii.org/en/on/onsc/2021/case451,Allen v. Premier Real Estate Solutions,High,No,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+437,https://canlii.org/en/on/onsc/2020/case1220,Roberts v. Summit Co.,Moderate,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+438,https://canlii.org/en/on/onsc/2022/case377,Hall v. Eastern Holdings,Moderate,No,No,Employer,No,No,Mostly,Mixed,School,Yes,Employee
+439,https://canlii.org/en/on/onsc/2022/case1012,Johnson v. Dynamic Consulting Solutions,Minimal,Limited,Yes,Worker,Limited,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+440,https://canlii.org/en/on/onsc/2024/case914,Roberts v. Dynamic Insurance Ltd.,Low,Limited,Yes,Worker,Yes,Limited,Limited,Mixed,Own premises,No,Independent Contractor
+441,https://canlii.org/en/on/onsc/2023/case63,Young v. Allied LLC,Moderate,No,No,Mixed,No,Limited,Yes,Employer,Hospital,Yes,Employee
+442,https://canlii.org/en/on/onsc/2024/case674,Walker v. ABC Media Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+443,https://canlii.org/en/on/onsc/2022/case712,Patel v. ABC Inc.,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Remote,No,Independent Contractor
+444,https://canlii.org/en/on/onsc/2020/case860,Allen v. Atlantic Ltd.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+445,https://canlii.org/en/on/onsc/2023/case848,Nelson v. Pacific Logistics Services,Low,Limited,Limited,Worker,Yes,Limited,Limited,Worker,Home office,Sometimes,Independent Contractor
+446,https://canlii.org/en/on/onsc/2024/case919,Young v. Regional Media Corp.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+447,https://canlii.org/en/on/onsc/2024/case449,Walker v. Regional Corp.,High,No,No,Employer,No,No,Yes,Mixed,Retail location,Yes,Employee
+448,https://canlii.org/en/on/onsc/2022/case417,Davis v. Eastern Education Services,Moderate,No,No,Employer,Limited,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+449,https://canlii.org/en/on/onsc/2023/case1028,Patel v. Strategic Inc.,Minimal,Limited,Yes,Worker,Yes,Limited,No,Worker,Hybrid,Sometimes,Independent Contractor
+450,https://canlii.org/en/on/onsc/2024/case284,Smith v. National Energy Services,Moderate,No,Limited,Mixed,Limited,No,Yes,Employer,Restaurant,Yes,Employee
+451,https://canlii.org/en/on/onsc/2023/case628,Gonzalez v. Metropolitan Holdings,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+452,https://canlii.org/en/on/onsc/2023/case298,O'Brien v. Metropolitan Construction Group,High,No,Limited,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+453,https://canlii.org/en/on/onsc/2023/case248,King v. National Solutions,High,No,No,Employer,No,Limited,Mostly,Employer,Branch office,Yes,Employee
+454,https://canlii.org/en/on/onsc/2022/case1017,Flores v. First Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Various locations,No,Independent Contractor
+455,https://canlii.org/en/on/onsc/2024/case34,Moore v. Elite Group,High,No,Limited,Employer,No,Limited,Yes,Mixed,Store location,Yes,Employee
+456,https://canlii.org/en/on/onsc/2021/case566,Ramirez v. Metropolitan Holdings,High,No,Limited,Employer,No,No,Yes,Mixed,Employer premises,Yes,Employee
+457,https://canlii.org/en/on/onsc/2020/case935,Baker v. Central Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+458,https://canlii.org/en/on/onsc/2022/case1227,Hall v. United Energy Corp.,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+459,https://canlii.org/en/on/onsc/2023/case358,Taylor v. Summit Co.,High,No,Limited,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+460,https://canlii.org/en/on/onsc/2020/case275,White v. Global Insurance Holdings,Moderate,No,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+461,https://canlii.org/en/on/onsc/2023/case83,Anderson v. Metropolitan Financial Inc.,High,No,No,Mixed,No,No,Yes,Mixed,Branch office,Sometimes,Employee
+462,https://canlii.org/en/on/onsc/2021/case101,Williams v. Summit Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+463,https://canlii.org/en/on/onsc/2022/case287,Young v. ABC Pharmaceutical Corp.,High,No,Limited,Employer,Limited,No,Yes,Employer,Restaurant,Yes,Employee
+464,https://canlii.org/en/on/onsc/2022/case657,Torres v. Metropolitan Education Holdings,Low,Yes,Yes,Mixed,Yes,Limited,No,Worker,Home office,No,Independent Contractor
+465,https://canlii.org/en/on/onsc/2022/case817,Green v. Community LLC,Minimal,Limited,Yes,Mixed,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+466,https://canlii.org/en/on/onsc/2024/case114,Carter v. Innovative Transportation Inc.,Moderate,Limited,No,Mixed,No,Limited,Yes,Employer,Restaurant,Yes,Employee
+467,https://canlii.org/en/on/onsc/2022/case537,Lopez v. Global Retail Solutions,High,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+468,https://canlii.org/en/on/onsc/2022/case387,Sanchez v. Apex Manufacturing Ltd.,Moderate,No,No,Employer,No,Limited,Yes,Mixed,Factory floor,Yes,Employee
+469,https://canlii.org/en/on/onsc/2023/case568,Johnson v. Premier Healthcare Co.,Moderate,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+470,https://canlii.org/en/on/onsc/2021/case856,Ramirez v. NextGen Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+471,https://canlii.org/en/on/onsc/2022/case27,Wright v. Northern Energy Inc.,High,Limited,Limited,Employer,No,Limited,Mostly,Employer,Employer premises,Sometimes,Employee
+472,https://canlii.org/en/on/onsc/2023/case1008,Smith v. Western Construction Inc.,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Remote,No,Independent Contractor
+473,https://canlii.org/en/on/onsc/2024/case564,Thompson v. ABC Insurance Co.,High,No,Limited,Employer,No,No,Yes,Employer,Branch office,Sometimes,Employee
+474,https://canlii.org/en/on/onsc/2021/case151,Martin v. NextGen Ltd.,Moderate,No,No,Employer,No,No,Mostly,Mixed,Regional office,Yes,Employee
+475,https://canlii.org/en/on/onsc/2020/case670,Rivera v. Modern LLC,Minimal,Limited,Yes,Mixed,Yes,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+476,https://canlii.org/en/on/onsc/2021/case926,Chen v. Strategic Media Ltd.,Low,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Home office,No,Independent Contractor
+477,https://canlii.org/en/on/onsc/2022/case917,Taylor v. Modern Services,Moderate,Yes,Yes,Worker,Yes,Limited,No,Worker,Remote,Sometimes,Independent Contractor
+478,https://canlii.org/en/on/onsc/2023/case1153,Rivera v. Modern Solutions,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+479,https://canlii.org/en/on/onsc/2020/case775,Roberts v. Atlantic Manufacturing Holdings,Moderate,Yes,Yes,Worker,Yes,Limited,No,Mixed,On the road,No,Independent Contractor
+480,https://canlii.org/en/on/onsc/2022/case1172,Clark v. Apex Transportation Services,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+481,https://canlii.org/en/on/onsc/2022/case602,Brown v. Dynamic Education Holdings,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Client sites,No,Independent Contractor
+482,https://canlii.org/en/on/onsc/2020/case360,Johnson v. Allied Holdings,Moderate,No,No,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+483,https://canlii.org/en/on/onsc/2023/case478,Williams v. Metropolitan Technology LLC,High,Limited,No,Employer,No,No,Yes,Employer,Branch office,Sometimes,Employee
+484,https://canlii.org/en/on/onsc/2023/case218,Rodriguez v. Pacific Legal Holdings,High,Limited,No,Employer,No,No,Mostly,Employer,Company office,Yes,Employee
+485,https://canlii.org/en/on/onsc/2023/case293,King v. Advanced Insurance Co.,High,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+486,https://canlii.org/en/on/onsc/2023/case313,Roberts v. Modern Pharmaceutical Solutions,High,No,No,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+487,https://canlii.org/en/on/onsc/2021/case631,Carter v. NextGen Real Estate LLC,Moderate,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Multiple client locations,Sometimes,Independent Contractor
+488,https://canlii.org/en/on/onsc/2023/case368,Nelson v. Community Construction Services,Moderate,No,Limited,Employer,No,No,Mostly,Employer,Employer premises,Yes,Employee
+489,https://canlii.org/en/on/onsc/2020/case495,Hall v. Eastern Financial Ltd.,High,No,Limited,Employer,No,Limited,Yes,Mixed,Store location,Yes,Employee
+490,https://canlii.org/en/on/onsc/2022/case1002,White v. United Telecom Inc.,Moderate,Limited,Yes,Mixed,Yes,Yes,No,Mixed,Various locations,No,Independent Contractor
+491,https://canlii.org/en/on/onsc/2022/case792,Ramirez v. Global LLC,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+492,https://canlii.org/en/on/onsc/2024/case559,Jackson v. Summit Holdings,High,Limited,Limited,Employer,No,No,Mostly,Mixed,Regional office,Yes,Employee
+493,https://canlii.org/en/on/onsc/2021/case506,Anderson v. Prime Corp.,High,No,Limited,Employer,No,No,Yes,Mixed,School,Yes,Employee
+494,https://canlii.org/en/on/onsc/2023/case208,Davis v. Community Inc.,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+495,https://canlii.org/en/on/onsc/2021/case1096,Wong v. Modern Energy Inc.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+496,https://canlii.org/en/on/onsc/2021/case1211,Smith v. Global Corp.,Moderate,No,No,Employer,No,No,Yes,Mixed,Company office,Yes,Employee
+497,https://canlii.org/en/on/onsc/2020/case735,Wong v. ABC Ltd.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+498,https://canlii.org/en/on/onsc/2021/case1136,Lewis v. Modern Solutions,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+499,https://canlii.org/en/on/onsc/2021/case341,Mitchell v. Prime Construction Ltd.,High,No,Limited,Employer,Limited,No,Yes,Mixed,Regional office,Yes,Employee
+500,https://canlii.org/en/on/onsc/2023/case743,Thomas v. Prime Retail Solutions,Minimal,Yes,Limited,Mixed,Yes,Limited,No,Worker,Various locations,No,Independent Contractor
+501,https://canlii.org/en/on/onsc/2023/case748,Hall v. Prime Co.,Moderate,Limited,Limited,Worker,Yes,Yes,Limited,Mixed,Remote,No,Independent Contractor
+502,https://canlii.org/en/on/onsc/2022/case252,Jones v. Innovative Group,Moderate,No,Limited,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+503,https://canlii.org/en/on/onsc/2022/case1212,Rodriguez v. Western Holdings,Minimal,Yes,Yes,Mixed,Limited,Yes,No,Worker,Own premises,No,Independent Contractor
+504,https://canlii.org/en/on/onsc/2021/case616,Carter v. Pacific Financial Services,Minimal,Limited,Yes,Worker,Yes,Limited,No,Worker,Home office,No,Independent Contractor
+505,https://canlii.org/en/on/onsc/2023/case1078,Hall v. Regional Insurance Corp.,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Coworking space,No,Independent Contractor
+506,https://canlii.org/en/on/onsc/2020/case125,Singh v. Allied Inc.,Moderate,No,No,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+507,https://canlii.org/en/on/onsc/2023/case108,Ramirez v. Premier Telecom Holdings,High,No,Limited,Mixed,No,Limited,Yes,Employer,Hospital,Yes,Employee
+508,https://canlii.org/en/on/onsc/2021/case941,Harris v. Prime Co.,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,Home office,No,Independent Contractor
+509,https://canlii.org/en/on/onsc/2024/case44,Roberts v. Elite Energy Holdings,High,No,Limited,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+510,https://canlii.org/en/on/onsc/2022/case1152,O'Brien v. Premier Hospitality LLC,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+511,https://canlii.org/en/on/onsc/2023/case778,Clark v. Prime Solutions,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+512,https://canlii.org/en/on/onsc/2024/case1104,Lopez v. Global Co.,Minimal,Yes,Yes,Mixed,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+513,https://canlii.org/en/on/onsc/2024/case734,Miller v. Prime Co.,Low,Limited,Yes,Worker,Yes,Yes,Limited,Mixed,Coworking space,Sometimes,Independent Contractor
+514,https://canlii.org/en/on/onsc/2023/case818,Davis v. Modern Real Estate Holdings,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+515,https://canlii.org/en/on/onsc/2022/case82,Patel v. Atlantic Consulting Inc.,High,Limited,No,Employer,No,No,Yes,Mixed,Store location,Yes,Employee
+516,https://canlii.org/en/on/onsc/2020/case1120,O'Brien v. Central Construction Services,Minimal,Yes,Yes,Worker,Yes,Limited,Limited,Mixed,On the road,No,Independent Contractor
+517,https://canlii.org/en/on/onsc/2023/case238,Baker v. Metropolitan Corp.,High,No,No,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+518,https://canlii.org/en/on/onsc/2022/case107,Campbell v. United Solutions,Moderate,Limited,No,Employer,No,No,Yes,Employer,Company office,Sometimes,Employee
+519,https://canlii.org/en/on/onsc/2023/case1213,Williams v. Dynamic Legal Ltd.,High,No,No,Employer,No,Limited,Yes,Mixed,Hospital,Yes,Employee
+520,https://canlii.org/en/on/onsc/2024/case524,Singh v. Western Holdings,Moderate,Limited,No,Mixed,No,No,Mostly,Mixed,Branch office,Yes,Employee
+521,https://canlii.org/en/on/onsc/2023/case598,Miller v. Allied Hospitality Corp.,Moderate,No,No,Employer,Limited,No,Yes,Employer,Hospital,Yes,Employee
+522,https://canlii.org/en/on/onsc/2020/case975,Perez v. ABC Telecom Ltd.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+523,https://canlii.org/en/on/onsc/2022/case442,Jones v. Prime Pharmaceutical Co.,High,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+524,https://canlii.org/en/on/onsc/2024/case789,Hall v. Advanced Real Estate LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+525,https://canlii.org/en/on/onsc/2024/case719,Kim v. Southern Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+526,https://canlii.org/en/on/onsc/2024/case424,Nguyen v. Advanced Logistics Holdings,High,No,No,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+527,https://canlii.org/en/on/onsc/2020/case855,Jackson v. Premier Construction Services,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+528,https://canlii.org/en/on/onsc/2021/case1101,Wilson v. NextGen Holdings,Low,Yes,Limited,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+529,https://canlii.org/en/on/onsc/2022/case902,Walker v. Premier Solutions,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+530,https://canlii.org/en/on/onsc/2023/case423,Williams v. XYZ Consulting Solutions,High,No,No,Mixed,No,No,Yes,Employer,Employer premises,Sometimes,Employee
+531,https://canlii.org/en/on/onsc/2020/case400,Murphy v. Northern Solutions,Moderate,No,Limited,Employer,No,No,Yes,Employer,Call center,Sometimes,Employee
+532,https://canlii.org/en/on/onsc/2021/case1241,Hill v. Atlantic Manufacturing Inc.,Minimal,Limited,Limited,Mixed,Yes,Yes,Mostly,Mixed,Multiple client locations,No,Independent Contractor
+533,https://canlii.org/en/on/onsc/2022/case42,Miller v. NextGen Retail Solutions,High,No,Limited,Employer,Limited,No,Yes,Mixed,Store location,Yes,Employee
+534,https://canlii.org/en/on/onsc/2021/case956,Chen v. ABC Logistics Group,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+535,https://canlii.org/en/on/onsc/2020/case470,Davis v. Allied Consulting Corp.,Moderate,No,Limited,Employer,No,No,Mostly,Mixed,School,Yes,Employee
+536,https://canlii.org/en/on/onsc/2024/case904,Johnson v. Elite Corp.,Minimal,Limited,Limited,Mixed,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+537,https://canlii.org/en/on/onsc/2020/case1090,Murphy v. First Insurance Solutions,Moderate,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Various locations,No,Independent Contractor
+538,https://canlii.org/en/on/onsc/2023/case783,Jackson v. Central Holdings,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Home office,No,Independent Contractor
+539,https://canlii.org/en/on/onsc/2020/case310,Roberts v. Elite Real Estate Solutions,High,No,No,Employer,Limited,No,Yes,Mixed,School,Sometimes,Employee
+540,https://canlii.org/en/on/onsc/2023/case728,Thomas v. ABC Services,Low,Yes,Limited,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+541,https://canlii.org/en/on/onsc/2023/case443,Scott v. XYZ LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+542,https://canlii.org/en/on/onsc/2021/case1186,Moore v. Metropolitan Solutions,Moderate,Limited,Yes,Worker,Yes,Yes,No,Mixed,Home office,Sometimes,Independent Contractor
+543,https://canlii.org/en/on/onsc/2024/case1034,Flores v. Western Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+544,https://canlii.org/en/on/onsc/2023/case38,Gonzalez v. NextGen Healthcare Solutions,High,No,Limited,Employer,No,No,Yes,Employer,Company office,Sometimes,Employee
+545,https://canlii.org/en/on/onsc/2023/case523,Gonzalez v. Global Consulting Services,High,No,Limited,Mixed,No,No,Yes,Employer,Warehouse,Yes,Employee
+546,https://canlii.org/en/on/onsc/2020/case895,Ramirez v. Summit Real Estate Services,Low,Limited,Yes,Worker,Yes,Limited,Limited,Worker,Hybrid,Sometimes,Independent Contractor
+547,https://canlii.org/en/on/onsc/2022/case812,Johnson v. Atlantic Inc.,Moderate,Limited,Yes,Mixed,Yes,Yes,No,Worker,On the road,Sometimes,Independent Contractor
+548,https://canlii.org/en/on/onsc/2024/case414,Johnson v. Prime LLC,High,No,Limited,Employer,No,No,Yes,Mixed,Warehouse,Yes,Employee
+549,https://canlii.org/en/on/onsc/2020/case690,Jones v. Apex Real Estate Corp.,Minimal,Yes,Yes,Worker,Yes,Limited,No,Mixed,Remote,No,Independent Contractor
+550,https://canlii.org/en/on/onsc/2023/case98,Nguyen v. Advanced Healthcare Co.,Moderate,Limited,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+551,https://canlii.org/en/on/onsc/2022/case967,Thompson v. ABC Pharmaceutical LLC,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+552,https://canlii.org/en/on/onsc/2021/case1071,O'Brien v. Modern Consulting Ltd.,Moderate,Limited,Yes,Worker,Yes,Yes,Limited,Mixed,Hybrid,Sometimes,Independent Contractor
+553,https://canlii.org/en/on/onsc/2023/case388,O'Brien v. Regional Retail Group,High,No,Limited,Employer,No,No,Yes,Employer,School,Yes,Employee
+554,https://canlii.org/en/on/onsc/2022/case232,Jones v. Regional Legal Holdings,Moderate,No,No,Employer,No,Limited,Yes,Employer,Hospital,Yes,Employee
+555,https://canlii.org/en/on/onsc/2024/case444,Harris v. Modern Construction Ltd.,High,Limited,No,Employer,No,No,Mostly,Employer,Hospital,Sometimes,Employee
+556,https://canlii.org/en/on/onsc/2020/case1215,Hall v. Global Corp.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+557,https://canlii.org/en/on/onsc/2021/case866,Thomas v. Horizon Consulting Inc.,Minimal,Yes,Limited,Worker,Yes,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+558,https://canlii.org/en/on/onsc/2023/case533,Allen v. Pinnacle Pharmaceutical Solutions,Moderate,No,Limited,Employer,No,Limited,Yes,Mixed,Warehouse,Sometimes,Employee
+559,https://canlii.org/en/on/onsc/2022/case177,Martin v. National Manufacturing LLC,High,Limited,No,Employer,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+560,https://canlii.org/en/on/onsc/2020/case720,Moore v. Prime Ltd.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+561,https://canlii.org/en/on/onsc/2023/case193,Johnson v. Eastern Co.,High,No,No,Employer,No,No,Yes,Mixed,Hospital,Sometimes,Employee
+562,https://canlii.org/en/on/onsc/2024/case984,Smith v. National Manufacturing Corp.,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Client sites,Sometimes,Independent Contractor
+563,https://canlii.org/en/on/onsc/2024/case1249,Flores v. National Group,High,No,No,Mixed,No,No,Mostly,Employer,Retail location,Sometimes,Employee
+564,https://canlii.org/en/on/onsc/2020/case950,King v. Modern Consulting Corp.,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+565,https://canlii.org/en/on/onsc/2023/case933,Lopez v. Pacific LLC,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+566,https://canlii.org/en/on/onsc/2020/case485,Harris v. Allied Ltd.,Moderate,Limited,Limited,Employer,No,No,Mostly,Employer,Employer premises,Yes,Employee
+567,https://canlii.org/en/on/onsc/2020/case695,Gonzalez v. Premier Co.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+568,https://canlii.org/en/on/onsc/2021/case131,Moore v. Modern Logistics LLC,High,Limited,No,Employer,No,Limited,Mostly,Mixed,Hospital,Yes,Employee
+569,https://canlii.org/en/on/onsc/2022/case1057,Torres v. Metropolitan Holdings,Low,Limited,Limited,Worker,Yes,Yes,No,Mixed,Various locations,No,Independent Contractor
+570,https://canlii.org/en/on/onsc/2021/case326,Perez v. ABC Legal Group,Moderate,No,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+571,https://canlii.org/en/on/onsc/2022/case572,Flores v. Metropolitan Transportation LLC,Moderate,No,No,Mixed,No,Limited,Yes,Employer,Hotel,Yes,Employee
+572,https://canlii.org/en/on/onsc/2023/case758,Flores v. United Solutions,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+573,https://canlii.org/en/on/onsc/2021/case601,Garcia v. Community Pharmaceutical Group,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Client sites,No,Independent Contractor
+574,https://canlii.org/en/on/onsc/2020/case460,Walker v. Dynamic Co.,High,No,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+575,https://canlii.org/en/on/onsc/2022/case642,Thomas v. Prime Construction Solutions,Minimal,Yes,Limited,Worker,Limited,Yes,Limited,Mixed,Own premises,Sometimes,Independent Contractor
+576,https://canlii.org/en/on/onsc/2023/case703,Flores v. Premier LLC,Minimal,Limited,Limited,Mixed,Yes,Yes,Limited,Worker,Remote,Sometimes,Independent Contractor
+577,https://canlii.org/en/on/onsc/2024/case494,Smith v. Premier Group,High,Limited,Limited,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+578,https://canlii.org/en/on/onsc/2024/case59,Baker v. Eastern Services,High,No,No,Employer,No,No,Mostly,Employer,Company office,Yes,Employee
+579,https://canlii.org/en/on/onsc/2020/case180,Wong v. ABC Ltd.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+580,https://canlii.org/en/on/onsc/2020/case515,Jones v. Metropolitan Co.,High,No,No,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+581,https://canlii.org/en/on/onsc/2020/case465,Moore v. NextGen Logistics Holdings,High,Limited,Limited,Mixed,No,No,Yes,Employer,Store location,Yes,Employee
+582,https://canlii.org/en/on/onsc/2021/case546,Jones v. Southern Energy Corp.,High,Limited,No,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+583,https://canlii.org/en/on/onsc/2021/case316,Robinson v. Southern Inc.,High,No,No,Employer,No,No,Mostly,Employer,Call center,Yes,Employee
+584,https://canlii.org/en/on/onsc/2023/case973,Garcia v. Allied Education Co.,Moderate,Limited,Yes,Mixed,Yes,Yes,Limited,Worker,Various locations,No,Independent Contractor
+585,https://canlii.org/en/on/onsc/2021/case1131,Mitchell v. NextGen Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+586,https://canlii.org/en/on/onsc/2020/case285,Wright v. Regional Technology Services,High,No,No,Mixed,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+587,https://canlii.org/en/on/onsc/2023/case273,Wright v. Elite Inc.,Moderate,No,No,Employer,Limited,No,Yes,Employer,Regional office,Sometimes,Employee
+588,https://canlii.org/en/on/onsc/2024/case1189,Kim v. National Manufacturing Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+589,https://canlii.org/en/on/onsc/2024/case1194,Rodriguez v. Summit Group,Moderate,Limited,Yes,Mixed,Yes,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+590,https://canlii.org/en/on/onsc/2023/case588,Perez v. Eastern Services,Moderate,Limited,No,Employer,Limited,No,Yes,Mixed,Factory floor,Yes,Employee
+591,https://canlii.org/en/on/onsc/2023/case138,Flores v. Southern Logistics Corp.,High,No,No,Employer,No,No,Yes,Employer,School,Yes,Employee
+592,https://canlii.org/en/on/onsc/2021/case76,Green v. Innovative Inc.,High,No,Limited,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+593,https://canlii.org/en/on/onsc/2024/case804,Smith v. Elite Legal Holdings,Low,Yes,Yes,Worker,Yes,Yes,Limited,Mixed,Various locations,No,Independent Contractor
+594,https://canlii.org/en/on/onsc/2022/case237,Hall v. Modern Manufacturing LLC,Moderate,Limited,Limited,Employer,No,Limited,Yes,Employer,Corporate HQ,Yes,Employee
+595,https://canlii.org/en/on/onsc/2023/case1148,Clark v. Dynamic Telecom Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+596,https://canlii.org/en/on/onsc/2020/case165,Mitchell v. XYZ Ltd.,High,No,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Sometimes,Employee
+597,https://canlii.org/en/on/onsc/2022/case77,Perez v. Global Technology LLC,High,Limited,Limited,Employer,No,Limited,Yes,Employer,Store location,Yes,Employee
+598,https://canlii.org/en/on/onsc/2024/case334,Johnson v. Atlantic Corp.,High,No,No,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+599,https://canlii.org/en/on/onsc/2020/case70,Campbell v. Strategic Transportation Group,High,Limited,No,Mixed,No,Limited,Yes,Employer,Hospital,Sometimes,Employee
+600,https://canlii.org/en/on/onsc/2023/case723,Gonzalez v. Global Group,Low,Yes,Limited,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+601,https://canlii.org/en/on/onsc/2024/case1039,Sanchez v. Advanced Manufacturing Group,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+602,https://canlii.org/en/on/onsc/2024/case1199,Robinson v. Pacific Co.,Moderate,Yes,Yes,Worker,Yes,Yes,Limited,Worker,On the road,No,Independent Contractor
+603,https://canlii.org/en/on/onsc/2023/case1058,White v. Metropolitan Logistics Ltd.,Low,Limited,Yes,Worker,Limited,Yes,No,Mixed,Coworking space,No,Independent Contractor
+604,https://canlii.org/en/on/onsc/2021/case266,Chen v. NextGen Corp.,High,Limited,No,Employer,No,No,Yes,Mixed,Retail location,Yes,Employee
+605,https://canlii.org/en/on/onsc/2023/case1193,Torres v. Modern LLC,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,Home office,Sometimes,Independent Contractor
+606,https://canlii.org/en/on/onsc/2020/case135,Harris v. Prime Construction Co.,High,No,Limited,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+607,https://canlii.org/en/on/onsc/2022/case32,Perez v. First Telecom Co.,High,No,No,Employer,No,No,Yes,Employer,Company office,Sometimes,Employee
+608,https://canlii.org/en/on/onsc/2021/case796,Brown v. ABC Ltd.,Low,Yes,Limited,Mixed,Yes,Yes,Limited,Worker,Various locations,No,Independent Contractor
+609,https://canlii.org/en/on/onsc/2023/case178,Brown v. NextGen LLC,Moderate,No,No,Employer,Limited,No,Yes,Mixed,Corporate HQ,Yes,Employee
+610,https://canlii.org/en/on/onsc/2020/case430,Walker v. Innovative Holdings,Moderate,Limited,No,Employer,Limited,No,Yes,Employer,Restaurant,Sometimes,Employee
+611,https://canlii.org/en/on/onsc/2024/case399,Martinez v. Western Media Holdings,Moderate,No,No,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+612,https://canlii.org/en/on/onsc/2024/case149,Kim v. Atlantic Real Estate Holdings,Moderate,Limited,No,Employer,Limited,No,Yes,Employer,Hospital,Yes,Employee
+613,https://canlii.org/en/on/onsc/2023/case463,Nelson v. XYZ Retail Holdings,High,No,No,Employer,No,No,Mostly,Employer,Hotel,Sometimes,Employee
+614,https://canlii.org/en/on/onsc/2023/case608,Lewis v. Premier Ltd.,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+615,https://canlii.org/en/on/onsc/2021/case1006,Williams v. Western Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+616,https://canlii.org/en/on/onsc/2020/case370,Davis v. Community Holdings,Moderate,No,No,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+617,https://canlii.org/en/on/onsc/2021/case141,Kim v. Southern Corp.,Moderate,No,No,Employer,No,Limited,Yes,Mixed,Hotel,Yes,Employee
+618,https://canlii.org/en/on/onsc/2023/case1173,White v. Premier Co.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Mixed,Client sites,Sometimes,Independent Contractor
+619,https://canlii.org/en/on/onsc/2024/case129,Roberts v. Advanced Solutions,Moderate,Limited,No,Employer,No,No,Yes,Mixed,Branch office,Yes,Employee
+620,https://canlii.org/en/on/onsc/2020/case575,Roberts v. Northern Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+621,https://canlii.org/en/on/onsc/2023/case968,Carter v. United Consulting Corp.,Low,Limited,Yes,Worker,Yes,Limited,Limited,Worker,Client sites,No,Independent Contractor
+622,https://canlii.org/en/on/onsc/2024/case419,Green v. Innovative Media Holdings,High,No,Limited,Employer,No,No,Yes,Employer,School,Yes,Employee
+623,https://canlii.org/en/on/onsc/2021/case1076,King v. Strategic Co.,Minimal,Limited,Yes,Worker,Limited,Yes,Limited,Worker,On the road,No,Independent Contractor
+624,https://canlii.org/en/on/onsc/2024/case1019,Anderson v. Northern Transportation Solutions,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+625,https://canlii.org/en/on/onsc/2021/case126,Moore v. Dynamic Services,Moderate,Limited,No,Employer,No,No,Mostly,Mixed,Hospital,Yes,Employee
+626,https://canlii.org/en/on/onsc/2020/case785,Wilson v. Dynamic Corp.,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+627,https://canlii.org/en/on/onsc/2021/case411,Martin v. Community Inc.,High,No,No,Employer,No,No,Yes,Mixed,Regional office,Yes,Employee
+628,https://canlii.org/en/on/onsc/2022/case1112,Hall v. Modern Legal LLC,Minimal,Yes,Limited,Worker,Limited,Limited,Limited,Worker,Client sites,No,Independent Contractor
+629,https://canlii.org/en/on/onsc/2020/case1010,Clark v. Allied Services,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Mixed,Hybrid,No,Independent Contractor
+630,https://canlii.org/en/on/onsc/2022/case292,Johnson v. Metropolitan Transportation Holdings,High,Limited,No,Employer,No,No,Yes,Mixed,Company office,Yes,Employee
+631,https://canlii.org/en/on/onsc/2022/case62,Clark v. Summit Solutions,High,No,No,Employer,No,Limited,Yes,Employer,Hotel,Sometimes,Employee
+632,https://canlii.org/en/on/onsc/2021/case971,Jones v. Global Construction Solutions,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+633,https://canlii.org/en/on/onsc/2020/case1160,Thompson v. Regional Holdings,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+634,https://canlii.org/en/on/onsc/2023/case1108,Hall v. Advanced Legal Services,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+635,https://canlii.org/en/on/onsc/2022/case162,Nguyen v. Eastern LLC,High,No,No,Employer,No,Limited,Yes,Employer,Factory floor,Sometimes,Employee
+636,https://canlii.org/en/on/onsc/2022/case1247,Carter v. Community Media Co.,Low,Limited,Yes,Mixed,Yes,Yes,Mostly,Mixed,Remote,No,Independent Contractor
+637,https://canlii.org/en/on/onsc/2020/case365,Torres v. Allied Legal Services,High,Limited,Limited,Employer,No,No,Mostly,Employer,Factory floor,Yes,Employee
+638,https://canlii.org/en/on/onsc/2024/case529,Thompson v. Strategic Services,High,No,No,Employer,No,No,Yes,Mixed,Store location,Yes,Employee
+639,https://canlii.org/en/on/onsc/2024/case39,Adams v. Dynamic Financial LLC,High,No,Limited,Employer,No,Limited,Yes,Employer,Factory floor,Yes,Employee
+640,https://canlii.org/en/on/onsc/2022/case707,Lopez v. Elite Real Estate Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+641,https://canlii.org/en/on/onsc/2020/case900,Patel v. First Healthcare Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Remote,Sometimes,Independent Contractor
+642,https://canlii.org/en/on/onsc/2024/case64,Thomas v. Allied Technology Co.,High,Limited,No,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+643,https://canlii.org/en/on/onsc/2024/case849,Allen v. Elite LLC,Minimal,Limited,Yes,Worker,Yes,Limited,No,Worker,Hybrid,No,Independent Contractor
+644,https://canlii.org/en/on/onsc/2021/case436,Roberts v. Innovative Services,High,No,Limited,Employer,No,No,Mostly,Employer,Factory floor,Yes,Employee
+645,https://canlii.org/en/on/onsc/2024/case1054,Thompson v. Pinnacle Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+646,https://canlii.org/en/on/onsc/2021/case46,O'Brien v. Pinnacle Inc.,High,No,Limited,Employer,No,Limited,Yes,Employer,Hotel,Yes,Employee
+647,https://canlii.org/en/on/onsc/2021/case106,Lee v. Prime Retail LLC,Moderate,Limited,Limited,Employer,No,No,Yes,Mixed,Employer premises,Yes,Employee
+648,https://canlii.org/en/on/onsc/2020/case395,Clark v. Atlantic Energy Co.,High,No,Limited,Mixed,No,No,Mostly,Employer,Employer premises,Yes,Employee
+649,https://canlii.org/en/on/onsc/2020/case1230,Harris v. XYZ Ltd.,Moderate,Limited,No,Employer,No,No,Mostly,Mixed,Hospital,Sometimes,Employee
+650,https://canlii.org/en/on/onsc/2022/case152,Nguyen v. ABC Group,Moderate,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+651,https://canlii.org/en/on/onsc/2020/case875,Gonzalez v. Summit LLC,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+652,https://canlii.org/en/on/onsc/2024/case434,Hernandez v. Atlantic Ltd.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+653,https://canlii.org/en/on/onsc/2020/case585,Flores v. Dynamic Transportation Solutions,Moderate,Limited,No,Employer,No,No,Yes,Mixed,Employer premises,Yes,Employee
+654,https://canlii.org/en/on/onsc/2021/case551,Adams v. Summit Consulting Ltd.,High,No,Limited,Mixed,No,Limited,Yes,Employer,Hospital,Yes,Employee
+655,https://canlii.org/en/on/onsc/2024/case474,Green v. Premier Retail Services,High,No,Limited,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+656,https://canlii.org/en/on/onsc/2020/case1040,Campbell v. Regional Services,Moderate,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Client sites,Sometimes,Independent Contractor
+657,https://canlii.org/en/on/onsc/2023/case473,Hall v. Elite Holdings,Moderate,No,No,Employer,No,No,Mostly,Employer,Factory floor,Yes,Employee
+658,https://canlii.org/en/on/onsc/2021/case1056,Allen v. Southern Inc.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+659,https://canlii.org/en/on/onsc/2020/case570,Harris v. Allied Financial Co.,High,No,Limited,Employer,No,Limited,Yes,Employer,School,Yes,Employee
+660,https://canlii.org/en/on/onsc/2023/case1223,O'Brien v. Allied Insurance Co.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+661,https://canlii.org/en/on/onsc/2024/case994,Wilson v. ABC Co.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+662,https://canlii.org/en/on/onsc/2021/case311,Green v. Prime Transportation LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+663,https://canlii.org/en/on/onsc/2020/case685,Davis v. Allied Construction Inc.,Low,Limited,Limited,Worker,Limited,Yes,Limited,Worker,Multiple client locations,Sometimes,Independent Contractor
+664,https://canlii.org/en/on/onsc/2024/case679,Young v. Metropolitan Services,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+665,https://canlii.org/en/on/onsc/2022/case457,Rodriguez v. Innovative Media Services,Moderate,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+666,https://canlii.org/en/on/onsc/2023/case398,Martin v. Modern Inc.,High,Limited,Limited,Mixed,Limited,No,Yes,Mixed,Corporate HQ,Yes,Employee
+667,https://canlii.org/en/on/onsc/2022/case932,Murphy v. Strategic LLC,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+668,https://canlii.org/en/on/onsc/2024/case89,Jackson v. Premier LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+669,https://canlii.org/en/on/onsc/2022/case402,Anderson v. Northern Solutions,High,No,No,Mixed,Limited,No,Yes,Employer,Corporate HQ,Sometimes,Employee
+670,https://canlii.org/en/on/onsc/2021/case736,Jones v. NextGen LLC,Minimal,Limited,Yes,Worker,Limited,Limited,No,Worker,Coworking space,No,Independent Contractor
+671,https://canlii.org/en/on/onsc/2021/case1021,Perez v. Premier Ltd.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+672,https://canlii.org/en/on/onsc/2020/case1125,Clark v. Atlantic Holdings,Moderate,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Home office,No,Independent Contractor
+673,https://canlii.org/en/on/onsc/2020/case1150,Sanchez v. ABC Ltd.,Low,Yes,Yes,Mixed,Limited,Yes,No,Worker,Client sites,No,Independent Contractor
+674,https://canlii.org/en/on/onsc/2022/case197,Hernandez v. Pacific Telecom Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+675,https://canlii.org/en/on/onsc/2021/case1171,Lopez v. Eastern Holdings,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+676,https://canlii.org/en/on/onsc/2020/case545,Gonzalez v. Horizon Group,Moderate,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+677,https://canlii.org/en/on/onsc/2021/case656,Rivera v. Pinnacle Manufacturing Corp.,Moderate,Yes,Limited,Worker,Yes,Limited,No,Mixed,On the road,No,Independent Contractor
+678,https://canlii.org/en/on/onsc/2023/case988,Adams v. Prime Insurance Services,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+679,https://canlii.org/en/on/onsc/2024/case1049,Garcia v. Metropolitan Pharmaceutical Corp.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Home office,No,Independent Contractor
+680,https://canlii.org/en/on/onsc/2024/case309,Brown v. United LLC,Moderate,Limited,No,Employer,No,Limited,Yes,Employer,Employer premises,Yes,Employee
+681,https://canlii.org/en/on/onsc/2022/case207,Smith v. Metropolitan Retail Solutions,High,No,No,Mixed,No,Limited,Yes,Employer,Store location,Yes,Employee
+682,https://canlii.org/en/on/onsc/2020/case65,Young v. Pacific Services,Moderate,No,No,Employer,No,No,Yes,Employer,Employer premises,Sometimes,Employee
+683,https://canlii.org/en/on/onsc/2023/case803,Perez v. Regional Consulting Inc.,Minimal,Yes,Limited,Mixed,Limited,Limited,Limited,Worker,Home office,No,Independent Contractor
+684,https://canlii.org/en/on/onsc/2020/case800,Rodriguez v. Elite Solutions,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+685,https://canlii.org/en/on/onsc/2020/case330,Kim v. Modern LLC,High,Limited,No,Mixed,No,Limited,Mostly,Mixed,Hospital,Sometimes,Employee
+686,https://canlii.org/en/on/onsc/2024/case1109,Perez v. Atlantic Real Estate Inc.,Moderate,Yes,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+687,https://canlii.org/en/on/onsc/2023/case183,Miller v. Global Media Ltd.,Moderate,No,Limited,Employer,No,No,Yes,Mixed,Call center,Yes,Employee
+688,https://canlii.org/en/on/onsc/2022/case1147,Hall v. Eastern Group,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+689,https://canlii.org/en/on/onsc/2023/case1098,Campbell v. Horizon Energy Corp.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+690,https://canlii.org/en/on/onsc/2024/case1154,Lewis v. Premier Holdings,Minimal,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Coworking space,No,Independent Contractor
+691,https://canlii.org/en/on/onsc/2020/case1115,Roberts v. Modern Holdings,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+692,https://canlii.org/en/on/onsc/2021/case541,Adams v. Dynamic Healthcare Group,Moderate,Limited,Limited,Employer,No,No,Mostly,Mixed,Hospital,Sometimes,Employee
+693,https://canlii.org/en/on/onsc/2023/case538,Kim v. ABC Corp.,High,No,Limited,Employer,Limited,No,Yes,Employer,Call center,Yes,Employee
+694,https://canlii.org/en/on/onsc/2022/case307,Allen v. ABC Corp.,High,Limited,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+695,https://canlii.org/en/on/onsc/2021/case981,Miller v. Allied Services,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Remote,No,Independent Contractor
+696,https://canlii.org/en/on/onsc/2022/case1072,Flores v. United Logistics Inc.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+697,https://canlii.org/en/on/onsc/2024/case799,Rodriguez v. Global Co.,Low,Yes,Limited,Worker,Limited,Yes,Limited,Worker,Client sites,Sometimes,Independent Contractor
+698,https://canlii.org/en/on/onsc/2024/case119,Sanchez v. United Ltd.,High,Limited,Limited,Employer,No,No,Mostly,Employer,Restaurant,Yes,Employee
+699,https://canlii.org/en/on/onsc/2022/case1022,Garcia v. Horizon Corp.,Minimal,Yes,Limited,Worker,Limited,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+700,https://canlii.org/en/on/onsc/2021/case681,Hill v. Metropolitan Ltd.,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+701,https://canlii.org/en/on/onsc/2024/case454,Martin v. Metropolitan Retail Inc.,High,No,No,Mixed,Limited,No,Yes,Employer,Company office,Yes,Employee
+702,https://canlii.org/en/on/onsc/2023/case683,Garcia v. ABC Services,Minimal,Yes,Limited,Mixed,Yes,Yes,Limited,Mixed,Multiple client locations,Sometimes,Independent Contractor
+703,https://canlii.org/en/on/onsc/2020/case525,Hernandez v. First Media Holdings,High,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+704,https://canlii.org/en/on/onsc/2020/case140,Patel v. Apex Energy Group,High,Limited,Limited,Mixed,No,No,Yes,Employer,Regional office,Yes,Employee
+705,https://canlii.org/en/on/onsc/2022/case137,Hernandez v. Premier Energy Holdings,Moderate,Limited,No,Mixed,Limited,No,Yes,Mixed,Hospital,Sometimes,Employee
+706,https://canlii.org/en/on/onsc/2023/case1053,Ramirez v. Innovative Services,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,Sometimes,Independent Contractor
+707,https://canlii.org/en/on/onsc/2020/case345,Brown v. National Solutions,High,No,No,Employer,Limited,No,Yes,Employer,Restaurant,Sometimes,Employee
+708,https://canlii.org/en/on/onsc/2020/case770,Martinez v. Elite Energy Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Own premises,Sometimes,Independent Contractor
+709,https://canlii.org/en/on/onsc/2020/case320,Hernandez v. Elite Consulting Holdings,High,Limited,Limited,Mixed,Limited,Limited,Yes,Employer,Branch office,Yes,Employee
+710,https://canlii.org/en/on/onsc/2022/case807,Chen v. NextGen Insurance Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+711,https://canlii.org/en/on/onsc/2020/case1225,Kim v. Prime Transportation Ltd.,High,No,Limited,Mixed,Limited,No,Mostly,Mixed,Regional office,Yes,Employee
+712,https://canlii.org/en/on/onsc/2024/case929,Nelson v. Eastern Inc.,Minimal,Limited,Limited,Worker,Limited,Limited,No,Worker,Client sites,No,Independent Contractor
+713,https://canlii.org/en/on/onsc/2021/case296,Jackson v. Innovative Pharmaceutical Ltd.,High,Limited,No,Employer,Limited,No,Mostly,Employer,Hospital,Sometimes,Employee
+714,https://canlii.org/en/on/onsc/2024/case259,Martin v. ABC Corp.,High,No,No,Employer,No,No,Yes,Mixed,Regional office,Yes,Employee
+715,https://canlii.org/en/on/onsc/2020/case645,Brown v. Central Co.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+716,https://canlii.org/en/on/onsc/2023/case1138,Chen v. Premier Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+717,https://canlii.org/en/on/onsc/2020/case905,Garcia v. Metropolitan Legal Co.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+718,https://canlii.org/en/on/onsc/2024/case764,Kim v. Central Ltd.,Minimal,Yes,Limited,Worker,Yes,Limited,Limited,Mixed,Own premises,No,Independent Contractor
+719,https://canlii.org/en/on/onsc/2022/case732,Scott v. Pacific Services,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+720,https://canlii.org/en/on/onsc/2024/case319,Jones v. Dynamic Co.,Moderate,Limited,Limited,Employer,No,Limited,Yes,Mixed,Hotel,Yes,Employee
+721,https://canlii.org/en/on/onsc/2024/case289,Ramirez v. Advanced Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+722,https://canlii.org/en/on/onsc/2021/case606,Thomas v. Eastern Technology Services,Minimal,Limited,Limited,Worker,Yes,Limited,Limited,Worker,Hybrid,Sometimes,Independent Contractor
+723,https://canlii.org/en/on/onsc/2024/case829,Chen v. Horizon Inc.,Moderate,Yes,Limited,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+724,https://canlii.org/en/on/onsc/2021/case946,Davis v. First Inc.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,Sometimes,Independent Contractor
+725,https://canlii.org/en/on/onsc/2022/case607,Perez v. Prime Financial Group,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Own premises,No,Independent Contractor
+726,https://canlii.org/en/on/onsc/2023/case453,Wong v. Metropolitan Telecom Inc.,High,Limited,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+727,https://canlii.org/en/on/onsc/2020/case840,Baker v. Elite Corp.,Low,Limited,Yes,Worker,Yes,Limited,Limited,Worker,Home office,No,Independent Contractor
+728,https://canlii.org/en/on/onsc/2024/case169,Wright v. Central Technology Ltd.,High,No,No,Employer,No,Limited,Yes,Mixed,School,Yes,Employee
+729,https://canlii.org/en/on/onsc/2021/case711,Moore v. Innovative Energy LLC,Minimal,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Coworking space,Sometimes,Independent Contractor
+730,https://canlii.org/en/on/onsc/2022/case1192,Singh v. Southern Solutions,Low,Yes,Limited,Mixed,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+731,https://canlii.org/en/on/onsc/2020/case510,Campbell v. Southern Insurance Solutions,High,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+732,https://canlii.org/en/on/onsc/2022/case1182,Patel v. NextGen Services,Minimal,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Coworking space,Sometimes,Independent Contractor
+733,https://canlii.org/en/on/onsc/2024/case4,Lopez v. Pinnacle Logistics Services,Moderate,No,Limited,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+734,https://canlii.org/en/on/onsc/2022/case272,Davis v. Innovative Services,Moderate,No,No,Employer,No,Limited,Yes,Employer,Hotel,Yes,Employee
+735,https://canlii.org/en/on/onsc/2023/case1048,Moore v. Regional Solutions,Minimal,Yes,Limited,Worker,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+736,https://canlii.org/en/on/onsc/2024/case394,Wright v. Summit Transportation Corp.,High,Limited,Limited,Employer,Limited,No,Yes,Employer,Factory floor,Sometimes,Employee
+737,https://canlii.org/en/on/onsc/2022/case1252,Hall v. Community LLC,Minimal,Limited,Yes,Mixed,Yes,Yes,Mostly,Worker,Home office,No,Independent Contractor
+738,https://canlii.org/en/on/onsc/2021/case11,Rodriguez v. Allied Ltd.,High,Limited,No,Employer,No,Limited,Yes,Employer,Restaurant,Yes,Employee
+739,https://canlii.org/en/on/onsc/2023/case113,Robinson v. Modern Healthcare LLC,High,No,Limited,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+740,https://canlii.org/en/on/onsc/2023/case143,Perez v. Central Hospitality Inc.,High,No,No,Employer,No,No,Yes,Mixed,Company office,Sometimes,Employee
+741,https://canlii.org/en/on/onsc/2022/case892,Murphy v. Southern Group,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+742,https://canlii.org/en/on/onsc/2022/case102,Taylor v. XYZ Media Inc.,Moderate,Limited,No,Employer,No,Limited,Yes,Employer,Restaurant,Sometimes,Employee
+743,https://canlii.org/en/on/onsc/2023/case1168,Rodriguez v. Allied Logistics Co.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+744,https://canlii.org/en/on/onsc/2021/case61,Wilson v. XYZ Manufacturing Holdings,High,No,Limited,Mixed,No,No,Yes,Mixed,Factory floor,Yes,Employee
+745,https://canlii.org/en/on/onsc/2020/case1165,Lee v. Community Retail LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+746,https://canlii.org/en/on/onsc/2020/case110,Sanchez v. Horizon Real Estate Co.,High,No,Limited,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+747,https://canlii.org/en/on/onsc/2024/case549,Jones v. Regional Consulting Holdings,High,No,No,Employer,Limited,No,Mostly,Employer,Factory floor,Yes,Employee
+748,https://canlii.org/en/on/onsc/2022/case1207,Johnson v. First Hospitality Group,Low,Yes,Limited,Worker,Yes,Yes,Mostly,Mixed,Client sites,No,Independent Contractor
+749,https://canlii.org/en/on/onsc/2021/case791,Lopez v. Atlantic Hospitality Services,Low,Limited,Limited,Worker,Yes,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+750,https://canlii.org/en/on/onsc/2023/case1178,Harris v. XYZ Insurance LLC,Low,Yes,Limited,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+751,https://canlii.org/en/on/onsc/2020/case1075,Torres v. XYZ Education Inc.,Moderate,Yes,Yes,Mixed,Limited,Limited,No,Worker,Various locations,No,Independent Contractor
+752,https://canlii.org/en/on/onsc/2022/case262,Martin v. United Holdings,High,Limited,Limited,Mixed,No,No,Yes,Employer,Store location,Sometimes,Employee
+753,https://canlii.org/en/on/onsc/2023/case428,Brown v. Modern Group,High,No,No,Employer,Limited,No,Yes,Employer,Hotel,Sometimes,Employee
+754,https://canlii.org/en/on/onsc/2022/case142,Wright v. Regional Real Estate Co.,Moderate,No,No,Employer,No,No,Yes,Mixed,Regional office,Sometimes,Employee
+755,https://canlii.org/en/on/onsc/2022/case1232,Miller v. Metropolitan Manufacturing Services,High,Limited,No,Employer,No,No,Mostly,Mixed,School,Yes,Employee
+756,https://canlii.org/en/on/onsc/2023/case993,Lopez v. United Hospitality Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+757,https://canlii.org/en/on/onsc/2020/case425,Ramirez v. Premier Co.,High,No,Limited,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+758,https://canlii.org/en/on/onsc/2021/case771,Mitchell v. Innovative Media Services,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+759,https://canlii.org/en/on/onsc/2024/case659,Hall v. Regional Inc.,Minimal,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Client sites,No,Independent Contractor
+760,https://canlii.org/en/on/onsc/2021/case251,Torres v. Community Transportation LLC,High,No,Limited,Mixed,No,No,Yes,Employer,Corporate HQ,Sometimes,Employee
+761,https://canlii.org/en/on/onsc/2020/case445,Carter v. Eastern Healthcare Services,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+762,https://canlii.org/en/on/onsc/2020/case1050,Miller v. Summit Solutions,Moderate,Yes,Limited,Mixed,Yes,Yes,Limited,Worker,Own premises,No,Independent Contractor
+763,https://canlii.org/en/on/onsc/2021/case691,Scott v. Innovative Ltd.,Moderate,Limited,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+764,https://canlii.org/en/on/onsc/2024/case489,Wright v. Global Ltd.,Moderate,No,No,Employer,Limited,No,Mostly,Employer,Regional office,Sometimes,Employee
+765,https://canlii.org/en/on/onsc/2024/case1004,Miller v. National Holdings,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+766,https://canlii.org/en/on/onsc/2024/case239,Carter v. NextGen Group,High,No,No,Employer,No,Limited,Yes,Employer,Hotel,Yes,Employee
+767,https://canlii.org/en/on/onsc/2023/case963,Wright v. Elite Services,Low,Yes,Limited,Worker,Limited,Limited,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+768,https://canlii.org/en/on/onsc/2023/case808,Anderson v. Global Pharmaceutical Holdings,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+769,https://canlii.org/en/on/onsc/2023/case1103,Adams v. XYZ Group,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+770,https://canlii.org/en/on/onsc/2021/case156,Johnson v. Southern Solutions,Moderate,No,No,Employer,No,No,Yes,Mixed,Store location,Sometimes,Employee
+771,https://canlii.org/en/on/onsc/2021/case931,Wilson v. Elite LLC,Moderate,Yes,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+772,https://canlii.org/en/on/onsc/2024/case499,Lewis v. Apex Insurance Holdings,Moderate,Limited,No,Mixed,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+773,https://canlii.org/en/on/onsc/2021/case206,Perez v. Premier Inc.,Moderate,Limited,No,Employer,No,No,Yes,Mixed,Restaurant,Yes,Employee
+774,https://canlii.org/en/on/onsc/2024/case1234,Jackson v. Strategic Healthcare Co.,High,No,Limited,Employer,Limited,No,Yes,Mixed,Hotel,Yes,Employee
+775,https://canlii.org/en/on/onsc/2024/case1059,Wong v. ABC Energy Group,Moderate,Yes,Yes,Worker,Yes,Limited,No,Worker,Hybrid,No,Independent Contractor
+776,https://canlii.org/en/on/onsc/2022/case897,Perez v. Southern Insurance Services,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+777,https://canlii.org/en/on/onsc/2023/case943,Roberts v. NextGen Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+778,https://canlii.org/en/on/onsc/2021/case836,Rodriguez v. NextGen Solutions,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+779,https://canlii.org/en/on/onsc/2022/case1142,Rivera v. First Real Estate Solutions,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+780,https://canlii.org/en/on/onsc/2020/case205,Brown v. Global Education Holdings,High,No,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+781,https://canlii.org/en/on/onsc/2022/case1082,Walker v. Elite Pharmaceutical Inc.,Moderate,Limited,Yes,Worker,Limited,Yes,No,Worker,Home office,No,Independent Contractor
+782,https://canlii.org/en/on/onsc/2023/case658,Johnson v. Elite Inc.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,On the road,No,Independent Contractor
+783,https://canlii.org/en/on/onsc/2022/case92,Martinez v. Metropolitan Corp.,High,No,No,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+784,https://canlii.org/en/on/onsc/2023/case288,Kim v. Western Retail Holdings,Moderate,No,Limited,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+785,https://canlii.org/en/on/onsc/2024/case1219,Baker v. Strategic Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,Sometimes,Independent Contractor
+786,https://canlii.org/en/on/onsc/2022/case422,Rivera v. Pinnacle Holdings,Moderate,No,Limited,Employer,No,No,Mostly,Employer,School,Sometimes,Employee
+787,https://canlii.org/en/on/onsc/2024/case959,Jackson v. Northern Manufacturing Services,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+788,https://canlii.org/en/on/onsc/2022/case342,Adams v. Premier Solutions,High,No,No,Mixed,Limited,Limited,Yes,Employer,Retail location,Yes,Employee
+789,https://canlii.org/en/on/onsc/2023/case353,Hall v. NextGen Manufacturing Inc.,High,No,Limited,Employer,No,No,Mostly,Mixed,Employer premises,Yes,Employee
+790,https://canlii.org/en/on/onsc/2024/case1074,Allen v. Eastern Legal Solutions,Low,Yes,Yes,Worker,Limited,Yes,Limited,Mixed,Multiple client locations,Sometimes,Independent Contractor
+791,https://canlii.org/en/on/onsc/2021/case641,Hernandez v. Atlantic Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+792,https://canlii.org/en/on/onsc/2024/case184,Singh v. Atlantic Transportation Co.,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Company office,Yes,Employee
+793,https://canlii.org/en/on/onsc/2021/case961,King v. Regional Solutions,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+794,https://canlii.org/en/on/onsc/2023/case1218,Patel v. XYZ Holdings,Moderate,No,Limited,Mixed,No,No,Yes,Mixed,Employer premises,Yes,Employee
+795,https://canlii.org/en/on/onsc/2022/case297,Davis v. Pacific Energy Holdings,High,Limited,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+796,https://canlii.org/en/on/onsc/2021/case876,Hall v. Southern Logistics Solutions,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+797,https://canlii.org/en/on/onsc/2022/case532,Rivera v. United Media Services,Moderate,Limited,Limited,Employer,Limited,No,Yes,Employer,Restaurant,Yes,Employee
+798,https://canlii.org/en/on/onsc/2022/case492,Flores v. Pinnacle Manufacturing Corp.,High,No,Limited,Employer,No,Limited,Mostly,Mixed,Warehouse,Yes,Employee
+799,https://canlii.org/en/on/onsc/2024/case164,Hernandez v. Northern Energy Services,Moderate,No,Limited,Employer,Limited,No,Yes,Employer,Warehouse,Yes,Employee
+800,https://canlii.org/en/on/onsc/2022/case72,Nelson v. Community Holdings,High,Limited,No,Employer,Limited,No,Mostly,Employer,Retail location,Yes,Employee
+801,https://canlii.org/en/on/onsc/2021/case521,Hernandez v. Summit Ltd.,High,No,No,Employer,No,Limited,Mostly,Employer,Company office,Yes,Employee
+802,https://canlii.org/en/on/onsc/2024/case619,Harris v. Central Manufacturing Co.,Low,Limited,Limited,Mixed,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+803,https://canlii.org/en/on/onsc/2022/case1042,Rodriguez v. Advanced Retail LLC,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+804,https://canlii.org/en/on/onsc/2022/case322,Nelson v. NextGen Financial Inc.,Moderate,No,No,Mixed,No,No,Mostly,Employer,Hospital,Yes,Employee
+805,https://canlii.org/en/on/onsc/2023/case553,Baker v. Prime Solutions,Moderate,No,No,Employer,No,Limited,Mostly,Employer,Call center,Yes,Employee
+806,https://canlii.org/en/on/onsc/2021/case1046,King v. Eastern Manufacturing Group,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+807,https://canlii.org/en/on/onsc/2022/case332,White v. Global Corp.,Moderate,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+808,https://canlii.org/en/on/onsc/2021/case826,Davis v. United Co.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+809,https://canlii.org/en/on/onsc/2021/case921,Roberts v. Advanced Ltd.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+810,https://canlii.org/en/on/onsc/2021/case516,Sanchez v. Advanced Corp.,High,No,No,Employer,Limited,No,Yes,Employer,Restaurant,Sometimes,Employee
+811,https://canlii.org/en/on/onsc/2020/case595,Thomas v. XYZ Pharmaceutical Group,Moderate,No,Limited,Mixed,No,No,Yes,Employer,Warehouse,Yes,Employee
+812,https://canlii.org/en/on/onsc/2021/case891,Jones v. Central Transportation Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+813,https://canlii.org/en/on/onsc/2023/case418,Garcia v. Global Holdings,Moderate,No,Limited,Mixed,No,No,Yes,Employer,Retail location,Sometimes,Employee
+814,https://canlii.org/en/on/onsc/2022/case1187,Hall v. Eastern Corp.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+815,https://canlii.org/en/on/onsc/2020/case260,Jones v. NextGen Corp.,High,No,Limited,Employer,Limited,Limited,Yes,Employer,Employer premises,Yes,Employee
+816,https://canlii.org/en/on/onsc/2021/case246,Carter v. United Logistics Solutions,High,No,No,Mixed,No,No,Yes,Employer,Hotel,Yes,Employee
+817,https://canlii.org/en/on/onsc/2020/case325,Clark v. NextGen Services,High,Limited,Limited,Employer,Limited,Limited,Yes,Employer,Warehouse,Yes,Employee
+818,https://canlii.org/en/on/onsc/2024/case654,Sanchez v. First Inc.,Moderate,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Hybrid,No,Independent Contractor
+819,https://canlii.org/en/on/onsc/2021/case766,Brown v. Summit Solutions,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Home office,No,Independent Contractor
+820,https://canlii.org/en/on/onsc/2023/case93,Murphy v. Atlantic Healthcare LLC,High,No,No,Mixed,No,No,Mostly,Employer,Call center,Yes,Employee
+821,https://canlii.org/en/on/onsc/2021/case136,Davis v. Central Holdings,High,Limited,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+822,https://canlii.org/en/on/onsc/2021/case1031,Allen v. Summit Transportation Solutions,Moderate,Yes,Yes,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+823,https://canlii.org/en/on/onsc/2023/case893,Nguyen v. Atlantic Holdings,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Various locations,Sometimes,Independent Contractor
+824,https://canlii.org/en/on/onsc/2021/case591,Martin v. Eastern Construction LLC,Moderate,No,Limited,Mixed,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+825,https://canlii.org/en/on/onsc/2021/case66,Young v. Atlantic Consulting Group,High,No,No,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+826,https://canlii.org/en/on/onsc/2021/case881,Martin v. XYZ Inc.,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,Various locations,No,Independent Contractor
+827,https://canlii.org/en/on/onsc/2023/case118,Wong v. Metropolitan Logistics Holdings,High,No,No,Employer,Limited,Limited,Mostly,Mixed,Restaurant,Yes,Employee
+828,https://canlii.org/en/on/onsc/2021/case166,Scott v. Prime Holdings,Moderate,No,Limited,Employer,Limited,No,Mostly,Employer,Warehouse,Yes,Employee
+829,https://canlii.org/en/on/onsc/2023/case813,Nguyen v. Metropolitan Services,Moderate,Yes,Yes,Worker,Limited,Yes,No,Worker,Own premises,No,Independent Contractor
+830,https://canlii.org/en/on/onsc/2022/case132,Murphy v. Central Group,Moderate,Limited,Limited,Employer,No,Limited,Yes,Mixed,Hotel,Yes,Employee
+831,https://canlii.org/en/on/onsc/2021/case171,Allen v. Global Group,Moderate,No,No,Employer,No,Limited,Yes,Mixed,Regional office,Yes,Employee
+832,https://canlii.org/en/on/onsc/2024/case199,Martin v. Advanced Real Estate Inc.,High,No,No,Mixed,No,No,Yes,Mixed,Retail location,Yes,Employee
+833,https://canlii.org/en/on/onsc/2024/case1224,Williams v. Northern Co.,High,No,Limited,Mixed,No,No,Mostly,Mixed,Hospital,Yes,Employee
+834,https://canlii.org/en/on/onsc/2020/case475,Davis v. XYZ Consulting Co.,High,No,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+835,https://canlii.org/en/on/onsc/2022/case1032,Torres v. XYZ Manufacturing Co.,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+836,https://canlii.org/en/on/onsc/2021/case786,Adams v. Western Retail Group,Moderate,Limited,Yes,Mixed,Yes,Limited,No,Worker,Hybrid,No,Independent Contractor
+837,https://canlii.org/en/on/onsc/2023/case653,Perez v. Prime Solutions,Moderate,Limited,Limited,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+838,https://canlii.org/en/on/onsc/2024/case1214,King v. Premier Solutions,Moderate,No,Limited,Mixed,No,Limited,Yes,Employer,Store location,Yes,Employee
+839,https://canlii.org/en/on/onsc/2024/case124,Torres v. XYZ Inc.,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Factory floor,Sometimes,Employee
+840,https://canlii.org/en/on/onsc/2022/case582,Davis v. Southern Solutions,High,Limited,No,Mixed,No,No,Yes,Employer,Regional office,Yes,Employee
+841,https://canlii.org/en/on/onsc/2022/case392,Hill v. Community Telecom LLC,Moderate,No,Limited,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+842,https://canlii.org/en/on/onsc/2022/case372,Rodriguez v. Metropolitan Logistics Corp.,High,Limited,Limited,Employer,No,No,Mostly,Employer,Hotel,Yes,Employee
+843,https://canlii.org/en/on/onsc/2022/case772,Moore v. Western Corp.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+844,https://canlii.org/en/on/onsc/2024/case639,Lopez v. ABC Technology Services,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+845,https://canlii.org/en/on/onsc/2022/case427,Perez v. Pinnacle Manufacturing Co.,High,No,No,Employer,No,Limited,Yes,Employer,Retail location,Yes,Employee
+846,https://canlii.org/en/on/onsc/2021/case336,Anderson v. National Healthcare Solutions,High,No,Limited,Employer,No,No,Mostly,Employer,Call center,Yes,Employee
+847,https://canlii.org/en/on/onsc/2020/case350,Singh v. National Group,High,No,No,Employer,No,Limited,Mostly,Employer,Warehouse,Sometimes,Employee
+848,https://canlii.org/en/on/onsc/2021/case416,Baker v. Metropolitan Ltd.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Hotel,Sometimes,Employee
+849,https://canlii.org/en/on/onsc/2023/case18,Robinson v. Central Solutions,High,No,No,Mixed,No,No,Mostly,Employer,Company office,Yes,Employee
+850,https://canlii.org/en/on/onsc/2024/case249,Nguyen v. Prime Construction Services,Moderate,No,Limited,Employer,No,No,Mostly,Mixed,Corporate HQ,Yes,Employee
+851,https://canlii.org/en/on/onsc/2023/case413,Adams v. XYZ Group,High,No,Limited,Employer,Limited,Limited,Mostly,Employer,Hotel,Yes,Employee
+852,https://canlii.org/en/on/onsc/2021/case1146,Martin v. Southern Manufacturing Corp.,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+853,https://canlii.org/en/on/onsc/2022/case192,Robinson v. Elite Hospitality Solutions,High,No,No,Employer,Limited,Limited,Yes,Employer,Employer premises,Yes,Employee
+854,https://canlii.org/en/on/onsc/2024/case179,Clark v. Atlantic Inc.,High,No,Limited,Mixed,No,No,Yes,Employer,Company office,Yes,Employee
+855,https://canlii.org/en/on/onsc/2021/case871,Anderson v. Pinnacle Holdings,Minimal,Yes,Yes,Worker,Yes,Limited,No,Mixed,Hybrid,No,Independent Contractor
+856,https://canlii.org/en/on/onsc/2023/case913,Murphy v. Strategic Manufacturing LLC,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+857,https://canlii.org/en/on/onsc/2021/case1111,Johnson v. Western LLC,Low,Yes,Yes,Mixed,Yes,Limited,No,Mixed,Coworking space,No,Independent Contractor
+858,https://canlii.org/en/on/onsc/2021/case821,Wright v. Innovative Transportation Inc.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+859,https://canlii.org/en/on/onsc/2021/case231,Martin v. Modern LLC,Moderate,No,No,Employer,No,Limited,Mostly,Employer,Company office,Yes,Employee
+860,https://canlii.org/en/on/onsc/2022/case1107,Torres v. Dynamic Transportation Corp.,Minimal,Yes,Limited,Mixed,Yes,Yes,No,Mixed,Own premises,No,Independent Contractor
+861,https://canlii.org/en/on/onsc/2022/case837,Nguyen v. Community LLC,Low,Yes,Yes,Mixed,Yes,Limited,Limited,Worker,On the road,No,Independent Contractor
+862,https://canlii.org/en/on/onsc/2024/case1024,Allen v. Summit Co.,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Remote,No,Independent Contractor
+863,https://canlii.org/en/on/onsc/2022/case1117,Thomas v. United Manufacturing Group,Low,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+864,https://canlii.org/en/on/onsc/2024/case589,Wilson v. Horizon Insurance Co.,High,Limited,Limited,Employer,No,No,Yes,Employer,Company office,Sometimes,Employee
+865,https://canlii.org/en/on/onsc/2020/case190,Chen v. Southern Inc.,Moderate,No,Limited,Mixed,Limited,No,Yes,Mixed,Hotel,Sometimes,Employee
+866,https://canlii.org/en/on/onsc/2020/case1185,White v. Atlantic Services,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,Various locations,No,Independent Contractor
+867,https://canlii.org/en/on/onsc/2023/case173,Lee v. United Education Co.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+868,https://canlii.org/en/on/onsc/2022/case1027,Kim v. Western Telecom Group,Minimal,Limited,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+869,https://canlii.org/en/on/onsc/2024/case1079,Perez v. Horizon Energy Holdings,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+870,https://canlii.org/en/on/onsc/2022/case852,Harris v. United Hospitality Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+871,https://canlii.org/en/on/onsc/2024/case749,Walker v. Regional Financial Solutions,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+872,https://canlii.org/en/on/onsc/2023/case408,Hernandez v. Prime Services,Moderate,Limited,Limited,Employer,No,No,Yes,Mixed,School,Yes,Employee
+873,https://canlii.org/en/on/onsc/2024/case74,Chen v. Allied LLC,High,Limited,No,Mixed,No,No,Yes,Employer,Employer premises,Yes,Employee
+874,https://canlii.org/en/on/onsc/2024/case1209,Campbell v. Community Services,Moderate,Limited,Limited,Mixed,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+875,https://canlii.org/en/on/onsc/2021/case651,Nelson v. Southern Education Corp.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,Sometimes,Independent Contractor
+876,https://canlii.org/en/on/onsc/2020/case225,Brown v. NextGen Solutions,High,No,No,Employer,No,Limited,Yes,Employer,Factory floor,Yes,Employee
+877,https://canlii.org/en/on/onsc/2022/case632,Wong v. Pinnacle Corp.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+878,https://canlii.org/en/on/onsc/2023/case483,Wright v. Summit Media Corp.,High,Limited,Limited,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+879,https://canlii.org/en/on/onsc/2024/case304,Adams v. Premier Services,Moderate,No,Limited,Employer,No,No,Mostly,Employer,Warehouse,Yes,Employee
+880,https://canlii.org/en/on/onsc/2020/case765,Thompson v. Pinnacle Telecom LLC,Low,Limited,Yes,Worker,Limited,Limited,No,Worker,On the road,No,Independent Contractor
+881,https://canlii.org/en/on/onsc/2022/case382,Nelson v. Northern Insurance Ltd.,Moderate,No,No,Employer,No,No,Yes,Employer,Retail location,Sometimes,Employee
+882,https://canlii.org/en/on/onsc/2024/case1229,Baker v. Summit Services,Moderate,Limited,No,Mixed,No,No,Mostly,Mixed,Restaurant,Yes,Employee
+883,https://canlii.org/en/on/onsc/2022/case762,Nguyen v. Elite Holdings,Minimal,Yes,Limited,Worker,Limited,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+884,https://canlii.org/en/on/onsc/2024/case339,Campbell v. Global Co.,High,No,No,Employer,No,No,Mostly,Employer,Hotel,Sometimes,Employee
+885,https://canlii.org/en/on/onsc/2021/case161,Lopez v. Southern Legal Services,Moderate,Limited,No,Employer,No,Limited,Yes,Employer,Restaurant,Yes,Employee
+886,https://canlii.org/en/on/onsc/2024/case1069,Rivera v. National Solutions,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+887,https://canlii.org/en/on/onsc/2020/case520,Thomas v. Northern Services,High,No,Limited,Mixed,No,No,Yes,Employer,School,Yes,Employee
+888,https://canlii.org/en/on/onsc/2024/case1164,Wong v. Allied Logistics Inc.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+889,https://canlii.org/en/on/onsc/2024/case879,Adams v. Community Group,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Home office,No,Independent Contractor
+890,https://canlii.org/en/on/onsc/2024/case624,Murphy v. NextGen Hospitality LLC,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+891,https://canlii.org/en/on/onsc/2020/case1245,Martinez v. Pacific Education Inc.,Low,Yes,Yes,Mixed,Yes,Limited,Limited,Mixed,Hybrid,Sometimes,Independent Contractor
+892,https://canlii.org/en/on/onsc/2020/case955,Ramirez v. Apex Energy Inc.,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Client sites,Sometimes,Independent Contractor
+893,https://canlii.org/en/on/onsc/2020/case830,Allen v. NextGen Ltd.,Minimal,Limited,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+894,https://canlii.org/en/on/onsc/2021/case276,Garcia v. Prime Healthcare Services,Moderate,No,No,Mixed,No,Limited,Mostly,Mixed,Hospital,Yes,Employee
+895,https://canlii.org/en/on/onsc/2020/case1180,Campbell v. Pinnacle Consulting Solutions,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,Coworking space,No,Independent Contractor
+896,https://canlii.org/en/on/onsc/2023/case823,Lopez v. Modern Co.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+897,https://canlii.org/en/on/onsc/2022/case857,Sanchez v. Atlantic Media Corp.,Moderate,Limited,Yes,Worker,Yes,Limited,No,Worker,Coworking space,No,Independent Contractor
+898,https://canlii.org/en/on/onsc/2022/case357,Lewis v. Summit Retail Ltd.,High,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+899,https://canlii.org/en/on/onsc/2024/case209,Thomas v. United Manufacturing LLC,Moderate,No,Limited,Mixed,No,Limited,Yes,Employer,Hospital,Yes,Employee
+900,https://canlii.org/en/on/onsc/2024/case1089,Ramirez v. NextGen Manufacturing Corp.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+901,https://canlii.org/en/on/onsc/2023/case643,Hall v. Apex Healthcare Inc.,Moderate,Limited,Limited,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+902,https://canlii.org/en/on/onsc/2020/case550,Wilson v. ABC Financial Inc.,Moderate,Limited,No,Mixed,No,Limited,Yes,Mixed,Regional office,Yes,Employee
+903,https://canlii.org/en/on/onsc/2022/case527,Campbell v. Modern Corp.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Sometimes,Employee
+904,https://canlii.org/en/on/onsc/2021/case71,Williams v. Eastern Holdings,High,No,Limited,Employer,Limited,Limited,Yes,Employer,Retail location,Yes,Employee
+905,https://canlii.org/en/on/onsc/2020/case1145,Jackson v. Innovative Education Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+906,https://canlii.org/en/on/onsc/2022/case397,Brown v. Northern Retail Services,Moderate,No,No,Mixed,No,No,Mostly,Employer,Retail location,Yes,Employee
+907,https://canlii.org/en/on/onsc/2020/case200,Nguyen v. Eastern Ltd.,High,No,No,Mixed,Limited,No,Yes,Employer,School,Yes,Employee
+908,https://canlii.org/en/on/onsc/2022/case797,King v. Horizon Construction Holdings,Low,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Home office,Sometimes,Independent Contractor
+909,https://canlii.org/en/on/onsc/2022/case1097,Sanchez v. Horizon Construction Corp.,Minimal,Limited,Limited,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+910,https://canlii.org/en/on/onsc/2024/case279,Brown v. Horizon LLC,High,No,No,Mixed,No,Limited,Yes,Employer,Warehouse,Yes,Employee
+911,https://canlii.org/en/on/onsc/2023/case878,Clark v. XYZ Transportation Group,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,Sometimes,Independent Contractor
+912,https://canlii.org/en/on/onsc/2023/case153,Thompson v. United Construction Co.,Moderate,No,No,Employer,No,No,Yes,Mixed,Restaurant,Yes,Employee
+913,https://canlii.org/en/on/onsc/2021/case1051,Ramirez v. Atlantic Co.,Low,Yes,Limited,Worker,Limited,Yes,No,Worker,Various locations,No,Independent Contractor
+914,https://canlii.org/en/on/onsc/2024/case1119,Jones v. Premier Consulting Holdings,Moderate,Yes,Limited,Worker,Yes,Limited,No,Worker,Client sites,No,Independent Contractor
+915,https://canlii.org/en/on/onsc/2020/case1070,Chen v. National Consulting LLC,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Multiple client locations,Sometimes,Independent Contractor
+916,https://canlii.org/en/on/onsc/2021/case496,Garcia v. Premier Group,Moderate,No,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+917,https://canlii.org/en/on/onsc/2020/case215,Smith v. Premier Retail Co.,High,No,No,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+918,https://canlii.org/en/on/onsc/2020/case990,Clark v. Strategic Transportation Co.,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,On the road,No,Independent Contractor
+919,https://canlii.org/en/on/onsc/2020/case1055,Lopez v. Pacific Services,Minimal,Yes,Limited,Worker,Limited,Limited,No,Worker,Home office,Sometimes,Independent Contractor
+920,https://canlii.org/en/on/onsc/2022/case562,Sanchez v. Dynamic Retail Solutions,Moderate,No,No,Mixed,No,Limited,Yes,Employer,Company office,Yes,Employee
+921,https://canlii.org/en/on/onsc/2023/case828,Patel v. Atlantic Education Co.,Low,Yes,Limited,Mixed,Limited,Limited,No,Worker,On the road,No,Independent Contractor
+922,https://canlii.org/en/on/onsc/2020/case25,Moore v. Premier Technology Ltd.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Sometimes,Employee
+923,https://canlii.org/en/on/onsc/2020/case85,Torres v. XYZ LLC,Moderate,Limited,No,Employer,No,No,Mostly,Mixed,Corporate HQ,Yes,Employee
+924,https://canlii.org/en/on/onsc/2024/case134,Thomas v. Southern Corp.,High,No,No,Employer,Limited,No,Yes,Employer,Branch office,Sometimes,Employee
+925,https://canlii.org/en/on/onsc/2020/case1200,Walker v. First Energy Inc.,Minimal,Yes,Yes,Mixed,Limited,Yes,No,Mixed,Hybrid,No,Independent Contractor
+926,https://canlii.org/en/on/onsc/2023/case688,Scott v. Regional Legal Services,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+927,https://canlii.org/en/on/onsc/2024/case584,Adams v. Innovative Corp.,High,No,No,Employer,No,No,Mostly,Employer,Call center,Yes,Employee
+928,https://canlii.org/en/on/onsc/2021/case41,Torres v. Strategic Co.,Moderate,No,Limited,Employer,Limited,Limited,Yes,Mixed,Store location,Yes,Employee
+929,https://canlii.org/en/on/onsc/2022/case317,White v. Metropolitan Co.,Moderate,No,No,Employer,Limited,Limited,Yes,Employer,Branch office,Sometimes,Employee
+930,https://canlii.org/en/on/onsc/2024/case744,Rodriguez v. Metropolitan Group,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,Remote,No,Independent Contractor
+931,https://canlii.org/en/on/onsc/2024/case689,O'Brien v. Prime Group,Low,Limited,Yes,Mixed,Limited,Yes,No,Worker,Hybrid,No,Independent Contractor
+932,https://canlii.org/en/on/onsc/2021/case466,King v. Global Healthcare Ltd.,High,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+933,https://canlii.org/en/on/onsc/2020/case865,Hall v. Elite Education Group,Minimal,Yes,Yes,Mixed,Limited,Yes,No,Mixed,Remote,Sometimes,Independent Contractor
+934,https://canlii.org/en/on/onsc/2024/case264,Miller v. Metropolitan Healthcare Inc.,High,No,No,Mixed,No,No,Yes,Employer,Employer premises,Yes,Employee
+935,https://canlii.org/en/on/onsc/2023/case1068,Thomas v. National Corp.,Low,Limited,Yes,Worker,Limited,Yes,No,Mixed,Various locations,No,Independent Contractor
+936,https://canlii.org/en/on/onsc/2021/case991,Wong v. Summit Financial Holdings,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,Sometimes,Independent Contractor
+937,https://canlii.org/en/on/onsc/2023/case1228,Roberts v. Southern Insurance Holdings,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,On the road,Sometimes,Independent Contractor
+938,https://canlii.org/en/on/onsc/2023/case858,Lopez v. Western Energy Solutions,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+939,https://canlii.org/en/on/onsc/2024/case944,Mitchell v. National Corp.,Low,Yes,Limited,Worker,Yes,Yes,No,Mixed,Own premises,No,Independent Contractor
+940,https://canlii.org/en/on/onsc/2023/case918,Martinez v. Prime Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+941,https://canlii.org/en/on/onsc/2021/case51,Young v. Modern Corp.,Moderate,No,No,Employer,No,Limited,Yes,Employer,Branch office,Yes,Employee
+942,https://canlii.org/en/on/onsc/2023/case128,Lewis v. First Real Estate Solutions,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,School,Yes,Employee
+943,https://canlii.org/en/on/onsc/2024/case609,Rodriguez v. Advanced Solutions,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+944,https://canlii.org/en/on/onsc/2023/case228,Carter v. Allied Technology Holdings,Moderate,No,Limited,Employer,No,No,Mostly,Employer,Warehouse,Yes,Employee
+945,https://canlii.org/en/on/onsc/2021/case16,Jones v. Strategic LLC,High,No,Limited,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+946,https://canlii.org/en/on/onsc/2022/case1052,Kim v. Prime Co.,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,Client sites,No,Independent Contractor
+947,https://canlii.org/en/on/onsc/2023/case1253,Robinson v. Pacific Legal Corp.,Moderate,Limited,Limited,Employer,No,No,Mostly,Mixed,Store location,Yes,Employee
+948,https://canlii.org/en/on/onsc/2020/case655,Rodriguez v. National LLC,Moderate,Yes,Limited,Worker,Yes,Limited,Limited,Worker,Coworking space,No,Independent Contractor
+949,https://canlii.org/en/on/onsc/2023/case1093,Moore v. ABC Ltd.,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Various locations,Sometimes,Independent Contractor
+950,https://canlii.org/en/on/onsc/2020/case700,Perez v. Horizon Retail Services,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Remote,No,Independent Contractor
+951,https://canlii.org/en/on/onsc/2020/case410,Torres v. Dynamic Real Estate Co.,High,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+952,https://canlii.org/en/on/onsc/2023/case648,Clark v. Northern Solutions,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,Sometimes,Independent Contractor
+953,https://canlii.org/en/on/onsc/2020/case750,Wilson v. Premier Ltd.,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,Client sites,No,Independent Contractor
+954,https://canlii.org/en/on/onsc/2021/case361,Miller v. Dynamic Legal LLC,High,No,No,Employer,No,No,Mostly,Employer,Restaurant,Yes,Employee
+955,https://canlii.org/en/on/onsc/2024/case834,Gonzalez v. Western Media Services,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Hybrid,No,Independent Contractor
+956,https://canlii.org/en/on/onsc/2023/case343,Scott v. Allied Pharmaceutical Group,Moderate,No,Limited,Mixed,No,No,Yes,Employer,Store location,Yes,Employee
+957,https://canlii.org/en/on/onsc/2021/case561,Martinez v. National Co.,Moderate,No,No,Mixed,Limited,No,Yes,Employer,Factory floor,Yes,Employee
+958,https://canlii.org/en/on/onsc/2020/case960,Roberts v. Pinnacle Hospitality Co.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Home office,Sometimes,Independent Contractor
+959,https://canlii.org/en/on/onsc/2021/case96,Patel v. Regional Corp.,Moderate,No,Limited,Employer,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+960,https://canlii.org/en/on/onsc/2024/case229,Mitchell v. Metropolitan Holdings,High,No,Limited,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+961,https://canlii.org/en/on/onsc/2022/case432,Singh v. Prime Manufacturing Holdings,High,No,Limited,Employer,Limited,No,Yes,Employer,Retail location,Yes,Employee
+962,https://canlii.org/en/on/onsc/2021/case846,Wright v. Innovative Holdings,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+963,https://canlii.org/en/on/onsc/2022/case122,Adams v. Modern Energy Corp.,Moderate,No,No,Employer,No,No,Mostly,Employer,Employer premises,Sometimes,Employee
+964,https://canlii.org/en/on/onsc/2024/case554,Garcia v. Western Solutions,High,No,No,Employer,No,Limited,Yes,Employer,Employer premises,Yes,Employee
+965,https://canlii.org/en/on/onsc/2023/case88,Roberts v. Atlantic Pharmaceutical Solutions,High,No,No,Employer,No,Limited,Yes,Employer,Company office,Yes,Employee
+966,https://canlii.org/en/on/onsc/2023/case223,Robinson v. ABC Inc.,Moderate,No,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+967,https://canlii.org/en/on/onsc/2020/case90,Hill v. Advanced Holdings,Moderate,No,No,Mixed,No,No,Mostly,Employer,Regional office,Sometimes,Employee
+968,https://canlii.org/en/on/onsc/2024/case769,Singh v. Southern Consulting LLC,Minimal,Yes,Limited,Worker,Limited,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+969,https://canlii.org/en/on/onsc/2020/case920,Smith v. Pinnacle Transportation Corp.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+970,https://canlii.org/en/on/onsc/2021/case1036,Hernandez v. Modern Media Holdings,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+971,https://canlii.org/en/on/onsc/2023/case733,Anderson v. ABC Corp.,Low,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Various locations,Sometimes,Independent Contractor
+972,https://canlii.org/en/on/onsc/2024/case109,Green v. Dynamic Education Corp.,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Restaurant,Sometimes,Employee
+973,https://canlii.org/en/on/onsc/2021/case911,Gonzalez v. Atlantic Energy Group,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+974,https://canlii.org/en/on/onsc/2023/case668,Williams v. Eastern Ltd.,Low,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+975,https://canlii.org/en/on/onsc/2023/case1088,Anderson v. First Technology Group,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+976,https://canlii.org/en/on/onsc/2020/case810,White v. Apex Co.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+977,https://canlii.org/en/on/onsc/2020/case295,Sanchez v. National Legal Inc.,Moderate,No,No,Mixed,No,No,Mostly,Mixed,Retail location,Yes,Employee
+978,https://canlii.org/en/on/onsc/2024/case629,Singh v. Pacific Ltd.,Minimal,Yes,Limited,Worker,Limited,Limited,No,Worker,Own premises,No,Independent Contractor
+979,https://canlii.org/en/on/onsc/2023/case948,Mitchell v. Atlantic Group,Minimal,Limited,Yes,Mixed,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+980,https://canlii.org/en/on/onsc/2024/case104,Martinez v. NextGen Financial Holdings,Moderate,Limited,No,Mixed,Limited,Limited,Mostly,Mixed,Store location,Yes,Employee
+981,https://canlii.org/en/on/onsc/2022/case802,White v. Allied Legal Corp.,Low,Yes,Limited,Worker,Limited,Yes,No,Worker,Hybrid,No,Independent Contractor
+982,https://canlii.org/en/on/onsc/2020/case970,Martinez v. Apex Co.,Minimal,Yes,Limited,Mixed,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+983,https://canlii.org/en/on/onsc/2021/case321,Hall v. Apex Legal Co.,High,No,No,Mixed,No,No,Yes,Employer,Branch office,Yes,Employee
+984,https://canlii.org/en/on/onsc/2023/case198,Miller v. Allied Pharmaceutical Solutions,Moderate,No,Limited,Employer,Limited,No,Yes,Mixed,Employer premises,Sometimes,Employee
+985,https://canlii.org/en/on/onsc/2024/case1134,Sanchez v. Innovative Consulting LLC,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,Sometimes,Independent Contractor
+986,https://canlii.org/en/on/onsc/2024/case54,Walker v. Premier Legal Ltd.,Moderate,No,No,Mixed,No,No,Yes,Employer,Call center,Yes,Employee
+987,https://canlii.org/en/on/onsc/2022/case617,Harris v. Innovative Insurance Solutions,Minimal,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Multiple client locations,Sometimes,Independent Contractor
+988,https://canlii.org/en/on/onsc/2021/case256,Adams v. Pacific Holdings,High,No,Limited,Mixed,No,Limited,Mostly,Employer,Corporate HQ,Yes,Employee
+989,https://canlii.org/en/on/onsc/2024/case1099,Walker v. NextGen LLC,Moderate,Limited,Yes,Worker,Limited,Yes,No,Mixed,Client sites,No,Independent Contractor
+990,https://canlii.org/en/on/onsc/2024/case409,Scott v. Apex Co.,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+991,https://canlii.org/en/on/onsc/2020/case420,Patel v. Premier Corp.,High,No,Limited,Mixed,No,No,Yes,Employer,Regional office,Yes,Employee
+992,https://canlii.org/en/on/onsc/2023/case923,Hernandez v. Modern Holdings,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+993,https://canlii.org/en/on/onsc/2023/case8,Brown v. Central LLC,High,Limited,No,Employer,No,No,Yes,Mixed,Hotel,Yes,Employee
+994,https://canlii.org/en/on/onsc/2024/case724,Hill v. Elite Transportation Group,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+995,https://canlii.org/en/on/onsc/2021/case401,Garcia v. Premier Manufacturing Co.,High,No,No,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+996,https://canlii.org/en/on/onsc/2022/case1067,Mitchell v. Northern Co.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+997,https://canlii.org/en/on/onsc/2023/case268,Murphy v. Apex Holdings,High,No,Limited,Employer,No,No,Mostly,Employer,Warehouse,Yes,Employee
+998,https://canlii.org/en/on/onsc/2020/case650,Nguyen v. Modern Healthcare Services,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+999,https://canlii.org/en/on/onsc/2024/case24,Hill v. Southern Holdings,Moderate,No,No,Employer,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+1000,https://canlii.org/en/on/onsc/2021/case186,Perez v. Allied Transportation Group,Moderate,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+1001,https://canlii.org/en/on/onsc/2022/case972,Lewis v. Regional Insurance Group,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1002,https://canlii.org/en/on/onsc/2020/case355,Brown v. Modern Insurance Co.,High,No,Limited,Mixed,No,No,Yes,Employer,Store location,Yes,Employee
+1003,https://canlii.org/en/on/onsc/2023/case48,Miller v. United LLC,High,No,Limited,Mixed,No,No,Yes,Mixed,Branch office,Yes,Employee
+1004,https://canlii.org/en/on/onsc/2024/case934,Moore v. Global Group,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+1005,https://canlii.org/en/on/onsc/2024/case969,Mitchell v. Dynamic Manufacturing Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+1006,https://canlii.org/en/on/onsc/2024/case1129,Williams v. Summit Group,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+1007,https://canlii.org/en/on/onsc/2024/case754,Chen v. United Transportation Solutions,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+1008,https://canlii.org/en/on/onsc/2020/case95,Thomas v. Prime Manufacturing LLC,Moderate,No,Limited,Employer,No,No,Mostly,Employer,Restaurant,Sometimes,Employee
+1009,https://canlii.org/en/on/onsc/2020/case55,Campbell v. Atlantic Logistics Co.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+1010,https://canlii.org/en/on/onsc/2020/case195,Baker v. Eastern Construction Co.,Moderate,No,No,Employer,No,No,Mostly,Employer,Branch office,Yes,Employee
+1011,https://canlii.org/dep/2023/case1,Thurston v. Ontario (Children's Lawyer),Low,No,Limited,Mixed,Limited,No,Yes,Mixed,Mixed,No,Employee
+1012,https://canlii.org/en/on/onsc/2022/case1167,Thomas v. Advanced Energy LLC,Minimal,Yes,Limited,Worker,Limited,Yes,No,Mixed,Various locations,Sometimes,Independent Contractor
+1013,https://canlii.org/en/on/onsc/2024/case1184,Wright v. Horizon Energy Services,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+1014,https://canlii.org/en/on/onsc/2021/case306,Ramirez v. Pacific Services,High,Limited,No,Employer,No,Limited,Mostly,Mixed,Company office,Yes,Employee
+1015,https://canlii.org/en/on/onsc/2020/case640,Campbell v. Dynamic Retail Holdings,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+1016,https://canlii.org/en/on/onsc/2022/case1177,Wright v. Atlantic Inc.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+1017,https://canlii.org/en/on/onsc/2022/case522,White v. Western Retail Inc.,High,No,Limited,Employer,No,No,Yes,Employer,Hospital,Yes,Employee
+1018,https://canlii.org/en/on/onsc/2024/case574,Williams v. Elite Group,Moderate,No,No,Employer,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+1019,https://canlii.org/en/on/onsc/2023/case458,Lee v. Pinnacle Inc.,High,Limited,No,Mixed,No,No,Yes,Employer,Restaurant,Yes,Employee
+1020,https://canlii.org/en/on/onsc/2023/case738,Murphy v. Pinnacle Holdings,Moderate,Yes,Limited,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1021,https://canlii.org/en/on/onsc/2023/case1248,Singh v. XYZ Energy Holdings,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+1022,https://canlii.org/en/on/onsc/2024/case404,Johnson v. Pinnacle Telecom Services,Moderate,No,No,Employer,Limited,No,Yes,Employer,Warehouse,Yes,Employee
+1023,https://canlii.org/en/on/onsc/2024/case504,Jones v. Allied Pharmaceutical Holdings,Moderate,No,No,Mixed,Limited,No,Yes,Employer,Call center,Sometimes,Employee
+1024,https://canlii.org/en/on/onsc/2024/case69,Wong v. NextGen Services,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+1025,https://canlii.org/en/on/onsc/2024/case204,Murphy v. Atlantic Legal Services,High,No,No,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+1026,https://canlii.org/en/on/onsc/2022/case242,Wong v. ABC Healthcare Group,Moderate,Limited,No,Employer,Limited,No,Yes,Mixed,Hospital,Sometimes,Employee
+1027,https://canlii.org/en/on/onsc/2021/case851,Perez v. Apex Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,No,Independent Contractor
+1028,https://canlii.org/en/on/onsc/2022/case352,Williams v. First Financial LLC,High,Limited,No,Employer,No,Limited,Yes,Employer,Retail location,Yes,Employee
+1029,https://canlii.org/en/on/onsc/2022/case1157,Williams v. Prime Services,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Home office,No,Independent Contractor
+1030,https://canlii.org/en/on/onsc/2023/case133,Jackson v. Modern Corp.,Moderate,Limited,Limited,Employer,Limited,No,Yes,Employer,Factory floor,Yes,Employee
+1031,https://canlii.org/en/on/onsc/2021/case1206,Thomas v. Horizon Group,Moderate,No,Limited,Mixed,Limited,No,Yes,Employer,Warehouse,Yes,Employee
+1032,https://canlii.org/en/on/onsc/2023/case1003,Ramirez v. Western LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1033,https://canlii.org/en/on/onsc/2022/case882,Walker v. Prime Construction Holdings,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+1034,https://canlii.org/en/on/onsc/2020/case635,Rivera v. Allied Group,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+1035,https://canlii.org/en/on/onsc/2024/case174,White v. Metropolitan Co.,High,Limited,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+1036,https://canlii.org/en/on/onsc/2021/case441,Jones v. Atlantic Holdings,High,No,No,Employer,No,Limited,Mostly,Mixed,Company office,Sometimes,Employee
+1037,https://canlii.org/en/on/onsc/2023/case1198,Mitchell v. Advanced Holdings,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Client sites,No,Independent Contractor
+1038,https://canlii.org/en/on/onsc/2022/case697,Roberts v. Atlantic Inc.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Own premises,Sometimes,Independent Contractor
+1039,https://canlii.org/en/on/onsc/2020/case725,Scott v. XYZ Services,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Remote,No,Independent Contractor
+1040,https://canlii.org/en/on/onsc/2023/case903,Adams v. Prime Corp.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+1041,https://canlii.org/en/on/onsc/2021/case291,Clark v. Horizon Corp.,Moderate,No,No,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+1042,https://canlii.org/en/on/onsc/2020/case885,Lopez v. National Services,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Own premises,No,Independent Contractor
+1043,https://canlii.org/en/on/onsc/2024/case604,Murphy v. Modern Insurance Holdings,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+1044,https://canlii.org/en/on/onsc/2023/case123,Rodriguez v. United Energy Inc.,High,No,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+1045,https://canlii.org/en/on/onsc/2022/case362,Patel v. Eastern Education Co.,Moderate,No,No,Employer,No,No,Yes,Employer,Company office,Yes,Employee
+1046,https://canlii.org/en/on/onsc/2020/case115,Gonzalez v. Regional Manufacturing Services,High,No,No,Employer,No,No,Yes,Mixed,Restaurant,Yes,Employee
+1047,https://canlii.org/en/on/onsc/2022/case627,Moore v. Atlantic Financial Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+1048,https://canlii.org/en/on/onsc/2024/case824,Baker v. Community Group,Moderate,Yes,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1049,https://canlii.org/en/on/onsc/2024/case1139,Singh v. Summit Legal Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+1050,https://canlii.org/en/on/onsc/2022/case202,Clark v. Prime Services,High,No,Limited,Employer,No,No,Yes,Employer,Warehouse,Sometimes,Employee
+1051,https://canlii.org/en/on/onsc/2024/case1044,Clark v. Dynamic Insurance Services,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Own premises,No,Independent Contractor
+1052,https://canlii.org/en/on/onsc/2024/case354,Miller v. Eastern Education Ltd.,High,No,No,Mixed,No,No,Yes,Employer,Regional office,Sometimes,Employee
+1053,https://canlii.org/en/on/onsc/2022/case777,Allen v. Atlantic Corp.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1054,https://canlii.org/en/on/onsc/2024/case1114,Singh v. Allied Energy Services,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Client sites,No,Independent Contractor
+1055,https://canlii.org/en/on/onsc/2024/case9,Baker v. Strategic Logistics LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+1056,https://canlii.org/en/on/onsc/2022/case1092,Wong v. Atlantic Holdings,Moderate,Yes,Limited,Worker,Yes,Yes,Limited,Worker,Remote,No,Independent Contractor
+1057,https://canlii.org/en/on/onsc/2024/case784,King v. Metropolitan Services,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Home office,No,Independent Contractor
+1058,https://canlii.org/en/on/onsc/2020/case385,Young v. Modern LLC,Moderate,No,No,Employer,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+1059,https://canlii.org/en/on/onsc/2021/case936,Martinez v. Elite Holdings,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1060,https://canlii.org/en/on/onsc/2020/case530,Thompson v. Prime Consulting Inc.,High,No,No,Employer,No,No,Yes,Mixed,Company office,Yes,Employee
+1061,https://canlii.org/en/on/onsc/2021/case626,Allen v. Premier Corp.,Moderate,Limited,Yes,Worker,Limited,Limited,Limited,Worker,Own premises,Sometimes,Independent Contractor
+1062,https://canlii.org/en/on/onsc/2021/case176,Miller v. Dynamic Services,High,No,No,Employer,Limited,No,Yes,Employer,Call center,Yes,Employee
+1063,https://canlii.org/en/on/onsc/2024/case859,White v. Dynamic Holdings,Moderate,Limited,Yes,Worker,Yes,Limited,No,Worker,Client sites,No,Independent Contractor
+1064,https://canlii.org/en/on/onsc/2020/case760,Taylor v. Premier Healthcare Ltd.,Minimal,Yes,Limited,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+1065,https://canlii.org/en/on/onsc/2020/case1155,Martinez v. Innovative Energy Ltd.,Low,Yes,Yes,Mixed,Limited,Yes,Limited,Worker,Multiple client locations,No,Independent Contractor
+1066,https://canlii.org/en/on/onsc/2020/case245,Miller v. Community Education Inc.,High,No,Limited,Employer,No,No,Yes,Mixed,Corporate HQ,Sometimes,Employee
+1067,https://canlii.org/en/on/onsc/2023/case513,Garcia v. Advanced Inc.,High,No,Limited,Employer,No,No,Yes,Mixed,Retail location,Yes,Employee
+1068,https://canlii.org/en/on/onsc/2022/case612,Gonzalez v. Prime Retail Services,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+1069,https://canlii.org/en/on/onsc/2024/case1179,Kim v. Northern Transportation Ltd.,Minimal,Limited,Limited,Mixed,Yes,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+1070,https://canlii.org/en/on/onsc/2021/case1246,Flores v. Prime Technology Holdings,Low,Yes,Limited,Mixed,Yes,Yes,Mostly,Mixed,Client sites,No,Independent Contractor
+1071,https://canlii.org/en/on/onsc/2020/case965,Nelson v. Pinnacle Inc.,Minimal,Limited,Yes,Worker,Yes,Yes,Limited,Mixed,On the road,Sometimes,Independent Contractor
+1072,https://canlii.org/en/on/onsc/2021/case31,Hill v. Northern Group,High,Limited,No,Employer,No,No,Mostly,Employer,Warehouse,Yes,Employee
+1073,https://canlii.org/en/on/onsc/2024/case1094,Smith v. Summit Insurance Co.,Moderate,Yes,Yes,Mixed,Yes,Yes,Limited,Worker,Remote,No,Independent Contractor
+1074,https://canlii.org/en/on/onsc/2022/case767,Perez v. National LLC,Minimal,Yes,Limited,Worker,Yes,Yes,No,Worker,Remote,Sometimes,Independent Contractor
+1075,https://canlii.org/en/on/onsc/2023/case938,Lopez v. NextGen Real Estate Solutions,Low,Yes,Limited,Mixed,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+1076,https://canlii.org/en/on/onsc/2024/case569,Nelson v. Elite Technology LLC,High,Limited,Limited,Employer,Limited,No,Yes,Employer,Corporate HQ,Yes,Employee
+1077,https://canlii.org/en/on/onsc/2024/case714,Rivera v. Modern Holdings,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+1078,https://canlii.org/en/on/onsc/2022/case67,Garcia v. Central Holdings,High,Limited,Limited,Mixed,Limited,Limited,Yes,Employer,Warehouse,Yes,Employee
+1079,https://canlii.org/en/on/onsc/2022/case567,Garcia v. United Legal Co.,Moderate,No,No,Mixed,No,No,Yes,Mixed,Hotel,Yes,Employee
+1080,https://canlii.org/en/on/onsc/2023/case853,Torres v. Allied Telecom Inc.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1081,https://canlii.org/en/on/onsc/2020/case1020,Brown v. Western Logistics Ltd.,Low,Yes,Limited,Worker,Limited,Yes,No,Worker,Various locations,No,Independent Contractor
+1082,https://canlii.org/en/on/onsc/2023/case1043,Singh v. Western Corp.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+1083,https://canlii.org/en/on/onsc/2022/case437,Lee v. Central LLC,Moderate,No,Limited,Employer,No,No,Mostly,Employer,Store location,Yes,Employee
+1084,https://canlii.org/en/on/onsc/2020/case265,Hall v. Innovative Energy Co.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Employer premises,Yes,Employee
+1085,https://canlii.org/en/on/onsc/2022/case592,Flores v. Community Real Estate Ltd.,Moderate,No,Limited,Employer,Limited,Limited,Yes,Employer,Store location,Yes,Employee
+1086,https://canlii.org/en/on/onsc/2022/case692,Harris v. First LLC,Minimal,Yes,Yes,Worker,Yes,Limited,No,Mixed,Home office,No,Independent Contractor
+1087,https://canlii.org/en/on/onsc/2020/case1065,Perez v. Regional Co.,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Multiple client locations,No,Independent Contractor
+1088,https://canlii.org/en/on/onsc/2021/case1116,Martin v. Apex Inc.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+1089,https://canlii.org/en/on/onsc/2021/case741,Murphy v. United Consulting Inc.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1090,https://canlii.org/en/on/onsc/2022/case1217,Davis v. Modern LLC,Moderate,Yes,Yes,Worker,Yes,Yes,Mostly,Mixed,Hybrid,No,Independent Contractor
+1091,https://canlii.org/en/on/onsc/2020/case290,Thompson v. Summit Solutions,Moderate,No,Limited,Employer,No,Limited,Yes,Employer,Warehouse,Yes,Employee
+1092,https://canlii.org/en/on/onsc/2022/case1127,Rivera v. NextGen Manufacturing LLC,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1093,https://canlii.org/en/on/onsc/2024/case329,O'Brien v. Atlantic Group,High,Limited,Limited,Employer,No,No,Yes,Employer,Warehouse,Yes,Employee
+1094,https://canlii.org/en/on/onsc/2021/case596,White v. Horizon Co.,High,No,No,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+1095,https://canlii.org/en/on/onsc/2021/case1191,Moore v. Western LLC,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+1096,https://canlii.org/en/on/onsc/2020/case150,Lopez v. Apex Logistics Group,High,Limited,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+1097,https://canlii.org/en/on/onsc/2023/case983,Allen v. Central Hospitality Inc.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Remote,No,Independent Contractor
+1098,https://canlii.org/en/on/onsc/2020/case1085,Kim v. Allied Energy Services,Minimal,Yes,Yes,Worker,Limited,Yes,No,Mixed,Home office,No,Independent Contractor
+1099,https://canlii.org/en/on/onsc/2023/case953,Nguyen v. Apex Consulting Co.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Client sites,No,Independent Contractor
+1100,https://canlii.org/en/on/onsc/2020/case380,Torres v. Prime Services,High,Limited,Limited,Employer,No,Limited,Yes,Mixed,Hotel,Yes,Employee
+1101,https://canlii.org/en/on/onsc/2024/case539,Lewis v. Central Co.,Moderate,Limited,No,Employer,Limited,No,Yes,Mixed,Branch office,Yes,Employee
+1102,https://canlii.org/en/on/onsc/2024/case324,Anderson v. Pacific Services,High,No,No,Employer,No,Limited,Mostly,Employer,Retail location,Sometimes,Employee
+1103,https://canlii.org/en/on/onsc/2023/case1073,Baker v. Western Pharmaceutical Ltd.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1104,https://canlii.org/en/on/onsc/2024/case794,Harris v. XYZ Logistics LLC,Minimal,Limited,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1105,https://canlii.org/en/on/onsc/2021/case1236,Thomas v. Western Healthcare Inc.,Minimal,Yes,Yes,Mixed,Yes,Limited,Mostly,Worker,Own premises,No,Independent Contractor
+1106,https://canlii.org/en/on/onsc/2020/case105,Williams v. Southern Inc.,Moderate,Limited,Limited,Employer,No,No,Yes,Employer,Factory floor,Yes,Employee
+1107,https://canlii.org/en/on/onsc/2023/case548,Lopez v. Advanced LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+1108,https://canlii.org/en/on/onsc/2022/case1102,Nguyen v. Regional Holdings,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,Sometimes,Independent Contractor
+1109,https://canlii.org/en/on/onsc/2020/case50,Allen v. NextGen Pharmaceutical Services,High,No,No,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+1110,https://canlii.org/en/on/onsc/2020/case845,Jones v. Premier Transportation Holdings,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,Multiple client locations,No,Independent Contractor
+1111,https://canlii.org/en/on/onsc/2020/case155,Scott v. Strategic Co.,Moderate,No,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+1112,https://canlii.org/en/on/onsc/2022/case1132,Ramirez v. Community Energy Corp.,Minimal,Yes,Limited,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+1113,https://canlii.org/en/on/onsc/2024/case909,Clark v. Apex Retail LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Home office,No,Independent Contractor
+1114,https://canlii.org/en/on/onsc/2021/case571,Clark v. NextGen Inc.,High,No,No,Employer,Limited,No,Yes,Mixed,Restaurant,Yes,Employee
+1115,https://canlii.org/en/on/onsc/2024/case84,Scott v. Apex Financial Corp.,High,No,Limited,Employer,Limited,No,Yes,Employer,School,Yes,Employee
+1116,https://canlii.org/en/on/onsc/2021/case1231,Davis v. Northern Co.,Low,Yes,Yes,Worker,Yes,Yes,Mostly,Worker,Remote,No,Independent Contractor
+1117,https://canlii.org/en/on/onsc/2020/case540,White v. Advanced Logistics Group,High,No,Limited,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+1118,https://canlii.org/en/on/onsc/2021/case301,Perez v. Strategic Hospitality Services,Moderate,No,No,Employer,No,No,Yes,Mixed,Store location,Yes,Employee
+1119,https://canlii.org/en/on/onsc/2023/case1063,King v. First Holdings,Minimal,Yes,Limited,Worker,Yes,Limited,No,Mixed,On the road,No,Independent Contractor
+1120,https://canlii.org/en/on/onsc/2024/case364,Walker v. Atlantic LLC,Moderate,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+1121,https://canlii.org/en/on/onsc/2023/case253,Williams v. NextGen Logistics Ltd.,High,No,No,Mixed,No,No,Yes,Mixed,Restaurant,Yes,Employee
+1122,https://canlii.org/en/on/onsc/2024/case699,Rodriguez v. Pinnacle Services,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+1123,https://canlii.org/en/on/onsc/2021/case966,Adams v. Eastern Corp.,Minimal,Yes,Limited,Mixed,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1124,https://canlii.org/en/on/onsc/2024/case544,Miller v. Northern Group,High,No,Limited,Mixed,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+1125,https://canlii.org/en/on/onsc/2023/case1158,Anderson v. Summit Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Remote,No,Independent Contractor
+1126,https://canlii.org/en/on/onsc/2024/case1159,Robinson v. Modern Inc.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,Sometimes,Independent Contractor
+1127,https://canlii.org/en/on/onsc/2023/case1143,Carter v. Central Group,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Various locations,Sometimes,Independent Contractor
+1128,https://canlii.org/en/on/onsc/2021/case1026,Wilson v. Apex Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Hybrid,No,Independent Contractor
+1129,https://canlii.org/en/on/onsc/2022/case647,Kim v. Southern Logistics Inc.,Moderate,Yes,Limited,Worker,Yes,Yes,Limited,Mixed,Various locations,No,Independent Contractor
+1130,https://canlii.org/en/on/onsc/2023/case468,Davis v. Northern Co.,Moderate,No,Limited,Employer,Limited,No,Yes,Employer,School,Yes,Employee
+1131,https://canlii.org/en/on/onsc/2021/case346,Baker v. Allied LLC,High,No,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+1132,https://canlii.org/en/on/onsc/2024/case144,Thompson v. Pinnacle Holdings,High,No,No,Employer,No,Limited,Yes,Employer,Hospital,Sometimes,Employee
+1133,https://canlii.org/en/on/onsc/2020/case705,Davis v. Premier LLC,Minimal,Yes,Yes,Worker,Limited,Yes,No,Worker,Client sites,Sometimes,Independent Contractor
+1134,https://canlii.org/en/on/onsc/2020/case835,King v. Advanced Education Services,Minimal,Yes,Yes,Worker,Yes,Yes,No,Mixed,Coworking space,Sometimes,Independent Contractor
+1135,https://canlii.org/en/on/onsc/2021/case111,Roberts v. Pinnacle Healthcare LLC,High,No,No,Employer,No,No,Yes,Mixed,Factory floor,Yes,Employee
+1136,https://canlii.org/en/on/onsc/2022/case12,Green v. Dynamic Pharmaceutical Services,High,No,Limited,Mixed,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+1137,https://canlii.org/en/on/onsc/2021/case1066,Clark v. Community Inc.,Moderate,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1138,https://canlii.org/en/on/onsc/2022/case247,Young v. NextGen Technology Group,Moderate,No,Limited,Employer,No,No,Yes,Employer,Store location,Sometimes,Employee
+1139,https://canlii.org/en/on/onsc/2023/case1013,Thompson v. Community Technology Ltd.,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,Multiple client locations,No,Independent Contractor
+1140,https://canlii.org/en/on/onsc/2021/case366,Lopez v. Metropolitan Education Ltd.,High,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+1141,https://canlii.org/en/on/onsc/2022/case652,Davis v. Regional Group,Low,Yes,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1142,https://canlii.org/en/on/onsc/2022/case497,O'Brien v. Allied Consulting Solutions,High,No,Limited,Employer,Limited,No,Yes,Employer,Hospital,Sometimes,Employee
+1143,https://canlii.org/en/on/onsc/2024/case854,Kim v. Premier Corp.,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,On the road,No,Independent Contractor
+1144,https://canlii.org/en/on/onsc/2022/case517,Torres v. Allied Group,High,No,No,Employer,No,No,Yes,Employer,Hotel,Yes,Employee
+1145,https://canlii.org/en/on/onsc/2021/case121,Ramirez v. Elite Transportation LLC,High,No,No,Employer,No,No,Yes,Mixed,Factory floor,Yes,Employee
+1146,https://canlii.org/en/on/onsc/2024/case614,Campbell v. Apex Financial Ltd.,Low,Limited,Yes,Mixed,Yes,Yes,No,Worker,On the road,Sometimes,Independent Contractor
+1147,https://canlii.org/en/on/onsc/2022/case267,Perez v. Metropolitan LLC,Moderate,No,No,Mixed,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+1148,https://canlii.org/en/on/onsc/2022/case1197,Torres v. Pinnacle Real Estate Solutions,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+1149,https://canlii.org/en/on/onsc/2020/case1210,Patel v. Central Co.,Moderate,Yes,Yes,Mixed,Yes,Yes,Mostly,Worker,Various locations,No,Independent Contractor
+1150,https://canlii.org/en/on/onsc/2020/case45,Martinez v. Dynamic Logistics Group,Moderate,No,Limited,Mixed,No,No,Yes,Employer,Hotel,Yes,Employee
+1151,https://canlii.org/en/on/onsc/2020/case450,Robinson v. Apex Ltd.,Moderate,No,Limited,Employer,Limited,No,Yes,Employer,Employer premises,Yes,Employee
+1152,https://canlii.org/en/on/onsc/2022/case57,Perez v. Allied LLC,High,No,Limited,Mixed,Limited,No,Mostly,Employer,Hotel,Yes,Employee
+1153,https://canlii.org/en/on/onsc/2023/case148,Martin v. Pinnacle Education Corp.,High,No,No,Mixed,Limited,No,Mostly,Employer,Employer premises,Yes,Employee
+1154,https://canlii.org/en/on/onsc/2020/case5,Nelson v. Modern Corp.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+1155,https://canlii.org/en/on/onsc/2021/case241,King v. Allied Services,High,No,Limited,Employer,Limited,Limited,Yes,Employer,Regional office,Yes,Employee
+1156,https://canlii.org/en/on/onsc/2023/case1243,Thomas v. XYZ Co.,High,Limited,No,Mixed,Limited,Limited,Mostly,Mixed,Hospital,Sometimes,Employee
+1157,https://canlii.org/en/on/onsc/2021/case211,Martin v. Western Holdings,High,No,No,Employer,No,No,Yes,Employer,Corporate HQ,Yes,Employee
+1158,https://canlii.org/en/on/onsc/2023/case613,Rodriguez v. Atlantic Ltd.,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Client sites,Sometimes,Independent Contractor
+1159,https://canlii.org/en/on/onsc/2022/case447,Rodriguez v. Central Legal Solutions,Moderate,No,No,Employer,Limited,Limited,Yes,Employer,School,Yes,Employee
+1160,https://canlii.org/en/on/onsc/2021/case976,White v. First Technology Inc.,Moderate,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Client sites,No,Independent Contractor
+1161,https://canlii.org/en/on/onsc/2021/case686,Young v. Atlantic Telecom Group,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1162,https://canlii.org/en/on/onsc/2020/case890,Thompson v. Allied Corp.,Moderate,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Home office,No,Independent Contractor
+1163,https://canlii.org/en/on/onsc/2020/case270,Williams v. National Inc.,High,No,Limited,Employer,Limited,No,Yes,Employer,Company office,Yes,Employee
+1164,https://canlii.org/en/on/onsc/2023/case638,Jones v. Dynamic Solutions,Minimal,Limited,Yes,Worker,Limited,Limited,No,Worker,Remote,No,Independent Contractor
+1165,https://canlii.org/en/on/onsc/2024/case369,Brown v. Modern Holdings,High,No,Limited,Employer,No,No,Yes,Mixed,School,Yes,Employee
+1166,https://canlii.org/en/on/onsc/2022/case542,Robinson v. Summit Corp.,High,Limited,No,Employer,No,No,Mostly,Employer,Store location,Yes,Employee
+1167,https://canlii.org/en/on/onsc/2024/case14,Anderson v. XYZ Corp.,Moderate,No,Limited,Employer,No,No,Yes,Employer,School,Yes,Employee
+1168,https://canlii.org/en/on/onsc/2024/case1239,Garcia v. Premier Logistics Ltd.,Low,Yes,Yes,Worker,Limited,Yes,Mostly,Worker,Remote,No,Independent Contractor
+1169,https://canlii.org/en/on/onsc/2023/case908,Jackson v. Regional Education Group,Low,Limited,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1170,https://canlii.org/en/on/onsc/2023/case563,Allen v. Community Solutions,High,No,No,Employer,No,No,Yes,Mixed,Company office,Yes,Employee
+1171,https://canlii.org/en/on/onsc/2021/case1016,Nguyen v. ABC Energy Inc.,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+1172,https://canlii.org/re/2023/case1,McKee v. Reid's Heritage Homes Ltd.,Moderate,No,No,Employer,Yes,No,Yes,Employer,Employer premises,No,Employee
+1173,https://canlii.org/en/on/onsc/2023/case58,O'Brien v. Apex Media Solutions,High,No,No,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+1174,https://canlii.org/en/on/onsc/2024/case899,Nguyen v. Summit Co.,Low,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Own premises,No,Independent Contractor
+1175,https://canlii.org/en/on/onsc/2022/case912,Rodriguez v. NextGen Pharmaceutical Ltd.,Moderate,Limited,Limited,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1176,https://canlii.org/en/on/onsc/2024/case349,Walker v. Pinnacle Co.,High,No,Limited,Mixed,No,No,Yes,Employer,School,Yes,Employee
+1177,https://canlii.org/en/on/onsc/2021/case351,Brown v. Modern Financial Holdings,Moderate,No,Limited,Employer,No,No,Yes,Mixed,Factory floor,Yes,Employee
+1178,https://canlii.org/en/on/onsc/2022/case547,Johnson v. Central Manufacturing Holdings,High,No,No,Employer,No,No,Yes,Employer,Regional office,Sometimes,Employee
+1179,https://canlii.org/en/on/onsc/2023/case363,Rivera v. Premier Inc.,High,No,Limited,Mixed,No,No,Yes,Mixed,Regional office,Yes,Employee
+1180,https://canlii.org/en/on/onsc/2021/case1091,Rivera v. Community Holdings,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+1181,https://canlii.org/en/on/onsc/2020/case680,Nelson v. Dynamic Transportation Holdings,Moderate,Yes,Yes,Worker,Yes,Yes,No,Mixed,Hybrid,No,Independent Contractor
+1182,https://canlii.org/en/on/onsc/2024/case314,Perez v. Southern Retail Inc.,High,No,No,Employer,No,No,Yes,Mixed,Warehouse,Sometimes,Employee
+1183,https://canlii.org/en/on/onsc/2024/case154,Jackson v. National Ltd.,High,No,Limited,Employer,Limited,No,Mostly,Employer,Regional office,Yes,Employee
+1184,https://canlii.org/en/on/onsc/2021/case356,Ramirez v. Advanced Healthcare Group,Moderate,No,Limited,Mixed,No,No,Yes,Employer,Warehouse,Sometimes,Employee
+1185,https://canlii.org/en/on/onsc/2021/case1176,Wilson v. Western Hospitality Corp.,Low,Yes,Limited,Mixed,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+1186,https://canlii.org/en/on/onsc/2024/case479,Torres v. Central Education Corp.,High,No,Limited,Employer,No,No,Yes,Employer,Call center,Yes,Employee
+1187,https://canlii.org/en/on/onsc/2023/case383,Robinson v. XYZ Co.,High,No,Limited,Employer,No,Limited,Yes,Employer,Restaurant,Yes,Employee
+1188,https://canlii.org/en/on/onsc/2021/case511,Campbell v. Pacific Group,Moderate,No,No,Employer,No,No,Yes,Mixed,Call center,Yes,Employee
+1189,https://canlii.org/en/on/onsc/2024/case1064,Kim v. Metropolitan Energy Inc.,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+1190,https://canlii.org/en/on/onsc/2022/case337,Ramirez v. United Construction Corp.,High,No,No,Employer,No,Limited,Mostly,Employer,Branch office,Yes,Employee
+1191,https://canlii.org/en/on/onsc/2024/case194,Moore v. United Corp.,Moderate,Limited,No,Employer,No,No,Yes,Employer,Restaurant,Yes,Employee
+1192,https://canlii.org/en/on/onsc/2022/case842,Nguyen v. XYZ Ltd.,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Various locations,No,Independent Contractor
+1193,https://canlii.org/en/on/onsc/2020/case1045,Lee v. Horizon Technology Group,Low,Yes,Yes,Worker,Yes,Limited,No,Worker,Own premises,No,Independent Contractor
+1194,https://canlii.org/en/on/onsc/2023/case698,Baker v. Horizon Co.,Low,Yes,Limited,Worker,Limited,Yes,No,Worker,Client sites,No,Independent Contractor
+1195,https://canlii.org/en/on/onsc/2021/case1126,Robinson v. Pinnacle Inc.,Low,Yes,Yes,Worker,Yes,Limited,No,Mixed,Own premises,No,Independent Contractor
+1196,https://canlii.org/en/on/onsc/2022/case982,Martin v. Metropolitan Energy Solutions,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1197,https://canlii.org/en/on/onsc/2021/case801,Harris v. Global Inc.,Minimal,Limited,Yes,Worker,Yes,Yes,Limited,Worker,Client sites,No,Independent Contractor
+1198,https://canlii.org/en/on/onsc/2023/case663,Sanchez v. Community Real Estate Inc.,Moderate,Yes,Yes,Worker,Yes,Yes,Limited,Worker,Multiple client locations,No,Independent Contractor
+1199,https://canlii.org/en/on/onsc/2024/case924,Ramirez v. Community Pharmaceutical Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,Limited,Worker,On the road,No,Independent Contractor
+1200,https://canlii.org/en/on/onsc/2022/case167,Roberts v. Horizon LLC,Moderate,No,Limited,Employer,No,No,Yes,Employer,Regional office,Yes,Employee
+1201,https://canlii.org/en/on/onsc/2021/case1161,Jones v. Global Healthcare Group,Moderate,Limited,Yes,Mixed,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+1202,https://canlii.org/en/on/onsc/2023/case978,Scott v. Northern Construction Holdings,Minimal,Limited,Yes,Mixed,Yes,Yes,Limited,Worker,Coworking space,No,Independent Contractor
+1203,https://canlii.org/en/on/onsc/2023/case1128,Scott v. Southern Media LLC,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1204,https://canlii.org/en/on/onsc/2024/case704,Patel v. ABC Solutions,Low,Yes,Limited,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+1205,https://canlii.org/en/on/onsc/2020/case740,Scott v. Western Insurance Solutions,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Hybrid,Sometimes,Independent Contractor
+1206,https://canlii.org/en/on/onsc/2023/case543,Davis v. NextGen Group,High,No,No,Employer,No,No,Yes,Employer,Retail location,Yes,Employee
+1207,https://canlii.org/en/on/onsc/2021/case116,Singh v. Pinnacle Logistics Corp.,High,No,Limited,Employer,No,Limited,Yes,Mixed,Hotel,Yes,Employee
+1208,https://canlii.org/en/on/onsc/2024/case99,Rivera v. Atlantic Telecom Co.,High,No,No,Employer,No,No,Yes,Mixed,Call center,Sometimes,Employee
+1209,https://canlii.org/en/on/onsc/2021/case196,Scott v. Modern Ltd.,High,No,Limited,Mixed,No,No,Yes,Employer,School,Yes,Employee
+1210,https://canlii.org/en/on/onsc/2023/case283,Taylor v. XYZ Co.,High,No,No,Employer,Limited,Limited,Yes,Employer,Company office,Yes,Employee
+1211,https://canlii.org/en/on/onsc/2024/case379,Ramirez v. Northern Logistics Solutions,Moderate,Limited,No,Employer,No,No,Yes,Mixed,School,Yes,Employee
+1212,https://canlii.org/en/on/onsc/2021/case731,Mitchell v. Eastern LLC,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Coworking space,No,Independent Contractor
+1213,https://canlii.org/en/on/onsc/2021/case461,Smith v. Premier Co.,High,No,No,Employer,No,No,Yes,Mixed,School,Yes,Employee
+1214,https://canlii.org/en/on/onsc/2023/case103,Miller v. Atlantic Energy LLC,Moderate,No,No,Employer,No,No,Yes,Mixed,Call center,Sometimes,Employee
+1215,https://canlii.org/en/on/onsc/2022/case1137,Anderson v. Western Manufacturing Inc.,Low,Yes,Yes,Worker,Yes,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1216,https://canlii.org/en/on/onsc/2023/case693,Davis v. Global Solutions,Minimal,Limited,Limited,Worker,Yes,Yes,No,Worker,Coworking space,No,Independent Contractor
+1217,https://canlii.org/en/on/onsc/2021/case446,Smith v. Metropolitan Services,Moderate,Limited,No,Mixed,No,Limited,Mostly,Employer,Corporate HQ,Yes,Employee
+1218,https://canlii.org/en/on/onsc/2020/case250,Perez v. First Logistics Co.,High,No,No,Employer,No,No,Yes,Employer,Retail location,Sometimes,Employee
+1219,https://canlii.org/en/on/onsc/2021/case746,Campbell v. Southern Co.,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1220,https://canlii.org/en/on/onsc/2023/case798,Clark v. Community Energy Ltd.,Low,Yes,Limited,Worker,Yes,Yes,No,Mixed,Client sites,No,Independent Contractor
+1221,https://canlii.org/en/on/onsc/2024/case729,Martin v. Metropolitan Inc.,Minimal,Yes,Yes,Worker,Yes,Limited,No,Worker,Various locations,No,Independent Contractor
+1222,https://canlii.org/en/on/onsc/2020/case675,Wright v. Allied Retail Co.,Low,Limited,Yes,Worker,Yes,Limited,No,Worker,On the road,No,Independent Contractor
+1223,https://canlii.org/en/on/onsc/2020/case80,Lopez v. Pinnacle Media Co.,High,No,Limited,Mixed,No,No,Mostly,Employer,Hospital,Yes,Employee
+1224,https://canlii.org/en/on/onsc/2024/case949,Johnson v. Allied Holdings,Moderate,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Remote,No,Independent Contractor
+1225,https://canlii.org/en/on/onsc/2021/case226,Harris v. First Legal Inc.,High,No,Limited,Employer,No,Limited,Mostly,Employer,Retail location,Yes,Employee
+1226,https://canlii.org/en/on/onsc/2021/case1181,Lopez v. XYZ Construction Ltd.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1227,https://canlii.org/en/on/onsc/2021/case1106,Hernandez v. NextGen Solutions,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+1228,https://canlii.org/en/on/onsc/2020/case1030,Patel v. Elite Corp.,Moderate,Yes,Yes,Worker,Yes,Yes,No,Worker,Home office,No,Independent Contractor
+1229,https://canlii.org/en/on/onsc/2022/case947,Jones v. First LLC,Minimal,Yes,Yes,Worker,Yes,Yes,No,Worker,Hybrid,No,Independent Contractor
+1230,https://canlii.org/en/on/onsc/2020/case230,Kim v. Apex Ltd.,High,No,No,Employer,No,No,Yes,Employer,Branch office,Yes,Employee
+1231,https://canlii.org/en/on/onsc/2021/case181,Murphy v. Southern Logistics Ltd.,Moderate,No,Limited,Employer,Limited,No,Yes,Employer,School,Yes,Employee
+1232,https://canlii.org/en/on/onsc/2021/case1061,Moore v. Metropolitan Real Estate Solutions,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Remote,No,Independent Contractor
+1233,https://canlii.org/en/on/onsc/2020/case1105,Lee v. United Telecom Co.,Low,Yes,Yes,Worker,Yes,Yes,No,Worker,On the road,No,Independent Contractor
+1234,https://canlii.org/en/on/onsc/2024/case759,Murphy v. Eastern Solutions,Low,Yes,Yes,Worker,Limited,Yes,No,Worker,Various locations,No,Independent Contractor
+1235,https://canlii.org/en/on/onsc/2022/case752,Hernandez v. Southern Education Inc.,Minimal,Yes,Yes,Mixed,Yes,Yes,No,Worker,Own premises,No,Independent Contractor
+1236,https://canlii.org/en/on/onsc/2024/case684,Smith v. National Inc.,Low,Limited,Yes,Worker,Limited,Yes,Limited,Worker,Multiple client locations,No,Independent Contractor
+1237,https://canlii.org/en/on/onsc/2020/case665,Hall v. Global Holdings,Minimal,Limited,Yes,Worker,Limited,Yes,No,Mixed,Multiple client locations,No,Independent Contractor
+1238,https://canlii.org/en/on/onsc/2022/case747,Perez v. Dynamic Services,Low,Yes,Yes,Worker,Yes,Limited,Limited,Worker,Own premises,No,Independent Contractor
+1239,https://canlii.org/en/on/onsc/2023/case323,Hernandez v. Horizon Co.,High,Limited,Limited,Employer,No,No,Mostly,Mixed,School,Yes,Employee
+1240,https://canlii.org/en/on/onsc/2024/case664,Williams v. Pinnacle Retail Ltd.,Minimal,Yes,Yes,Worker,Yes,Limited,Limited,Mixed,Home office,No,Independent Contractor
+1241,https://canlii.org/en/on/onsc/2023/case53,Hernandez v. Global Consulting Solutions,High,Limited,Limited,Employer,No,No,Yes,Employer,Restaurant,Sometimes,Employee
+1242,https://canlii.org/en/on/onsc/2020/case850,Garcia v. Western Real Estate Solutions,Low,Limited,Yes,Worker,Limited,Yes,No,Worker,Hybrid,No,Independent Contractor
+1243,https://canlii.org/en/on/onsc/2023/case883,Ramirez v. Premier Holdings,Minimal,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,Sometimes,Independent Contractor
+1244,https://canlii.org/en/on/onsc/2022/case477,Davis v. Dynamic Holdings,High,No,Limited,Employer,Limited,No,Yes,Employer,Retail location,Yes,Employee
+1245,https://canlii.org/en/on/onsc/2021/case536,Wong v. Global Logistics Inc.,Moderate,Limited,Limited,Employer,Limited,No,Mostly,Mixed,Store location,Yes,Employee
+1246,https://canlii.org/en/on/onsc/2021/case1121,Kim v. Northern Media Corp.,Minimal,Yes,Yes,Worker,Limited,Limited,No,Worker,Various locations,No,Independent Contractor
+1247,https://canlii.org/en/on/onsc/2024/case989,Torres v. National Holdings,Moderate,Limited,Yes,Mixed,Yes,Yes,No,Worker,Hybrid,Sometimes,Independent Contractor
+1248,https://canlii.org/en/on/onsc/2022/case787,Johnson v. Pinnacle LLC,Low,Limited,Yes,Worker,Yes,Yes,No,Worker,Client sites,No,Independent Contractor
+1249,https://canlii.org/en/on/onsc/2020/case185,Rodriguez v. NextGen Manufacturing LLC,High,No,Limited,Employer,No,No,Mostly,Employer,School,Yes,Employee
+1250,https://canlii.org/en/on/onsc/2023/case488,Ramirez v. Central Insurance Corp.,Moderate,No,Limited,Employer,No,No,Yes,Employer,Store location,Yes,Employee
+1251,https://canlii.org/en/on/onsc/2020/case1140,Williams v. Pacific Real Estate Inc.,Minimal,Yes,Yes,Worker,Limited,Yes,Limited,Worker,Own premises,No,Independent Contractor
+1252,https://canlii.org/en/on/onsc/2024/case79,Hall v. First Telecom Group,Moderate,Limited,No,Employer,No,Limited,Yes,Employer,Corporate HQ,Sometimes,Employee
+1253,https://canlii.org/en/on/onsc/2020/case10,Hill v. NextGen Legal Solutions,High,No,Limited,Employer,No,Limited,Yes,Mixed,School,Yes,Employee
+1254,https://canlii.org/en/on/onsc/2023/case583,Walker v. Global Solutions,High,Limited,No,Mixed,No,Limited,Yes,Employer,Factory floor,Yes,Employee
+1255,https://canlii.org/en/on/onsc/2020/case1240,Smith v. Atlantic Healthcare Ltd.,High,Limited,No,Mixed,No,No,Yes,Employer,Factory floor,Yes,Employee

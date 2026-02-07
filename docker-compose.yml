@@ -1,0 +1,76 @@
+# Docker Compose for Deel Lab Legal AI System
+# Local development and testing
+
+services:
+  # Main API Service
+  legal-ai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: deel-legal-ai-api
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # RAG Pipeline Worker (for background processing)
+  rag-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: deel-rag-worker
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    command: [ "python", "-m", "rag_pipeline.pipeline", "--skip-scrape" ]
+    profiles:
+      - worker # Only starts with --profile worker
+
+  # ML Training Job (one-time)
+  ml-trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: deel-ml-trainer
+    environment:
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+      - ./law-dataset-exploring-main:/app/law-dataset-exploring-main:ro
+    command: [ "python", "-m", "ml_classifier.train_classifier", "--train" ]
+    profiles:
+      - train # Only starts with --profile train
+
+# Named volumes for persistence
+volumes:
+  data:
+  models:
+  logs:
+
+    # Networks
+networks:
+  default:
+    name: deel-legal-ai-network

@@ -1,0 +1,39 @@
+{
+  "feature_importance": {
+    "Is the worker required to wear a uniform?": 0.25504656548267285,
+    "Delegation of tasks": 0.16467692748842716,
+    "Ownership of tools": 0.15549719885007762,
+    "Exclusivity of services": 0.14518089831518757,
+    "Risk of loss": 0.09912030466072544,
+    "Chance of profit": 0.0838056330224749,
+    "Who sets the work hours": 0.06870775317209812,
+    "Ability to hire employees": 0.02233334736159419,
+    "Supervision/review of work": 0.005506579142669531,
+    "Where the work is performed": 0.00012479250407257156
+  },
+  "training_stats": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "cv_mean": 0.998406374501992,
+    "cv_std": 0.0031872509960159333,
+    "feature_columns": [
+      "Supervision/review of work",
+      "Ability to hire employees",
+      "Delegation of tasks",
+      "Ownership of tools",
+      "Chance of profit",
+      "Risk of loss",
+      "Exclusivity of services",
+      "Who sets the work hours",
+      "Where the work is performed",
+      "Is the worker required to wear a uniform?"
+    ],
+    "target_classes": [
+      "Employee",
+      "Independent Contractor"
+    ],
+    "n_samples": 1255
+  }
+}
