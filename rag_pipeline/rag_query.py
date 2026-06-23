@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat
 from rag_pipeline.pinecone_client import PineconeClient, SearchResult
+from rag_pipeline.verifier import ResponseVerifier
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -31,6 +32,7 @@ class RAGResponse:
     answer: str
     sources: List[Dict[str, Any]]
     confidence: str
+    verification: Optional[Dict[str, Any]] = None  # Attached when verify=True
     
 
 class LegalRAGQuery:
@@ -53,6 +55,7 @@ class LegalRAGQuery:
         self.embeddings = embeddings or GeminiEmbeddings()
         self.chat = chat or GeminiChat()
         self.pinecone = pinecone or PineconeClient()
+        self.verifier = ResponseVerifier(chat=self.chat)
         
         # Ensure Pinecone is connected
         self.pinecone.connect()
@@ -86,7 +89,8 @@ class LegalRAGQuery:
         top_k: int = 5,
         namespace: str = "",
         filter: Optional[Dict[str, Any]] = None,
-        include_analysis: bool = True
+        include_analysis: bool = True,
+        verify: bool = False
     ) -> RAGResponse:
         """
         Query the legal knowledge base.
@@ -141,14 +145,28 @@ class LegalRAGQuery:
         if include_analysis:
             context = [r.content for r in search_results]
             answer = self.chat.generate_with_context(question, context)
+            
+            verification_report = None
+            if verify:
+                logger.info("Running post-hoc verification on generated answer...")
+                verification = self.verifier.verify_grounding(answer, sources)
+                verification_report = verification.to_dict()
+                if not verification.is_grounded:
+                    logger.warning(f"Verification failed! Unsupported claims: {verification.unsupported_claims}")
+                    if verification.corrected_answer:
+                        answer = f"{verification.corrected_answer}\n\n[System Note: The original response was modified because it contained claims unsupported by the retrieved documents.]"
+                    else:
+                        answer = f"{answer}\n\n[System Warning: The verification module flagged the following claims as potentially unsupported by the documents: {', '.join(verification.unsupported_claims)}]"
         else:
             answer = "See sources below for relevant legal information."
+            verification_report = None
         
         return RAGResponse(
             query=question,
             answer=answer,
             sources=sources,
-            confidence=confidence
+            confidence=confidence,
+            verification=verification_report,
         )
     
     def query_multi_hop(
@@ -158,6 +176,7 @@ class LegalRAGQuery:
         top_k_per_hop: int = 3,
         namespace: str = "",
         filter: Optional[Dict[str, Any]] = None,
+        verify: bool = False,
     ) -> RAGResponse:
         """
         Query using multi-hop retrieval for complex questions.
@@ -206,11 +225,24 @@ class LegalRAGQuery:
         confidence = "high" if result.final_completeness > 0.8 else \
                      "medium" if result.final_completeness > 0.5 else "low"
         
+        answer = result.answer
+        verification_report = None
+        if verify:
+            logger.info("Running post-hoc verification on multi-hop answer...")
+            verification = self.verifier.verify_grounding(answer, sources)
+            verification_report = verification.to_dict()
+            if not verification.is_grounded:
+                if verification.corrected_answer:
+                    answer = f"{verification.corrected_answer}\n\n[System Note: The original response was modified because it contained claims unsupported by the retrieved documents.]"
+                else:
+                    answer = f"{answer}\n\n[System Warning: The verification module flagged the following claims as potentially unsupported by the documents: {', '.join(verification.unsupported_claims)}]"
+        
         return RAGResponse(
             query=question,
-            answer=result.answer,
+            answer=answer,
             sources=sources,
             confidence=confidence,
+            verification=verification_report,
         )
     
     def query_smart(
@@ -218,6 +250,7 @@ class LegalRAGQuery:
         question: str,
         namespace: str = "",
         filter: Optional[Dict[str, Any]] = None,
+        verify: bool = False,
     ) -> RAGResponse:
         """
         Smart query that auto-routes between single-hop and multi-hop
@@ -230,10 +263,10 @@ class LegalRAGQuery:
         
         if complexity == "complex":
             logger.info("Auto-routing to multi-hop retrieval")
-            return self.query_multi_hop(question, namespace=namespace, filter=filter)
+            return self.query_multi_hop(question, namespace=namespace, filter=filter, verify=verify)
         else:
             logger.info("Auto-routing to single-hop retrieval")
-            return self.query(question, namespace=namespace, filter=filter)
+            return self.query(question, namespace=namespace, filter=filter, verify=verify)
     
     def _estimate_complexity(self, question: str) -> str:
         """

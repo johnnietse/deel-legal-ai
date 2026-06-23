@@ -17,6 +17,7 @@ A comprehensive legal AI platform for employment law analysis, featuring:
 ### 🔬 v2.0 — Research-Grade Modules (New)
 - **Multi-Hop RAG**: Iterative retrieve-read-reason cycles with gap analysis and dynamic stopping
 - **Knowledge Graph + Hybrid Retrieval**: Legal entity graph (NetworkX) with BFS subgraph traversal and graph-to-text linearization, fused with vector search
+- **Post-Hoc Verifier**: Adversarial NLI fact-checker with claim-level citation mapping and implicit assumption validation to eliminate hallucinations
 - **MCTS Legal Reasoning Agent**: Monte Carlo Tree Search over Sagaz test factors with UCB1 selection and LLM-as-judge simulation
 - **Dynamic Evaluation Framework**: Anti-contamination parameterized benchmarks with difficulty-controlled test generation
 - **Debiased LLM-as-Judge**: Rubric decomposition, position-swap debiasing, and length normalization for fair evaluation
@@ -188,6 +189,7 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 | `/rag/query` | POST | Single-hop legal knowledge query |
 | `/rag/query/multi-hop` | POST | ⭐ Multi-hop iterative retrieval for complex questions |
 | `/rag/query/smart` | POST | ⭐ Auto-routes between single/multi-hop based on complexity |
+| `/rag/verify` | POST | ⭐ Standalone fact-checking and assumption validation |
 | `/classify` | POST | Worker classification (Random Forest) |
 | `/classify/reasoning` | POST | ⭐ MCTS-based classification with full reasoning trace |
 | `/evaluate/generate-suite` | POST | ⭐ Generate anti-contamination evaluation suite |
@@ -238,6 +240,7 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 | `multi_hop_retriever.py` | **Multi-Hop RAG**: State-machine iterative retrieval with gap analysis, query reformulation, and dynamic stopping criteria. Research contribution: the `_should_stop` function implements retrieval trajectory control. |
 | `knowledge_graph.py` | **Legal Knowledge Graph**: LLM-based entity/relation extraction, NetworkX directed graph, BFS subgraph traversal, and graph-to-text linearization for LLM consumption. |
 | `graph_retriever.py` | **Hybrid Retriever**: Fuses Pinecone vector search with knowledge graph traversal. Merges semantic similarity results with structured relationship context. |
+| `verifier.py` | **Fact-Checker**: Uses adversarial NLI to extract implicit assumptions, map citations, and auto-correct hallucinations. |
 | `legal_reasoning_agent.py` | **MCTS Agent**: Monte Carlo Tree Search over Sagaz classification factors with UCB1 selection, LLM-as-judge simulation, and backpropagation. Implements inference-time compute scaling. |
 
 ### **Evaluation Framework (`evaluation/` — v2.0)**

@@ -90,6 +90,7 @@ class RAGQueryRequest(BaseModel):
     question: str = Field(..., description="Legal question to answer")
     top_k: int = Field(default=5, ge=1, le=20, description="Number of sources to retrieve")
     jurisdiction: Optional[str] = Field(default=None, description="Filter by jurisdiction (e.g., 'ON', 'BC')")
+    verify: bool = Field(default=False, description="Run post-hoc verification to check for hallucinations")
 
 
 class RAGQueryResponse(BaseModel):
@@ -97,6 +98,7 @@ class RAGQueryResponse(BaseModel):
     answer: str
     confidence: str
     sources: List[Dict[str, Any]]
+    verification: Optional[Dict[str, Any]] = None
 
 
 class ClassificationRequestModel(BaseModel):
@@ -179,14 +181,16 @@ async def rag_query_endpoint(request: RAGQueryRequest):
         response = rag.query(
             question=request.question,
             top_k=request.top_k,
-            filter=filter_dict
+            filter=filter_dict,
+            verify=request.verify
         )
         
         return RAGQueryResponse(
             query=response.query,
             answer=response.answer,
             confidence=response.confidence,
-            sources=response.sources
+            sources=response.sources,
+            verification=response.verification
         )
         
     except Exception as e:
@@ -310,6 +314,7 @@ class MultiHopQueryRequest(BaseModel):
     max_hops: int = Field(default=5, ge=1, le=10, description="Maximum retrieval hops")
     top_k_per_hop: int = Field(default=3, ge=1, le=10, description="Documents per hop")
     jurisdiction: Optional[str] = Field(default=None, description="Jurisdiction filter")
+    verify: bool = Field(default=False, description="Run post-hoc verification to check for hallucinations")
 
 
 class MultiHopQueryResponse(BaseModel):
@@ -319,6 +324,7 @@ class MultiHopQueryResponse(BaseModel):
     sources: List[Dict[str, Any]]
     total_hops: int = 0
     retrieval_mode: str = "multi_hop"
+    verification: Optional[Dict[str, Any]] = None
 
 
 @app.post("/rag/query/multi-hop", response_model=MultiHopQueryResponse)
@@ -341,6 +347,7 @@ async def rag_multi_hop_query(request: MultiHopQueryRequest):
             max_hops=request.max_hops,
             top_k_per_hop=request.top_k_per_hop,
             filter=filter_dict,
+            verify=request.verify,
         )
         
         return MultiHopQueryResponse(
@@ -350,6 +357,7 @@ async def rag_multi_hop_query(request: MultiHopQueryRequest):
             sources=response.sources,
             total_hops=len(response.sources),
             retrieval_mode="multi_hop",
+            verification=response.verification,
         )
         
     except Exception as e:
@@ -373,6 +381,7 @@ async def rag_smart_query(request: RAGQueryRequest):
         response = rag.query_smart(
             question=request.question,
             filter=filter_dict,
+            verify=request.verify,
         )
         
         return MultiHopQueryResponse(
@@ -380,12 +389,35 @@ async def rag_smart_query(request: RAGQueryRequest):
             answer=response.answer,
             confidence=response.confidence,
             sources=response.sources,
+            retrieval_mode="smart_auto",
+            verification=response.verification,
         )
         
     except Exception as e:
         logger.error(f"Smart query error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+class VerifyRequest(BaseModel):
+    answer: str = Field(..., description="Draft answer to verify")
+    sources: List[Dict[str, Any]] = Field(..., description="Sources retrieved from Pinecone/Graph")
+
+@app.post("/rag/verify")
+async def verify_standalone(request: VerifyRequest):
+    """
+    Standalone endpoint to fact-check an arbitrary answer against sources
+    using the NLI Verifier and assumption extraction.
+    """
+    rag = get_rag_query()
+    if not rag or not hasattr(rag, 'verifier'):
+        raise HTTPException(status_code=503, detail="Verification service unavailable")
+        
+    try:
+        verification = rag.verifier.verify_grounding(request.answer, request.sources)
+        return verification.to_dict()
+    except Exception as e:
+        logger.error(f"Standalone verification error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 # =====================
 # MCTS Reasoning Endpoint (Module 3)

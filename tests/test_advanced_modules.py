@@ -526,6 +526,58 @@ class TestBiasDetector:
 
 
 # ============================================================
+# Module 6: Verification Module Tests
+# ============================================================
+
+class TestResponseVerifier:
+    """Tests for the ResponseVerifier fact-checking module."""
+    
+    def test_claim_verification_structure(self):
+        from rag_pipeline.verifier import ClaimVerification
+        
+        claim = ClaimVerification(
+            claim="The Sagaz test has 5 factors.",
+            is_supported=True,
+            confidence=0.9,
+            supporting_source="Source 1",
+            explanation="Explicitly listed in the document"
+        )
+        
+        assert claim.is_supported
+        assert claim.confidence == 0.9
+        
+    def test_assumption_check_structure(self):
+        from rag_pipeline.verifier import AssumptionCheck
+        
+        assumption = AssumptionCheck(
+            assumption="Canadian federal law applies",
+            is_valid=False,
+            risk_level="high",
+            explanation="Sources only mention Ontario provincial law"
+        )
+        
+        assert not assumption.is_valid
+        assert assumption.risk_level == "high"
+        
+    def test_verification_result_structure(self):
+        from rag_pipeline.verifier import VerificationResult, ClaimVerification
+        
+        res = VerificationResult(
+            is_grounded=False,
+            grounding_score=0.5,
+            claims=[ClaimVerification("claim1", True, 0.9)],
+            unsupported_claims=["claim2"],
+            analysis="Partially supported"
+        )
+        
+        assert res.grounding_score == 0.5
+        assert not res.is_grounded
+        
+        d = res.to_dict()
+        assert "is_grounded" in d
+        assert d["grounding_score"] == 0.5
+
+# ============================================================
 # Integration Tests
 # ============================================================
 
