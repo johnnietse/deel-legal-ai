@@ -151,6 +151,113 @@ class LegalRAGQuery:
             confidence=confidence
         )
     
+    def query_multi_hop(
+        self,
+        question: str,
+        max_hops: int = 5,
+        top_k_per_hop: int = 3,
+        namespace: str = "",
+        filter: Optional[Dict[str, Any]] = None,
+    ) -> RAGResponse:
+        """
+        Query using multi-hop retrieval for complex questions.
+        
+        Uses iterative retrieve-read-reason cycles to build a complete
+        evidence chain before generating the final answer.
+        
+        Args:
+            question: Complex legal question
+            max_hops: Maximum retrieval hops
+            top_k_per_hop: Documents per hop
+            namespace: Pinecone namespace
+            filter: Metadata filter
+            
+        Returns:
+            RAGResponse with multi-hop answer and sources
+        """
+        from rag_pipeline.multi_hop_retriever import MultiHopRetriever
+        
+        retriever = MultiHopRetriever(
+            embeddings=self.embeddings,
+            chat=self.chat,
+            pinecone=self.pinecone,
+            max_hops=max_hops,
+        )
+        
+        result = retriever.retrieve(
+            question,
+            top_k_per_hop=top_k_per_hop,
+            namespace=namespace,
+            filter=filter,
+        )
+        
+        # Convert to standard RAGResponse format
+        sources = []
+        for i, source in enumerate(result.sources):
+            sources.append({
+                "index": i + 1,
+                "id": source.get("id", ""),
+                "score": source.get("score", 0.0),
+                "excerpt": source.get("content", "")[:500],
+                "hop": source.get("hop", 1),
+                "case_name": source.get("metadata", {}).get("case_name", "Unknown"),
+            })
+        
+        confidence = "high" if result.final_completeness > 0.8 else \
+                     "medium" if result.final_completeness > 0.5 else "low"
+        
+        return RAGResponse(
+            query=question,
+            answer=result.answer,
+            sources=sources,
+            confidence=confidence,
+        )
+    
+    def query_smart(
+        self,
+        question: str,
+        namespace: str = "",
+        filter: Optional[Dict[str, Any]] = None,
+    ) -> RAGResponse:
+        """
+        Smart query that auto-routes between single-hop and multi-hop
+        based on question complexity.
+        
+        Uses a simple heuristic: questions with multiple clauses,
+        cross-references, or comparative elements get multi-hop.
+        """
+        complexity = self._estimate_complexity(question)
+        
+        if complexity == "complex":
+            logger.info("Auto-routing to multi-hop retrieval")
+            return self.query_multi_hop(question, namespace=namespace, filter=filter)
+        else:
+            logger.info("Auto-routing to single-hop retrieval")
+            return self.query(question, namespace=namespace, filter=filter)
+    
+    def _estimate_complexity(self, question: str) -> str:
+        """
+        Estimate question complexity for routing decisions.
+        
+        Returns "simple" or "complex" based on heuristics.
+        """
+        complexity_indicators = [
+            "and also", "in addition", "compared to", "versus",
+            "how does", "what are all", "comprehensive",
+            "multiple", "different", "interact", "relationship between",
+            "both", "as well as", "furthermore", "across",
+        ]
+        
+        question_lower = question.lower()
+        indicator_count = sum(1 for ind in complexity_indicators if ind in question_lower)
+        word_count = len(question.split())
+        
+        # Complex if: many words, multiple indicators, or question marks
+        if indicator_count >= 2 or word_count > 40 or question.count("?") > 1:
+            return "complex"
+        
+        return "simple"
+    
     def query_worker_classification(
         self,
         facts: str,

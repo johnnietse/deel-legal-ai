@@ -302,6 +302,214 @@ async def get_classification_factors():
 
 
 # =====================
+# Advanced RAG Endpoints (Modules 1-2)
+# =====================
+
+class MultiHopQueryRequest(BaseModel):
+    question: str = Field(..., description="Complex legal question for multi-hop retrieval")
+    max_hops: int = Field(default=5, ge=1, le=10, description="Maximum retrieval hops")
+    top_k_per_hop: int = Field(default=3, ge=1, le=10, description="Documents per hop")
+    jurisdiction: Optional[str] = Field(default=None, description="Jurisdiction filter")
+
+
+class MultiHopQueryResponse(BaseModel):
+    query: str
+    answer: str
+    confidence: str
+    sources: List[Dict[str, Any]]
+    total_hops: int = 0
+    retrieval_mode: str = "multi_hop"
+
+
+@app.post("/rag/query/multi-hop", response_model=MultiHopQueryResponse)
+async def rag_multi_hop_query(request: MultiHopQueryRequest):
+    """
+    Query using multi-hop retrieval for complex legal questions.
+    
+    Performs iterative retrieve-read-reason cycles to build complete
+    evidence chains across multiple document nodes.
+    """
+    rag = get_rag_query()
+    if not rag:
+        raise HTTPException(status_code=503, detail="RAG service unavailable")
+    
+    try:
+        filter_dict = {"jurisdiction": request.jurisdiction} if request.jurisdiction else None
+        
+        response = rag.query_multi_hop(
+            question=request.question,
+            max_hops=request.max_hops,
+            top_k_per_hop=request.top_k_per_hop,
+            filter=filter_dict,
+        )
+        
+        return MultiHopQueryResponse(
+            query=response.query,
+            answer=response.answer,
+            confidence=response.confidence,
+            sources=response.sources,
+            total_hops=len(response.sources),
+            retrieval_mode="multi_hop",
+        )
+        
+    except Exception as e:
+        logger.error(f"Multi-hop query error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/rag/query/smart", response_model=MultiHopQueryResponse)
+async def rag_smart_query(request: RAGQueryRequest):
+    """
+    Smart query that auto-routes between single-hop and multi-hop
+    based on question complexity analysis.
+    """
+    rag = get_rag_query()
+    if not rag:
+        raise HTTPException(status_code=503, detail="RAG service unavailable")
+    
+    try:
+        filter_dict = {"jurisdiction": request.jurisdiction} if request.jurisdiction else None
+        
+        response = rag.query_smart(
+            question=request.question,
+            filter=filter_dict,
+        )
+        
+        return MultiHopQueryResponse(
+            query=response.query,
+            answer=response.answer,
+            confidence=response.confidence,
+            sources=response.sources,
+        )
+        
+    except Exception as e:
+        logger.error(f"Smart query error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================
+# MCTS Reasoning Endpoint (Module 3)
+# =====================
+
+class MCTSClassificationRequest(BaseModel):
+    facts: str = Field(..., description="Description of the working relationship")
+    n_simulations: int = Field(default=20, ge=5, le=100, description="MCTS simulations")
+
+
+class MCTSClassificationResponse(BaseModel):
+    classification: str
+    confidence: float
+    factor_analysis: Dict[str, Dict[str, Any]]
+    reasoning_text: str
+    tree_statistics: Dict[str, Any]
+    duration_ms: float
+
+
+@app.post("/classify/reasoning", response_model=MCTSClassificationResponse)
+async def classify_with_reasoning(request: MCTSClassificationRequest):
+    """
+    Classify worker using MCTS-based legal reasoning.
+    
+    Explores a tree of classification hypotheses using Monte Carlo
+    Tree Search, scoring each against RAG-retrieved precedents.
+    Returns full reasoning trace with per-factor analysis.
+    """
+    from rag_pipeline.legal_reasoning_agent import LegalReasoningAgent
+    
+    try:
+        agent = LegalReasoningAgent(n_simulations=request.n_simulations)
+        result = agent.classify_with_reasoning(request.facts)
+        
+        return MCTSClassificationResponse(
+            classification=result.classification,
+            confidence=result.confidence,
+            factor_analysis=result.factor_analysis,
+            reasoning_text=result.full_reasoning_text,
+            tree_statistics=result.tree_statistics,
+            duration_ms=result.duration_ms,
+        )
+        
+    except Exception as e:
+        logger.error(f"MCTS classification error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================
+# Evaluation Endpoints (Modules 4-5)
+# =====================
+
+class BenchmarkRequest(BaseModel):
+    n_cases: int = Field(default=10, ge=1, le=100, description="Number of test cases")
+    seed: int = Field(default=42, description="Random seed for reproducibility")
+
+
+@app.post("/evaluate/generate-suite")
+async def generate_benchmark_suite(request: BenchmarkRequest):
+    """
+    Generate a dynamic, anti-contamination legal evaluation test suite.
+    
+    Each test case is parameterized with randomized names, companies,
+    and amounts while preserving legal logic. Same seed = same suite.
+    """
+    from evaluation.dynamic_benchmark import LegalBenchmarkGenerator
+    
+    try:
+        generator = LegalBenchmarkGenerator(base_seed=request.seed)
+        suite = generator.generate_suite(n_cases=request.n_cases)
+        suite.save()
+        
+        return {
+            "suite_id": suite.suite_id,
+            "n_cases": suite.n_cases,
+            "difficulty_distribution": suite.difficulty_distribution,
+            "cases_preview": [
+                {
+                    "case_id": c.case_id,
+                    "difficulty": c.difficulty,
+                    "expected": c.expected_classification,
+                    "scenario_preview": c.scenario[:200] + "...",
+                }
+                for c in suite.cases[:3]
+            ],
+        }
+        
+    except Exception as e:
+        logger.error(f"Benchmark generation error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class JudgeRequest(BaseModel):
+    question: str = Field(..., description="The question asked")
+    response: str = Field(..., description="The AI response to evaluate")
+    reference: Optional[str] = Field(default=None, description="Optional reference answer")
+
+
+@app.post("/evaluate/judge")
+async def judge_response(request: JudgeRequest):
+    """
+    Score a legal AI response using the debiased LLM judge.
+    
+    Returns component-level scores with bias mitigation applied
+    (rubric decomposition, length normalization).
+    """
+    from evaluation.llm_judge import DebiasedLegalJudge
+    
+    try:
+        judge = DebiasedLegalJudge()
+        result = judge.score(
+            question=request.question,
+            response=request.response,
+            reference=request.reference,
+        )
+        
+        return result.to_dict()
+        
+    except Exception as e:
+        logger.error(f"Judge error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================
 # Run Server
 # =====================
 

@@ -44,6 +44,52 @@ CHUNK_OVERLAP = 50  # tokens (10% overlap for legal context preservation)
 MAX_RETRIES = 3
 RATE_LIMIT_DELAY = 16  # seconds between CanLII requests
 
+# Multi-Hop RAG Configuration
+MULTI_HOP_MAX_HOPS = 5
+MULTI_HOP_COMPLETENESS_THRESHOLD = 0.8  # Stop when evidence is >= 80% complete
+MULTI_HOP_MIN_NEW_INFO_TOKENS = 50  # Minimum new info to justify another hop
+
+# Knowledge Graph Configuration
+KNOWLEDGE_GRAPH_PATH = DATA_DIR / "legal_knowledge_graph.json"
+KG_MAX_SUBGRAPH_DEPTH = 3
+KG_ENTITY_TYPES = ["Case", "Court", "Judge", "LegalTest", "Factor", "Jurisdiction", "Party", "Statute"]
+KG_RELATION_TYPES = [
+    "cites", "applies_test", "involves_factor", "decided_by",
+    "supports_classification", "overrules", "distinguishes",
+    "enacted_by", "amends", "interprets"
+]
+
+# MCTS Legal Reasoning Agent Configuration
+MCTS_N_SIMULATIONS = 50
+MCTS_EXPLORATION_CONSTANT = 1.414  # UCB1 sqrt(2)
+MCTS_MAX_DEPTH = 6
+MCTS_MIN_SCORE_THRESHOLD = 0.2  # Prune branches below this score
+MCTS_REWARD_WEIGHTS = {
+    "precedent_alignment": 0.35,
+    "factor_completeness": 0.25,
+    "logical_consistency": 0.25,
+    "evidence_strength": 0.15,
+}
+
+# Evaluation Framework Configuration
+EVAL_DIR = BASE_DIR / "evaluation"
+EVAL_RESULTS_DIR = BASE_DIR / "evaluation_results"
+EVAL_RESULTS_DIR.mkdir(exist_ok=True)
+EVAL_DEFAULT_N_CASES = 50
+EVAL_DIMENSIONS = [
+    "factor_identification",
+    "legal_reasoning_quality",
+    "citation_accuracy",
+    "risk_assessment",
+    "completeness",
+    "hedging_appropriateness",
+]
+
+# LLM Judge Configuration
+JUDGE_MODEL = "gemini-2.0-flash"  # Model used for judging
+JUDGE_TEMPERATURE = 0.1  # Low temperature for consistent scoring
+JUDGE_POSITION_SWAP_TRIALS = 2  # Number of swap trials for position debiasing
+
 # CanLII Scraper Configuration
 CANLII_BASE_URL = "https://www.canlii.org"
 CANLII_PDF_DOWNLOAD_DIR = DATA_DIR / "canlii_pdfs"
@@ -61,3 +107,10 @@ EMPLOYMENT_CASES_CSV = DATA_DIR / "employment_cases_large.csv"
 # Logging Configuration
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_LEVEL = "INFO"
+
+# New module dependencies check
+NETWORKX_AVAILABLE = True
+try:
+    import networkx
+except ImportError:
+    NETWORKX_AVAILABLE = False

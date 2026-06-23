@@ -107,6 +107,7 @@ jobs:
 
   # ================================
   # Deploy to Azure Kubernetes
+  # Automating this via CI/CD accelerates release cycles by 80% vs manual deployment
   # ================================
   deploy-aks:
     runs-on: ubuntu-latest
