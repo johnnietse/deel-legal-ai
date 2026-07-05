@@ -1,5 +1,5 @@
 # Docker Compose for Deel Lab Legal AI System
-# Local development and testing
+# v3.0 ByteDance Commercial Architecture
 
 services:
   # Main API Service
@@ -15,10 +15,17 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - PINECONE_API_KEY=${PINECONE_API_KEY}
       - LOG_LEVEL=INFO
+      - VECTOR_STORE_BACKEND=${VECTOR_STORE_BACKEND:-pinecone}
+      - BM25_BACKEND=${BM25_BACKEND:-elasticsearch}
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - MILVUS_HOST=milvus-standalone
+      - MILVUS_PORT=19530
     volumes:
       - ./data:/app/data
       - ./models:/app/models
       - ./logs:/app/logs
+    depends_on:
+      - elasticsearch
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
@@ -26,6 +33,76 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+
+  # v3.0: Elasticsearch (Sparse BM25 Index)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: deel-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://elasticsearch:9200 | grep -q 'You Know, for Search'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # v3.0: Milvus Standalone (Vector Store)
+  milvus-etcd:
+    image: quay.io/coreos/etcd:v3.5.5
+    container_name: deel-milvus-etcd
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - milvus_etcd:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus-minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    container_name: deel-milvus-minio
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    volumes:
+      - milvus_minio:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus-standalone:
+    image: milvusdb/milvus:v2.3.5
+    container_name: deel-milvus-standalone
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: milvus-etcd:2379
+      MINIO_ADDRESS: milvus-minio:9000
+    volumes:
+      - milvus_data:/var/lib/milvus
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    depends_on:
+      - milvus-etcd
+      - milvus-minio
 
   # RAG Pipeline Worker (for background processing)
   rag-worker:
@@ -38,11 +115,18 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - PINECONE_API_KEY=${PINECONE_API_KEY}
       - LOG_LEVEL=INFO
+      - VECTOR_STORE_BACKEND=${VECTOR_STORE_BACKEND:-pinecone}
+      - BM25_BACKEND=${BM25_BACKEND:-elasticsearch}
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - MILVUS_HOST=milvus-standalone
+      - MILVUS_PORT=19530
     volumes:
       - ./data:/app/data
       - ./models:/app/models
       - ./logs:/app/logs
-    command: [ "python", "-m", "rag_pipeline.pipeline", "--skip-scrape" ]
+    depends_on:
+      - elasticsearch
+    command: [ "python", "-m", "rag_pipeline.pipeline", "--reindex" ]
     profiles:
       - worker # Only starts with --profile worker
 
@@ -69,8 +153,11 @@ volumes:
   data:
   models:
   logs:
+  es_data:
+  milvus_etcd:
+  milvus_minio:
+  milvus_data:
 
-    # Networks
 networks:
   default:
     name: deel-legal-ai-network

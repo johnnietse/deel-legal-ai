@@ -51,3 +51,24 @@ networkx>=3.2.0
 # Logging & Utilities
 tqdm>=4.66.0
 tenacity>=8.2.0
+
+# ===========================================================================
+# ByteDance RAG Enhancements (§4–§8)
+# ===========================================================================
+
+# Sparse Retrieval — BM25 (production: Elasticsearch, dev fallback: rank-bm25)
+elasticsearch>=8.12.0
+rank-bm25>=0.2.2
+
+# Vector Store — Milvus backend (self-hosted alternative to Pinecone)
+pymilvus>=2.4.0
+
+# --- Model Optimisation (LoRA / Quantisation / Distillation) ---
+# GPU/ML dependencies for fine-tuning. Install on GPU nodes only.
+torch>=2.2.0
+transformers>=4.40.0
+peft>=0.10.0
+datasets>=2.18.0
+bitsandbytes>=0.43.0
+accelerate>=0.28.0
+

@@ -43,6 +43,9 @@ COPY config.py .
 COPY rag_pipeline/ ./rag_pipeline/
 COPY ml_classifier/ ./ml_classifier/
 COPY api/ ./api/
+COPY scripts/ ./scripts/
+COPY evaluation/ ./evaluation/
+COPY data/ ./data/
 
 # Create directories for data and models
 RUN mkdir -p /app/data /app/models /app/logs

@@ -34,7 +34,7 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat
-from rag_pipeline.pinecone_client import PineconeClient, SearchResult
+from rag_pipeline.vector_store import VectorSearchResult
 from config import (
     MULTI_HOP_MAX_HOPS,
     MULTI_HOP_COMPLETENESS_THRESHOLD,
@@ -110,20 +110,21 @@ class MultiHopRetriever:
         self,
         embeddings: Optional[GeminiEmbeddings] = None,
         chat: Optional[GeminiChat] = None,
-        pinecone: Optional[PineconeClient] = None,
+        vector_store=None,
         max_hops: int = MULTI_HOP_MAX_HOPS,
         completeness_threshold: float = MULTI_HOP_COMPLETENESS_THRESHOLD,
         min_new_info_tokens: int = MULTI_HOP_MIN_NEW_INFO_TOKENS,
     ):
         self.embeddings = embeddings or GeminiEmbeddings()
         self.chat = chat or GeminiChat()
-        self.pinecone = pinecone or PineconeClient()
+        from rag_pipeline.vector_store import create_vector_store
+        self.vector_store = vector_store if vector_store is not None else create_vector_store()
         self.max_hops = max_hops
         self.completeness_threshold = completeness_threshold
         self.min_new_info_tokens = min_new_info_tokens
-        
-        # Ensure Pinecone is connected
-        self.pinecone.connect()
+
+        # Ensure vector store is connected
+        self.vector_store.connect()
     
     def retrieve(
         self,
@@ -263,14 +264,14 @@ class MultiHopRetriever:
         top_k: int,
         namespace: str,
         filter: Optional[Dict[str, Any]],
-    ) -> List[SearchResult]:
-        """Retrieve documents from Pinecone for a given query."""
+    ) -> List[VectorSearchResult]:
+        """Retrieve documents from vector store for a given query."""
         query_result = self.embeddings.embed_text(query)
-        
+
         if not query_result.embedding:
             return []
-        
-        return self.pinecone.search(
+
+        return self.vector_store.search(
             query_vector=query_result.embedding,
             top_k=top_k,
             namespace=namespace,
@@ -281,7 +282,7 @@ class MultiHopRetriever:
         self,
         original_query: str,
         current_query: str,
-        retrieved: List[SearchResult],
+        retrieved: List[VectorSearchResult],
         prior_evidence: List[str],
     ) -> Dict[str, Any]:
         """

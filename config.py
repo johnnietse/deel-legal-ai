@@ -114,3 +114,114 @@ try:
     import networkx
 except ImportError:
     NETWORKX_AVAILABLE = False
+
+# =============================================================================
+# ByteDance RAG Enhancements Configuration
+# =============================================================================
+
+# --- Elasticsearch BM25 (ByteDance §5.2) ---
+ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL", "http://localhost:9200")
+ELASTICSEARCH_CLOUD_ID = os.getenv("ELASTICSEARCH_CLOUD_ID", "")
+ELASTICSEARCH_API_KEY = os.getenv("ELASTICSEARCH_API_KEY", "")
+ELASTICSEARCH_USERNAME = os.getenv("ELASTICSEARCH_USERNAME", "")
+ELASTICSEARCH_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD", "")
+ELASTICSEARCH_INDEX_NAME = "deel-legal-chunks"
+
+# --- Milvus Vector Store (ByteDance ByteVectorDB alternative) ---
+MILVUS_HOST = os.getenv("MILVUS_HOST", "localhost")
+MILVUS_PORT = int(os.getenv("MILVUS_PORT", "19530"))
+MILVUS_TOKEN = os.getenv("MILVUS_TOKEN", "")
+MILVUS_COLLECTION_NAME = "deel_legal_vectors"
+
+# --- Vector Store Backend Selection ---
+# Options: "pinecone" (managed), "milvus" (self-hosted)
+VECTOR_STORE_BACKEND = os.getenv("VECTOR_STORE_BACKEND", "pinecone")
+
+# --- HNSW Index Tuning (ByteDance §4.2.1) ---
+# Options: "development", "production", "high_recall", "billion_scale"
+HNSW_PRESET = os.getenv("HNSW_PRESET", "production")
+
+# --- Hybrid Search Configuration (ByteDance §5.2) ---
+HYBRID_SEARCH_ENABLED = True
+HYBRID_FUSION_METHOD = "rrf"        # "rrf" (Reciprocal Rank Fusion) or "weighted"
+HYBRID_MMR_LAMBDA = 0.7             # Diversity vs relevance trade-off (§5.3.3)
+HYBRID_DEFAULT_TOP_K = 5
+# Query-type adaptive weights (ByteDance §5.2.3)
+HYBRID_KEYWORD_WEIGHTS = (0.7, 0.3)  # (bm25, vector) for citation queries
+HYBRID_SEMANTIC_WEIGHTS = (0.2, 0.8)  # (bm25, vector) for conceptual queries
+HYBRID_BALANCED_WEIGHTS = (0.4, 0.6)  # (bm25, vector) for mixed queries
+
+# --- BM25 Backend Selection ---
+# Options: "elasticsearch" (production), "local" (development)
+BM25_BACKEND = os.getenv("BM25_BACKEND", "elasticsearch")
+
+# --- Semantic Chunking Configuration (ByteDance §4.1.2) ---
+SEMANTIC_CHUNKING_ENABLED = True
+SEMANTIC_CHUNK_MAX_TOKENS = 512
+SEMANTIC_CHUNK_MIN_TOKENS = 50
+SEMANTIC_CHUNK_NARRATIVE_TARGET = 384    # Narrative reasoning text
+SEMANTIC_CHUNK_STRUCTURED_TARGET = 128   # Statutes, lists, tables
+
+# --- Multi-Granularity Vectors (ByteDance §4.1.2) ---
+MULTI_GRANULARITY_ENABLED = False  # Enable when ready to re-index
+DOCUMENT_SUMMARY_NAMESPACE = "legal_cases_docs"
+CHUNK_NAMESPACE = "legal_cases"
+
+# --- Prompt Template Configuration (ByteDance §6.2) ---
+PROMPT_MAX_SOURCES = 5               # Max sources to inject into prompt
+PROMPT_MIN_SIMILARITY = 0.0          # Min score to keep a source in prompt
+
+# --- Confidence Gate (ByteDance §6.3.1) ---
+CONFIDENCE_GATE_ENABLED = True
+CONFIDENCE_REFUSE_THRESHOLD = 0.3    # Below → refuse to answer
+CONFIDENCE_HEDGE_THRESHOLD = 0.5     # Below → add hedging language
+
+# --- Query & Embedding Cache (ByteDance §6.4.2) ---
+CACHE_ENABLED = True
+CACHE_DIR = str(DATA_DIR / "cache")
+CACHE_EMBEDDING_MAXSIZE = 2000
+CACHE_EMBEDDING_TTL = 3600           # 1 hour
+CACHE_RETRIEVAL_MAXSIZE = 500
+CACHE_RETRIEVAL_TTL = 600            # 10 minutes
+CACHE_RESPONSE_MAXSIZE = 500
+CACHE_RESPONSE_TTL = 300             # 5 minutes
+
+# --- Feedback System (ByteDance §6.3.3) ---
+FEEDBACK_STORE_PATH = str(DATA_DIR / "feedback.jsonl")
+FEEDBACK_MIN_WRONG_FOR_FLAG = 3      # Flag queries with N+ "wrong" ratings
+
+# --- Pipeline Metrics (ByteDance §8.1) ---
+METRICS_LOG_DIR = str(LOGS_DIR / "metrics")
+METRICS_MAX_IN_MEMORY = 10000
+
+# --- Model Optimisation (ByteDance §7.2–7.4) ---
+# LoRA fine-tuning
+LORA_BASE_MODEL = os.getenv("BASE_LLM_MODEL", "google/gemma-2-2b-it")
+LORA_OUTPUT_DIR = str(MODELS_DIR / "lora_legal")
+LORA_RANK = 16
+LORA_ALPHA = 32
+LORA_TRAIN_DATA = str(DATA_DIR / "training" / "lora_train.jsonl")
+LORA_EVAL_DATA = str(DATA_DIR / "training" / "lora_eval.jsonl")
+
+# Quantisation
+QUANTISATION_BITS = 8                # 4 or 8
+QUANTISATION_METHOD = "bitsandbytes"  # "bitsandbytes", "gptq", "awq"
+
+# Knowledge distillation
+DISTILLATION_TEACHER = "gemini-2.0-flash"
+DISTILLATION_STUDENT = "google/gemma-2-2b-it"
+DISTILLATION_SAMPLES = 5000
+
+# --- GPU Auto-Scaling (ByteDance §8.2) ---
+AUTOSCALE_MIN_REPLICAS = 1
+AUTOSCALE_MAX_REPLICAS = 8
+AUTOSCALE_TARGET_QPS = 10
+AUTOSCALE_SCALE_UP_THRESHOLD = 0.8
+AUTOSCALE_SCALE_DOWN_THRESHOLD = 0.3
+AUTOSCALE_COOLDOWN_SECONDS = 300
+
+# --- Cross-Region Deployment (ByteDance §8.3) ---
+PRIMARY_REGION = os.getenv("PRIMARY_REGION", "us-east-1")
+REPLICA_REGIONS = os.getenv("REPLICA_REGIONS", "eu-west-1,ap-southeast-1").split(",")
+REPLICATION_STRATEGY = "async"       # "async" or "sync"
+

@@ -14,7 +14,19 @@ A comprehensive legal AI platform for employment law analysis, featuring:
 - **REST API**: FastAPI service with RAG query and classification endpoints
 - **Cloud Deployment**: Docker containerization with Azure Kubernetes Service deployment
 
-### 🔬 v2.0 — Research-Grade Modules (New)
+### 🏭 v3.0 — ByteDance RAG Production Architecture (Latest)
+Based on [ByteDance's internal RAG guideline](rag_pipeline/Byte_Dance_RAG_Guideline.md), the pipeline now implements commercial-grade patterns:
+- **Hybrid Retrieval**: BM25 (Elasticsearch) + Dense Vector fusion with Reciprocal Rank Fusion and MMR diversity
+- **Semantic Chunking**: Section-aware, paragraph-preserving chunking with variable sizes (128 tokens for statutes, 384 for narrative)
+- **Structured Prompt Templates**: 4 legal-domain templates with intent-based auto-selection
+- **Confidence Gate**: Pre-generation refuse/hedge/pass quality control
+- **Multi-Layer Caching**: Embedding (1h TTL), retrieval (10m), response (5m) with LRU eviction
+- **Pipeline Metrics**: Per-query structured JSONL logging with latency percentiles and cost estimation
+- **Feedback Loop**: User feedback collection with root cause analysis and few-shot example export
+- **Vector Store Abstraction**: Unified interface supporting Pinecone (managed) and Milvus (self-hosted, GPU-accelerated)
+- **Model Optimization**: LoRA fine-tuning scaffolding, INT8 quantisation, knowledge distillation, GPU auto-scaling configs
+
+### 🔬 v2.0 — Research-Grade Modules
 - **Multi-Hop RAG**: Iterative retrieve-read-reason cycles with gap analysis and dynamic stopping
 - **Knowledge Graph + Hybrid Retrieval**: Legal entity graph (NetworkX) with BFS subgraph traversal and graph-to-text linearization, fused with vector search
 - **Post-Hoc Verifier**: Adversarial NLI fact-checker with claim-level citation mapping and implicit assumption validation to eliminate hallucinations
@@ -42,10 +54,12 @@ A comprehensive legal AI platform for employment law analysis, featuring:
 
 ### Legal RAG Pipeline
 - Automated collection of 500+ legal documents (Real + Synthetic)
-- Structure-aware document chunking (512 tokens, 10% overlap)
+- **Semantic chunking** with section-awareness and paragraph preservation (v3.0)
 - Google Gemini embeddings (text-embedding-004)
-- Pinecone vector database for semantic search
+- **Dual vector store**: Pinecone (managed) or Milvus (self-hosted) with HNSW tuning (v3.0)
+- **Hybrid BM25 + vector retrieval** with Elasticsearch and query-type-aware weights (v3.0)
 - Context-aware response generation with Gemini 2.0 Flash
+- **Confidence gate**, **multi-layer caching**, and **pipeline metrics** (v3.0)
 
 ### Worker Classification Model
 - Random Forest classifier trained on 1255 annotated employment cases
@@ -69,26 +83,34 @@ The Deel Legal AI platform is built on a modern, decoupled microservices archite
 ```mermaid
 graph TD
     subgraph Data Layer
-        A[CanLII Scraper] -->|PDFs| B[Document Processor]
+        A[CanLII Scraper] -->|PDFs| B["Document Processor<br>(SemanticChunker v3.0)"]
         C[Synthetic Generator] -->|CSV| D[ML Trainer]
     end
 
     subgraph Logic Layer
         B -->|Chunks| E[Gemini Embeddings]
-        E -->|Vectors| F[Pinecone DB]
+        E -->|Vectors| F["Pinecone / Milvus"]
+        B -->|Text| ES["Elasticsearch BM25"]
         D -->|Model| G[Random Forest Classifier]
         K[Knowledge Graph extractor] -->|Triples| L[NetworkX Graph DB]
         B -->|Text| K
     end
 
-    subgraph Application Layer
-        H[FastAPI Gateway] -->|Query| I[LegalRAGPipeline]
+    subgraph "Application Layer (v3.0 Enhanced)"
+        H[FastAPI Gateway] -->|Query| QC[Query Classifier]
+        QC -->|keyword| ES
+        QC -->|semantic| F
+        QC -->|hybrid| BOTH["BM25 + Vector"]
+        ES --> RRF["RRF Fusion + MMR"]
+        F --> RRF
+        BOTH --> RRF
+        RRF --> PT[Prompt Template Auto-Select]
+        PT --> J[Gemini 2.0 Flash]
+        J --> CG[Confidence Gate]
+        CG --> VER[NLI Verifier]
         H -->|Classify| G
-        I -->|Vector Retrieve| F
-        I -->|Graph Retrieve| L
-        I -->|Generate| J[Gemini 2.0 Flash]
         H -->|Reasoning| M[MCTS Agent]
-        M --> I
+        M --> QC
     end
 ```
 
@@ -131,6 +153,7 @@ sequenceDiagram
 - Python 3.11+
 - Docker & Docker Compose
 - API Keys: Gemini (Google AI Studio), Pinecone
+- **v3.0 optional**: Elasticsearch 8.x, Milvus 2.4+ (for production BM25 and self-hosted vector store)
 
 ### Installation
 
@@ -149,6 +172,24 @@ pip install -r requirements.txt
 # Configure environment
 cp .env.example .env
 # Edit .env with your API keys
+```
+
+### v3.0 Environment Variables
+```bash
+# Elasticsearch (production BM25)
+ELASTICSEARCH_URL=http://localhost:9200
+ELASTICSEARCH_API_KEY=your_key
+
+# Milvus (optional, self-hosted vector store)
+MILVUS_HOST=localhost
+MILVUS_PORT=19530
+VECTOR_STORE_BACKEND=pinecone  # or "milvus"
+
+# BM25 backend
+BM25_BACKEND=elasticsearch     # or "local" for development
+
+# HNSW tuning preset
+HNSW_PRESET=production         # development | production | high_recall | billion_scale
 ```
 
 ### Running Locally
@@ -186,10 +227,13 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/health` | GET | Health check |
-| `/rag/query` | POST | Single-hop legal knowledge query |
+| `/rag/query` | POST | Single-hop legal knowledge query (v3.0: hybrid retrieval + prompt templates) |
 | `/rag/query/multi-hop` | POST | ⭐ Multi-hop iterative retrieval for complex questions |
 | `/rag/query/smart` | POST | ⭐ Auto-routes between single/multi-hop based on complexity |
 | `/rag/verify` | POST | ⭐ Standalone fact-checking and assumption validation |
+| `/rag/stats` | GET | 🏭 Pipeline statistics: latency, cost, cache hit rates, quality scores |
+| `/api/feedback` | POST | 🏭 Submit user feedback (useful/not_useful/wrong) with error categorisation |
+| `/api/feedback/summary` | GET | 🏭 Feedback analysis: ratings, flagged queries, root cause breakdown |
 | `/classify` | POST | Worker classification (Random Forest) |
 | `/classify/reasoning` | POST | ⭐ MCTS-based classification with full reasoning trace |
 | `/evaluate/generate-suite` | POST | ⭐ Generate anti-contamination evaluation suite |
@@ -243,6 +287,19 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 | `verifier.py` | **Fact-Checker**: Uses adversarial NLI to extract implicit assumptions, map citations, and auto-correct hallucinations. |
 | `legal_reasoning_agent.py` | **MCTS Agent**: Monte Carlo Tree Search over Sagaz classification factors with UCB1 selection, LLM-as-judge simulation, and backpropagation. Implements inference-time compute scaling. |
 
+### **ByteDance RAG Enhancements (`rag_pipeline/` — v3.0)** 🏭
+| File | Role & Description |
+|------|-------------------|
+| `hybrid_retriever.py` | **Hybrid Search**: BM25 keyword + dense vector fusion with Reciprocal Rank Fusion (RRF), query-type classifier (keyword/semantic/hybrid), and Maximum Marginal Relevance (MMR) diversity reranking. §5.2 |
+| `prompt_templates.py` | **Prompt Library**: 4 domain-specific templates (worker classification, notice period, risk analysis, general) with intent-based auto-selector. §6.2 |
+| `confidence_gate.py` | **Quality Gate**: Pre-generation confidence checking — refuses low-confidence, hedges borderline, passes high-confidence answers. §6.3.1 |
+| `query_cache.py` | **Multi-Layer Cache**: 3-tier TTL cache (embedding 1h, retrieval 10m, response 5m) with LRU eviction and disk persistence. §6.4.2 |
+| `metrics.py` | **Pipeline Metrics**: Per-query structured JSONL logging with timing, cost estimation, latency percentiles (p50/p95), and weekly summaries. §8.1 |
+| `feedback_analyzer.py` | **Feedback Loop**: JSONL-backed user feedback (useful/not_useful/wrong), root cause analysis by system layer, flagged query detection, few-shot example export. §6.3.3 |
+| `vector_store.py` | **Vector Store Abstraction**: Unified interface for Pinecone (managed) and Milvus (self-hosted, GPU-accelerated). HNSW tuning presets from development to billion-scale. §4.2.1 |
+| `search_engine.py` | **Elasticsearch BM25**: Production sparse retrieval with legal-domain custom analyser, legal synonym expansion, and metadata-filtered search. §5.2 |
+| `model_optimization.py` | **Model Optimization**: LoRA fine-tuning (PEFT), INT8/4-bit quantisation (BitsAndBytes), teacher-student distillation, GPU auto-scaling profiles, cross-region deployment configs. §7–§8 |
+
 ### **Evaluation Framework (`evaluation/` — v2.0)**
 | File | Role & Description |
 |------|-------------------|
@@ -274,37 +331,56 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 
 ```text
 Law_AI_Deel/
-├── rag_pipeline/              # RAG pipeline components
-│   ├── canlii_scraper.py      # CanLII web scraper
-│   ├── document_processor.py  # PDF extraction & chunking
-│   ├── embeddings.py          # Gemini embeddings
-│   ├── pinecone_client.py     # Vector database client
-│   ├── rag_query.py           # Query interface (+ smart routing)
-│   ├── pipeline.py            # Main orchestrator
-│   ├── multi_hop_retriever.py # ⭐ Multi-hop iterative retrieval
-│   ├── knowledge_graph.py     # ⭐ Legal entity knowledge graph
-│   ├── graph_retriever.py     # ⭐ Hybrid vector+graph retriever
-│   └── legal_reasoning_agent.py # ⭐ MCTS classification agent
-├── evaluation/                # ⭐ Evaluation framework
-│   ├── dynamic_benchmark.py   # Anti-contamination test generation
-│   ├── llm_judge.py           # Debiased LLM-as-Judge
-│   ├── bias_detector.py       # Bias detection & auditing
-│   └── benchmark_runner.py    # CLI benchmark orchestrator
-├── ml_classifier/             # ML classification
-│   ├── train_classifier.py    # Random Forest training
-│   └── model_inference.py     # Inference API
-├── api/                       # FastAPI service
-│   └── main.py                # REST endpoints (v1 + v2)
-├── data/                      # Data storage
+├── rag_pipeline/                  # RAG pipeline components
+│   ├── canlii_scraper.py          # CanLII web scraper
+│   ├── document_processor.py      # PDF extraction, chunking + SemanticChunker (v3)
+│   ├── embeddings.py              # Gemini embeddings
+│   ├── pinecone_client.py         # Vector database client
+│   ├── rag_query.py               # Query interface (v3: full ByteDance pipeline)
+│   ├── pipeline.py                # Main orchestrator
+│   ├── multi_hop_retriever.py     # ⭐ Multi-hop iterative retrieval
+│   ├── knowledge_graph.py         # ⭐ Legal entity knowledge graph
+│   ├── graph_retriever.py         # ⭐ Hybrid vector+graph retriever
+│   ├── legal_reasoning_agent.py   # ⭐ MCTS classification agent
+│   ├── verifier.py                # ⭐ NLI fact-checker
+│   ├── hybrid_retriever.py        # 🏭 BM25+vector fusion, RRF, MMR
+│   ├── prompt_templates.py        # 🏭 Domain prompt templates
+│   ├── confidence_gate.py         # 🏭 Pre-generation quality gate
+│   ├── query_cache.py             # 🏭 Multi-layer TTL cache
+│   ├── metrics.py                 # 🏭 Pipeline metrics & logging
+│   ├── feedback_analyzer.py       # 🏭 User feedback loop
+│   ├── vector_store.py            # 🏭 Pinecone/Milvus abstraction
+│   ├── search_engine.py           # 🏭 Elasticsearch BM25
+│   └── model_optimization.py      # 🏭 LoRA, quantisation, deployment
+├── evaluation/                    # ⭐ Evaluation framework
+│   ├── dynamic_benchmark.py       # Anti-contamination test generation
+│   ├── llm_judge.py               # Debiased LLM-as-Judge
+│   ├── bias_detector.py           # Bias detection & auditing
+│   └── benchmark_runner.py        # CLI benchmark orchestrator
+├── ml_classifier/                 # ML classification
+│   ├── train_classifier.py        # Random Forest training
+│   └── model_inference.py         # Inference API
+├── api/                           # FastAPI service
+│   └── main.py                    # REST endpoints (v1 + v2 + v3)
+├── data/                          # Data storage
 │   ├── employment_cases_large.csv
+│   ├── cache/                     # 🏭 Query cache (auto-generated)
 │   └── generate_large_dataset.py
-├── tests/                     # Test suites
-│   └── test_advanced_modules.py # 31 tests for v2 modules
-├── k8s/                       # Kubernetes manifests
+├── scripts/                       # 🏭 Deployment & execution scripts
+│   ├── reindex_local.py           # Local semantic re-indexing pipeline
+│   ├── bootstrap_elasticsearch.py # Elasticsearch index creation & loading
+│   └── lora_finetune.py           # LoRA training & distillation pipeline
+├── tests/                         # Test suites (85+ total tests)
+│   ├── test_advanced_modules.py   # Tests for v2 modules
+│   ├── test_v3_bytedance.py       # Tests for v3 ByteDance modules
+│   ├── test_system_integration.py # E2E system integration tests
+│   └── test_main.py               # API and core functionality tests
+├── logs/metrics/                  # 🏭 Structured metrics JSONL
+├── k8s/                           # Kubernetes manifests
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-└── config.py
+└── config.py                      # Central config (60+ v3 constants)
 ```
 
 ---
@@ -314,11 +390,11 @@ Law_AI_Deel/
 To verify the entire system integration (Data, ML, and RAG connection), run the included test suite:
 
 ```bash
-# Run full system integration test
-python tests/test_system_integration.py
+# Run the complete test suite (v1, v2, and v3 modules, ~85 tests)
+python -m pytest tests/ -v --tb=short
 
-# Run advanced modules test suite (31 tests)
-python -m pytest tests/test_advanced_modules.py -v
+# Run specifically the v3 ByteDance RAG tests
+python -m pytest tests/test_v3_bytedance.py -v
 ```
 
 Expected output for integration:

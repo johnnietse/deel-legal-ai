@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-07-05T04:12:36.761509",
+  "documents_processed": 18,
+  "chunks_created": 73,
+  "avg_tokens_per_chunk": 101.7,
+  "content_type_distribution": {
+    "narrative": 73,
+    "statute": 0,
+    "list": 0
+  },
+  "section_distribution": {
+    "facts": 11,
+    "analysis": 12,
+    "issues": 5,
+    "preamble": 6,
+    "fact": 10,
+    "body": 24,
+    "overview": 4,
+    "relief": 1
+  },
+  "test_queries_run": 8,
+  "duration_seconds": 0.78
+}

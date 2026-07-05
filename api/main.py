@@ -419,6 +419,114 @@ async def verify_standalone(request: VerifyRequest):
         logger.error(f"Standalone verification error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# =====================
+# ByteDance Enhancements — Feedback & Observability
+# =====================
+
+class FeedbackRequest(BaseModel):
+    query_id: str = Field(default="", description="ID of the query being rated")
+    query_text: str = Field(..., description="The original question")
+    answer_text: str = Field(default="", description="The answer that was given")
+    rating: str = Field(..., description="Rating: 'useful', 'not_useful', or 'wrong'")
+    error_type: Optional[str] = Field(
+        default=None,
+        description="Error category: 'data_error', 'incomplete', 'off_topic', 'hallucination'"
+    )
+    comment: Optional[str] = Field(default=None, description="Free-text comment")
+
+
+@app.post("/api/feedback")
+async def submit_feedback(request: FeedbackRequest):
+    """
+    Submit user feedback on a RAG response.
+    
+    ByteDance §6.3.3: Collect "useful/not useful/wrong" feedback per response.
+    Wrong-feedback triggers root cause analysis. Good answers go into the
+    "excellent answer library" for few-shot examples and fine-tuning.
+    """
+    from rag_pipeline.feedback_analyzer import FeedbackStore, FeedbackEntry
+    
+    valid_ratings = {"useful", "not_useful", "wrong"}
+    if request.rating not in valid_ratings:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid rating. Must be one of: {valid_ratings}"
+        )
+    
+    valid_errors = {"data_error", "incomplete", "off_topic", "hallucination", None}
+    if request.error_type not in valid_errors:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid error_type. Must be one of: {valid_errors}"
+        )
+    
+    try:
+        store = FeedbackStore()
+        entry = FeedbackEntry(
+            query_id=request.query_id,
+            query_text=request.query_text,
+            answer_text=request.answer_text,
+            rating=request.rating,
+            error_type=request.error_type,
+            comment=request.comment,
+        )
+        store.record(entry)
+        
+        return {
+            "status": "recorded",
+            "query_id": request.query_id,
+            "rating": request.rating,
+        }
+    except Exception as e:
+        logger.error(f"Feedback error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/feedback/summary")
+async def get_feedback_summary():
+    """
+    Get a summary of collected user feedback.
+    
+    Includes: total count, rating distribution, error type breakdown,
+    flagged queries, and root cause analysis.
+    """
+    from rag_pipeline.feedback_analyzer import FeedbackStore, FeedbackAnalyzer
+    
+    try:
+        analyzer = FeedbackAnalyzer()
+        summary = analyzer.summary()
+        flagged = analyzer.get_flagged_queries()
+        root_cause = analyzer.root_cause_breakdown()
+        
+        return {
+            "summary": summary,
+            "flagged_queries": flagged[:10],
+            "root_cause": root_cause,
+        }
+    except Exception as e:
+        logger.error(f"Feedback summary error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/rag/stats")
+async def get_pipeline_stats():
+    """
+    Get full pipeline statistics (ByteDance §8.1).
+    
+    Returns: latency percentiles, quality scores, cost estimates,
+    cache hit rates, retrieval mode distribution.
+    """
+    rag = get_rag_query()
+    if not rag:
+        raise HTTPException(status_code=503, detail="RAG service unavailable")
+    
+    try:
+        return rag.get_pipeline_stats()
+    except Exception as e:
+        logger.error(f"Stats error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # =====================
 # MCTS Reasoning Endpoint (Module 3)
 # =====================

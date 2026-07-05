@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat
-from rag_pipeline.pinecone_client import PineconeClient, SearchResult
+from rag_pipeline.vector_store import create_vector_store, VectorSearchResult
 from rag_pipeline.knowledge_graph import LegalKnowledgeGraph, SubgraphResult
 
 # Setup logging
@@ -60,20 +60,20 @@ class HybridRetriever:
         self,
         embeddings: Optional[GeminiEmbeddings] = None,
         chat: Optional[GeminiChat] = None,
-        pinecone: Optional[PineconeClient] = None,
+        vector_store=None,
         knowledge_graph: Optional[LegalKnowledgeGraph] = None,
         vector_weight: float = 0.6,
         graph_weight: float = 0.4,
     ):
         self.embeddings = embeddings or GeminiEmbeddings()
         self.chat = chat or GeminiChat()
-        self.pinecone = pinecone or PineconeClient()
+        self.vector_store = vector_store if vector_store is not None else create_vector_store()
         self.kg = knowledge_graph or LegalKnowledgeGraph()
         self.vector_weight = vector_weight
         self.graph_weight = graph_weight
-        
-        # Ensure Pinecone is connected
-        self.pinecone.connect()
+
+        # Ensure vector store is connected
+        self.vector_store.connect()
     
     def retrieve(
         self,
@@ -146,24 +146,24 @@ class HybridRetriever:
         top_k: int,
         namespace: str,
         filter: Optional[Dict[str, Any]],
-    ) -> List[SearchResult]:
-        """Perform vector similarity search via Pinecone."""
+    ) -> List[VectorSearchResult]:
+        """Perform vector similarity search via configured store."""
         query_result = self.embeddings.embed_text(query)
-        
+
         if not query_result.embedding:
             return []
-        
-        return self.pinecone.search(
+
+        return self.vector_store.search(
             query_vector=query_result.embedding,
             top_k=top_k,
             namespace=namespace,
             filter=filter,
         )
-    
+
     def _extract_entities(
         self,
         query: str,
-        vector_results: List[SearchResult],
+        vector_results: List[VectorSearchResult],
     ) -> List[str]:
         """Extract entity names from query and retrieved passages."""
         # Extract from query
@@ -186,7 +186,7 @@ class HybridRetriever:
     def _merge_contexts(
         self,
         query: str,
-        vector_results: List[SearchResult],
+        vector_results: List[VectorSearchResult],
         graph_results: List[SubgraphResult],
     ) -> str:
         """

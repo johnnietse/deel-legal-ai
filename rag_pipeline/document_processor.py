@@ -17,7 +17,10 @@ from typing import List, Dict, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 import hashlib
 
-import fitz  # PyMuPDF
+try:
+    import fitz  # PyMuPDF — optional, only needed for PDF extraction
+except ImportError:
+    fitz = None
 import tiktoken
 
 # Setup logging
@@ -109,6 +112,8 @@ class LegalDocumentProcessor:
         }
         
         try:
+            if fitz is None:
+                raise ImportError("PyMuPDF (fitz) is required for PDF extraction. Run: pip install PyMuPDF")
             doc = fitz.open(str(pdf_path))
             metadata["page_count"] = len(doc)
             
@@ -390,6 +395,380 @@ class LegalDocumentProcessor:
             logger.info(f"{status_emoji} Processed {pdf_path.name}: {len(result.chunks)} chunks")
         
         return results
+
+
+class SemanticChunker:
+    """
+    Semantic-aware dynamic chunking for legal documents.
+    
+    Inspired by ByteDance RAG Guideline §4.1.2:
+    "Semantic completeness priority" — analyse paragraph structure,
+    headings, and semantic pauses. Legal parameter tables get 128-token
+    chunks; narrative text gets 384-token chunks.
+    
+    Key improvements over fixed-size chunking:
+      1. Never splits across legal section boundaries (FACTS, ANALYSIS, etc.)
+      2. Keeps numbered paragraphs ([1], [2], etc.) as atomic units
+      3. Variable chunk sizes: shorter for statutes/lists, longer for reasoning
+      4. Richer metadata: paragraph_range, legal_section, chunk_type
+    """
+    
+    # Legal paragraph numbering patterns
+    PARAGRAPH_PATTERN = re.compile(
+        r'^\s*\[(\d+)\]',           # [1], [2], ...
+        re.MULTILINE
+    )
+    
+    # Section heading patterns
+    SECTION_HEADING_PATTERN = re.compile(
+        r'^(?:'
+        r'(?:[IVXLCDM]+\.?\s+)'                 # Roman numerals: "IV. ANALYSIS"
+        r'|(?:[A-Z]\.?\s+)'                      # Letter headings: "A. Background"
+        r'|(?:\d+\.?\s+)'                         # Numbered: "3. Issues"
+        r')?'
+        r'(FACTS?|BACKGROUND|FACTUAL BACKGROUND'
+        r'|LAW|LEGAL FRAMEWORK|APPLICABLE LAW|RELEVANT LAW'
+        r'|ANALYSIS|DISCUSSION|REASONING'
+        r'|CONCLUSION|DECISION|ORDER|DISPOSITION'
+        r'|ISSUES?'
+        r'|RELIEF|REMEDY|DAMAGES'
+        r'|OVERVIEW|INTRODUCTION|SUMMARY'
+        r'|BETWEEN|BEFORE'
+        r')',
+        re.IGNORECASE | re.MULTILINE
+    )
+    
+    # Content type detection patterns
+    STATUTE_PATTERNS = [
+        re.compile(r'(?:s\.|[Ss]ection)\s*\d+', re.IGNORECASE),
+        re.compile(r'\(\d+\)\s*[A-Z]'),           # "(1) Every employer..."
+        re.compile(r'\b(?:shall|must|may not|is prohibited)\b', re.IGNORECASE),
+    ]
+    
+    LIST_PATTERN = re.compile(
+        r'^\s*(?:[-•*]|\([a-z]\)|\([ivx]+\)|\d+\.)\s+',
+        re.MULTILINE
+    )
+    
+    def __init__(
+        self,
+        max_chunk_tokens: int = 512,
+        min_chunk_tokens: int = 50,
+        narrative_target: int = 384,
+        structured_target: int = 128,
+        overlap_tokens: int = 50,
+        encoding_name: str = "cl100k_base",
+    ):
+        self.max_chunk_tokens = max_chunk_tokens
+        self.min_chunk_tokens = min_chunk_tokens
+        self.narrative_target = narrative_target
+        self.structured_target = structured_target
+        self.overlap_tokens = overlap_tokens
+        self.encoding = tiktoken.get_encoding(encoding_name)
+    
+    def _count_tokens(self, text: str) -> int:
+        return len(self.encoding.encode(text))
+    
+    def _detect_content_type(self, text: str) -> str:
+        """Classify content as 'statute', 'list', or 'narrative'."""
+        statute_hits = sum(1 for p in self.STATUTE_PATTERNS if p.search(text))
+        list_hits = len(self.LIST_PATTERN.findall(text))
+        
+        if statute_hits >= 2:
+            return "statute"
+        if list_hits >= 3:
+            return "list"
+        return "narrative"
+    
+    def _target_size_for(self, content_type: str) -> int:
+        """Get target chunk size based on content type (ByteDance §4.1.2)."""
+        if content_type in ("statute", "list"):
+            return self.structured_target
+        return self.narrative_target
+    
+    def _split_into_sections(self, text: str) -> List[Dict[str, Any]]:
+        """
+        Split document into major legal sections.
+        
+        Each section is a dict with:
+          - 'name': section name (e.g., 'analysis', 'facts')
+          - 'text': section content
+          - 'start_pos': character position in original text
+        """
+        # Find all section headings
+        headings = list(self.SECTION_HEADING_PATTERN.finditer(text))
+        
+        if not headings:
+            return [{"name": "body", "text": text, "start_pos": 0}]
+        
+        sections = []
+        
+        # Text before first heading
+        if headings[0].start() > 0:
+            pre_text = text[:headings[0].start()].strip()
+            if pre_text:
+                sections.append({
+                    "name": "preamble",
+                    "text": pre_text,
+                    "start_pos": 0,
+                })
+        
+        # Each section
+        for i, heading in enumerate(headings):
+            end = headings[i + 1].start() if i + 1 < len(headings) else len(text)
+            section_text = text[heading.start():end].strip()
+            section_name = heading.group(1).lower().strip()
+            
+            # Normalise section names
+            section_map = {
+                "facts": "facts", "background": "facts",
+                "factual background": "facts",
+                "law": "law", "legal framework": "law",
+                "applicable law": "law", "relevant law": "law",
+                "analysis": "analysis", "discussion": "analysis",
+                "reasoning": "analysis",
+                "conclusion": "conclusion", "decision": "conclusion",
+                "order": "conclusion", "disposition": "conclusion",
+                "issues": "issues", "issue": "issues",
+                "relief": "relief", "remedy": "relief",
+                "damages": "relief",
+            }
+            normalised = section_map.get(section_name, section_name)
+            
+            sections.append({
+                "name": normalised,
+                "text": section_text,
+                "start_pos": heading.start(),
+            })
+        
+        return sections
+    
+    def _split_into_paragraphs(self, text: str) -> List[Dict[str, Any]]:
+        """
+        Split section text into legal paragraphs.
+        
+        Respects [N] numbering as atomic units.
+        """
+        # Try splitting by numbered paragraphs first
+        parts = re.split(r'(?=\s*\[\d+\])', text)
+        
+        paragraphs = []
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            
+            # Extract paragraph number if present
+            num_match = re.match(r'\[(\d+)\]', part)
+            para_num = int(num_match.group(1)) if num_match else None
+            
+            paragraphs.append({
+                "text": part,
+                "paragraph_number": para_num,
+            })
+        
+        # If no numbered paragraphs found, fall back to double-newline split
+        if len(paragraphs) <= 1 and '\n\n' in text:
+            paragraphs = []
+            for part in text.split('\n\n'):
+                part = part.strip()
+                if part:
+                    paragraphs.append({"text": part, "paragraph_number": None})
+        
+        return paragraphs
+    
+    def chunk_document(
+        self,
+        text: str,
+        document_id: str,
+        base_metadata: Optional[Dict[str, Any]] = None,
+    ) -> List[DocumentChunk]:
+        """
+        Semantically chunk a legal document.
+        
+        Pipeline:
+          1. Split into sections (FACTS, ANALYSIS, CONCLUSION, ...)
+          2. Within each section, split into paragraphs (respect [N] numbering)
+          3. Group paragraphs into chunks respecting content-type target sizes
+          4. Never split across section or paragraph boundaries
+          5. Attach rich metadata
+        """
+        if not text.strip():
+            return []
+        
+        base_metadata = base_metadata or {}
+        
+        # Clean text
+        text = re.sub(r'\n{3,}', '\n\n', text)
+        text = re.sub(r' {2,}', ' ', text)
+        
+        chunks: List[DocumentChunk] = []
+        chunk_index = 0
+        
+        sections = self._split_into_sections(text)
+        
+        for section in sections:
+            section_name = section["name"]
+            section_text = section["text"]
+            
+            paragraphs = self._split_into_paragraphs(section_text)
+            
+            # Determine content type and target chunk size
+            content_type = self._detect_content_type(section_text)
+            target_size = self._target_size_for(content_type)
+            
+            current_text = ""
+            current_tokens = 0
+            current_para_start = None
+            current_para_end = None
+            
+            for para in paragraphs:
+                para_text = para["text"]
+                para_tokens = self._count_tokens(para_text)
+                para_num = para["paragraph_number"]
+                
+                # If single paragraph exceeds max, it becomes its own chunk
+                if para_tokens > self.max_chunk_tokens:
+                    # Flush current buffer first
+                    if current_text:
+                        chunks.append(self._make_chunk(
+                            content=current_text,
+                            document_id=document_id,
+                            chunk_index=chunk_index,
+                            base_metadata=base_metadata,
+                            section=section_name,
+                            content_type=content_type,
+                            para_start=current_para_start,
+                            para_end=current_para_end,
+                        ))
+                        chunk_index += 1
+                        current_text = ""
+                        current_tokens = 0
+                    
+                    # Store oversized paragraph as its own chunk
+                    chunks.append(self._make_chunk(
+                        content=para_text,
+                        document_id=document_id,
+                        chunk_index=chunk_index,
+                        base_metadata=base_metadata,
+                        section=section_name,
+                        content_type=content_type,
+                        para_start=para_num,
+                        para_end=para_num,
+                    ))
+                    chunk_index += 1
+                    current_para_start = None
+                    current_para_end = None
+                    continue
+                
+                # Would adding this paragraph exceed the target?
+                if current_tokens + para_tokens > target_size and current_text:
+                    chunks.append(self._make_chunk(
+                        content=current_text,
+                        document_id=document_id,
+                        chunk_index=chunk_index,
+                        base_metadata=base_metadata,
+                        section=section_name,
+                        content_type=content_type,
+                        para_start=current_para_start,
+                        para_end=current_para_end,
+                    ))
+                    chunk_index += 1
+                    current_text = ""
+                    current_tokens = 0
+                    current_para_start = None
+                    current_para_end = None
+                
+                # Accumulate
+                separator = "\n\n" if current_text else ""
+                current_text += separator + para_text
+                current_tokens += para_tokens
+                
+                if para_num is not None:
+                    if current_para_start is None:
+                        current_para_start = para_num
+                    current_para_end = para_num
+            
+            # Flush remaining text in this section
+            if current_text and self._count_tokens(current_text) >= self.min_chunk_tokens:
+                chunks.append(self._make_chunk(
+                    content=current_text,
+                    document_id=document_id,
+                    chunk_index=chunk_index,
+                    base_metadata=base_metadata,
+                    section=section_name,
+                    content_type=content_type,
+                    para_start=current_para_start,
+                    para_end=current_para_end,
+                ))
+                chunk_index += 1
+                current_text = ""
+                current_tokens = 0
+            elif current_text and chunks:
+                # Too small — merge with previous chunk if same section
+                prev = chunks[-1]
+                if prev.metadata.get("legal_section") == section_name:
+                    prev.content += "\n\n" + current_text
+                    prev.token_count = self._count_tokens(prev.content)
+                    if current_para_end is not None:
+                        prev.metadata["paragraph_range_end"] = current_para_end
+                else:
+                    # Different section — keep as small chunk
+                    chunks.append(self._make_chunk(
+                        content=current_text,
+                        document_id=document_id,
+                        chunk_index=chunk_index,
+                        base_metadata=base_metadata,
+                        section=section_name,
+                        content_type=content_type,
+                        para_start=current_para_start,
+                        para_end=current_para_end,
+                    ))
+                    chunk_index += 1
+        
+        # Update total_chunks
+        total = len(chunks)
+        for c in chunks:
+            c.total_chunks = total
+        
+        return chunks
+    
+    def _make_chunk(
+        self,
+        content: str,
+        document_id: str,
+        chunk_index: int,
+        base_metadata: Dict[str, Any],
+        section: str,
+        content_type: str,
+        para_start: Optional[int],
+        para_end: Optional[int],
+    ) -> DocumentChunk:
+        """Create a DocumentChunk with rich semantic metadata."""
+        metadata = base_metadata.copy()
+        metadata["legal_section"] = section
+        metadata["chunk_type"] = content_type  # "narrative", "statute", "list"
+        metadata["char_count"] = len(content)
+        
+        if para_start is not None:
+            metadata["paragraph_range_start"] = para_start
+        if para_end is not None:
+            metadata["paragraph_range_end"] = para_end
+        if para_start and para_end:
+            metadata["paragraph_range"] = f"[{para_start}]-[{para_end}]"
+        
+        content_hash = hashlib.md5(content.encode()).hexdigest()[:8]
+        chunk_id = f"{document_id}_chunk_{chunk_index}_{content_hash}"
+        
+        return DocumentChunk(
+            chunk_id=chunk_id,
+            document_id=document_id,
+            content=content,
+            token_count=self._count_tokens(content),
+            chunk_index=chunk_index,
+            total_chunks=0,
+            metadata=metadata,
+        )
 
 
 def main():

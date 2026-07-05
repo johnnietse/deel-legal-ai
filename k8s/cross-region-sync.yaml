@@ -1,0 +1,77 @@
+# ByteDance Practice: Cross-Region Deployment
+# Using Karmada (Multi-Cloud/Multi-Cluster Kubernetes Management)
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: legal-ai-cross-region
+  namespace: default
+spec:
+  # What to deploy
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: legal-ai-api
+    - apiVersion: v1
+      kind: Service
+      name: legal-ai-service
+  
+  # Where to deploy (Cross-region replication)
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - us-east-cluster
+        - us-west-cluster
+        - eu-central-cluster
+    
+    # Replica distribution across regions
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        dynamicWeight: AvailableReplicas
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - us-east-cluster
+            weight: 2
+          - targetCluster:
+              clusterNames:
+                - us-west-cluster
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - eu-central-cluster
+            weight: 1
+
+---
+# Cross-Region Vector DB Sync (Milvus)
+# Note: In production, you would also set up Milvus CDC (Change Data Capture)
+# for active-active synchronization across these regions.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milvus-cdc-sync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: milvus-cdc
+  template:
+    metadata:
+      labels:
+        app: milvus-cdc
+    spec:
+      containers:
+        - name: milvus-cdc
+          image: milvusdb/milvus-cdc:v2.3.0
+          args:
+            - server
+            - "-c"
+            - "/app/config/cdc.yaml"
+          volumeMounts:
+            - name: cdc-config
+              mountPath: /app/config
+      volumes:
+        - name: cdc-config
+          configMap:
+            name: milvus-cdc-config

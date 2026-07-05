@@ -1,5 +1,11 @@
 # RAG Pipeline - Pinecone Vector Database Client
 """
+[DEPRECATED] Use rag_pipeline/vector_store.py (PineconeBackend) instead.
+
+This module is kept for backward compatibility but will be removed.
+The new abstract VectorStore interface (vector_store.py) supports
+both Pinecone and Milvus backends via the factory function.
+
 Pinecone integration for legal document vector storage and retrieval.
 
 Implements best practices for legal RAG:

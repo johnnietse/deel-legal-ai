@@ -20,19 +20,38 @@ flowchart TB
         
         GATEWAY["FastAPI REST API Gateway<br><i>High-Availability Pods (99.5% Uptime)</i>"]:::compute
         
-        %% RAG Pipeline Subsystem
+        %% RAG Pipeline Subsystem (v3.0 ByteDance Architecture)
         subgraph RAG [RAG Services Pipeline]
             direction TB
-            SCRAPER["Data Ingestion Engine<br><i>Selenium & BS4 (10K+ CanLII Cases)</i>"]:::data
-            CHUNKER["Semantic Document Processor<br><i>Structure-Aware Chunking (-30% Hallucinations)</i>"]:::compute
+            SCRAPER["Data Ingestion Engine<br><i>Selenium & BS4 (10K+ Cases)</i>"]:::data
+            CHUNKER["Semantic Document Processor<br><i>Section-Aware Chunking (v3.0)</i>"]:::compute
             EMBEDDING["Embedding Model<br><i>Gemini text-embedding-004</i>"]:::model
-            VECTOR_DB[("Pinecone Vector Database<br><i>Scalable Semantic Indexing</i>")]:::data
+            
+            BM25_DB[("Elasticsearch<br><i>Sparse BM25 Index</i>")]:::data
+            VECTOR_DB[("Pinecone / Milvus<br><i>Dense Semantic Index</i>")]:::data
+            
+            CACHE["Multi-Layer Cache<br><i>TTL-based Response Caching</i>"]:::data
+            Q_CLASS["Query Classifier<br><i>Semantic / Keyword / Hybrid</i>"]:::compute
+            FUSION["RRF & MMR Fusion<br><i>Diversity Re-ranking</i>"]:::compute
+            TEMPLATES["Prompt Auto-Selector<br><i>Domain-Specific Templates</i>"]:::compute
             GENERATOR["LLM Generation Engine<br><i>Gemini 2.0 Flash</i>"]:::model
+            CONFIDENCE["Confidence Gate<br><i>Pass / Hedge / Refuse</i>"]:::compute
             
             SCRAPER -->|Raw Case Law| CHUNKER
-            CHUNKER -->|Overlapped Semantic Chunks| EMBEDDING
-            EMBEDDING -->|Vector Embeddings| VECTOR_DB
-            VECTOR_DB -->|Context Retrieval| GENERATOR
+            CHUNKER -->|Semantic Chunks| EMBEDDING
+            CHUNKER -->|Raw Text| BM25_DB
+            EMBEDDING -->|Vectors| VECTOR_DB
+            
+            Q_CLASS -->|Keyword| BM25_DB
+            Q_CLASS -->|Semantic| VECTOR_DB
+            Q_CLASS -->|Hybrid| BM25_DB
+            Q_CLASS -->|Hybrid| VECTOR_DB
+            
+            BM25_DB --> FUSION
+            VECTOR_DB --> FUSION
+            FUSION --> TEMPLATES
+            TEMPLATES --> GENERATOR
+            GENERATOR --> CONFIDENCE
         end
         
         %% Machine Learning Subsystem
@@ -41,14 +60,18 @@ flowchart TB
             DS["Employment Law Dataset<br><i>1260+ Annotated Cases</i>"]:::data
             TRAINING["Hyperparameter Tuning<br><i>GridSearchCV</i>"]:::compute
             RF_MODEL["Random Forest Classifier<br><i>Predicts Worker Classification</i>"]:::model
-            INTERP["Model Interpretability Engine<br><i>Gini Importance across 10 Sagaz Factors</i>"]:::compute
+            INTERP["Model Interpretability Engine<br><i>Gini Importance</i>"]:::compute
+            LORA["LoRA Fine-Tuning Pipeline<br><i>Feedback-driven (v3.0)</i>"]:::compute
             
             DS --> TRAINING
             TRAINING --> RF_MODEL
             RF_MODEL --> INTERP
+            LORA -.-> GENERATOR
         end
         
-        GATEWAY -->|POST /rag/query| GENERATOR
+        GATEWAY --> CACHE
+        CACHE -->|Miss| Q_CLASS
+        CONFIDENCE --> GATEWAY
         GATEWAY -->|POST /classify| RF_MODEL
     end
 
@@ -77,9 +100,12 @@ flowchart TB
 ## Highlights of this Architecture Diagram
 
 1. **Clean Segregation of Concerns**: The system is neatly divided into DevOps (CI/CD), API Layer (FastAPI), RAG Services, and ML Pipelines, directly reflecting your Dockerized and Kubernetes-orchestrated architecture.
-2. **Impact-Oriented Annotations**: Key achievements are embedded directly in the visual nodes:
+2. **ByteDance v3.0 Enhancements (New)**: The RAG pipeline now mirrors enterprise standards, featuring:
+   - *Hybrid Search* combining Elasticsearch (BM25) and Pinecone/Milvus (Dense Vectors) with RRF/MMR fusion.
+   - *Quality Gates* using Confidence Gating (Pass/Hedge/Refuse) to prevent hallucinations.
+   - *Model Optimization* with LoRA fine-tuning and distillation pipelines.
+3. **Impact-Oriented Annotations**: Key achievements are embedded directly in the visual nodes:
    - *10K+ CanLII Cases* on the Web Scraper.
-   - *-30% Hallucinations* through Structure-Aware Chunking.
-   - *1260+ Annotated Cases* and *10 Sagaz Factors* on the ML side.
+   - *1260+ Annotated Cases* on the ML side.
    - *99.5% Uptime* and *+80% Release Cycles* on the Kubernetes and CI/CD elements.
-3. **Apple Symposium Aesthetics**: Employs the `San Francisco` (`-apple-system`) font stack, muted elegant color palettes (cool grays for infrastructure, soft blues for data, muted reds for AI/ML processes), and rounded, border-less designs (`rx: 16px`) for a premium presentation.
+4. **Apple Symposium Aesthetics**: Employs the `San Francisco` (`-apple-system`) font stack, muted elegant color palettes (cool grays for infrastructure, soft blues for data, muted reds for AI/ML processes), and rounded, border-less designs (`rx: 16px`) for a premium presentation.
