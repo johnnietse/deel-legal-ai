@@ -55,7 +55,7 @@ Based on [ByteDance's internal RAG guideline](rag_pipeline/Byte_Dance_RAG_Guidel
 ### Legal RAG Pipeline
 - Automated collection of 500+ legal documents (Real + Synthetic)
 - **Semantic chunking** with section-awareness and paragraph preservation (v3.0)
-- Google Gemini embeddings (text-embedding-004)
+- Google Gemini embeddings (gemini-embedding-001)
 - **Dual vector store**: Pinecone (managed) or Milvus (self-hosted) with HNSW tuning (v3.0)
 - **Hybrid BM25 + vector retrieval** with Elasticsearch and query-type-aware weights (v3.0)
 - Context-aware response generation with Gemini 2.0 Flash
@@ -274,7 +274,7 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 | `pipeline.py` | **Orchestrator**: Ties together scraping, processing, embedding, and querying. The main entry point for RAG operations. |
 | `canlii_scraper.py` | **Data Ingestion**: Handles web scraping from CanLII, including rate limiting and CAPTCHA detection. |
 | `document_processor.py` | **Preprocessing**: Extracts text from PDFs and chunks it intelligently (preserving legal context). |
-| `embeddings.py` | **Vectorization**: Interface to Google's Gemini Embedding API (text-embedding-004). |
+| `embeddings.py` | **Vectorization**: Interface to Google's Gemini Embedding API (gemini-embedding-001). |
 | `pinecone_client.py` | **Storage**: Manages connection to Pinecone Vector DB, including upserting and semantic search. |
 | `rag_query.py` | **Retrieval**: Formulates prompts and calls Gemini for answer generation based on retrieved context. |
 

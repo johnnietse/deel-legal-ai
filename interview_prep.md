@@ -48,7 +48,7 @@ This document is an **exhaustive**, **encyclopedic** reference for every technic
 **Tech Stack:**
 - **Backend**: Python 3.11 + FastAPI (async-first)
 - **Vector DB**: Pinecone Serverless (AWS us-east-1, 768-dim, cosine similarity)
-- **LLM/Embeddings**: Google Gemini (gemini-2.0-flash + text-embedding-004)
+- **LLM/Embeddings**: Google Gemini (gemini-2.0-flash + gemini-embedding-001)
 - **ML**: Scikit-learn Random Forest with GridSearchCV hyperparameter tuning
 - **Infrastructure**: Docker multi-stage builds + Kubernetes with HPA
 
@@ -158,7 +158,7 @@ PINECONE_DIMENSION = 768  # Gemini embedding dimension
 PINECONE_METRIC = "cosine"
 ```
 
-**Why 768 Dimensions?**: Google's `text-embedding-004` model outputs 768-dimensional vectors. This must match exactly or Pinecone will reject the upsert.
+**Why 768 Dimensions?**: Google's `gemini-embedding-001` model outputs 768-dimensional vectors. This must match exactly or Pinecone will reject the upsert.
 
 **Why Cosine Metric?**: For normalized vectors (which embedding models produce), cosine similarity is:
 - Computationally efficient
@@ -944,7 +944,7 @@ class TestSystemIntegration:
 | **CORS** | Cross-Origin Resource Sharing browser security | `CORSMiddleware` allows frontend to call our API |
 | **Cosine Similarity** | Measures angle between vectors (-1 to 1) | Pinecone index uses cosine metric for semantic search |
 | **Docker Multi-Stage** | Using multiple `FROM` statements for smaller images | Builder stage compiles; production stage runs |
-| **Embeddings** | Dense vector representations of text | Gemini `text-embedding-004` outputs 768-dim vectors |
+| **Embeddings** | Dense vector representations of text | Gemini `gemini-embedding-001` outputs 768-dim vectors |
 | **Feature Importance** | Score showing which features most influence predictions | Random Forest's `feature_importances_` shows "Supervision" is top predictor |
 | **Gini Impurity** | Measure of how often a randomly chosen element would be incorrectly labeled | Used internally by Random Forest to determine optimal splits |
 | **GridSearchCV** | Exhaustive hyperparameter search with cross-validation | Tests all combinations of `n_estimators`, `max_depth` to find best model |
@@ -1040,7 +1040,7 @@ class TestSystemIntegration:
                                ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │                     GEMINI EMBEDDINGS                             │
-│              text-embedding-004 → Vector[768]                     │
+│              gemini-embedding-001 → Vector[768]                     │
 └──────────────────────────────┬───────────────────────────────────┘
                                │
                                ▼

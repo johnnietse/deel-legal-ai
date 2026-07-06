@@ -25,7 +25,7 @@ flowchart TB
             direction TB
             SCRAPER["Data Ingestion Engine<br><i>Selenium & BS4 (10K+ Cases)</i>"]:::data
             CHUNKER["Semantic Document Processor<br><i>Section-Aware Chunking (v3.0)</i>"]:::compute
-            EMBEDDING["Embedding Model<br><i>Gemini text-embedding-004</i>"]:::model
+            EMBEDDING["Embedding Model<br><i>Gemini gemini-embedding-001</i>"]:::model
             
             BM25_DB[("Elasticsearch<br><i>Sparse BM25 Index</i>")]:::data
             VECTOR_DB[("Pinecone / Milvus<br><i>Dense Semantic Index</i>")]:::data
