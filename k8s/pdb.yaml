@@ -1,0 +1,11 @@
+# PodDisruptionBudget for Legal AI API
+# Ensures high availability during voluntary disruptions (node maintenance, etc.)
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: legal-ai-api-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: legal-ai-api
