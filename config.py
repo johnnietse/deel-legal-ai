@@ -16,20 +16,20 @@ LOGS_DIR = BASE_DIR / "logs"
 for dir_path in [DATA_DIR, MODELS_DIR, LOGS_DIR]:
     dir_path.mkdir(exist_ok=True)
 
-# API Keys
-# API Keys
+# API Keys - Environment variables only, no hardcoded values
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "")
 
+# Validate API keys at runtime
 if not GEMINI_API_KEY:
-    print("WARNING: GEMINI_API_KEY not set in environment variables or .env file")
+    raise ValueError("GEMINI_API_KEY environment variable is required")
     
 if not PINECONE_API_KEY:
-    print("WARNING: PINECONE_API_KEY not set in environment variables or .env file")
+    raise ValueError("PINECONE_API_KEY environment variable is required")
 
 # Gemini API Configuration
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
-GEMINI_EMBEDDING_MODEL = "text-embedding-004"
+GEMINI_EMBEDDING_MODEL = "gemini-embedding-001"
 GEMINI_CHAT_MODEL = "gemini-2.0-flash"
 
 # Pinecone Configuration

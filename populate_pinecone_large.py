@@ -517,13 +517,13 @@ def populate_pinecone_large():
     for i, doc in enumerate(chunked_docs):
         try:
             # Get embedding from Gemini
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={GEMINI_API_KEY}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key={GEMINI_API_KEY}"
             
             # Limit content for embedding
             content_text = doc["content"][:8000]
             
             response = requests.post(url, json={
-                "model": "models/text-embedding-004",
+                "model": "models/gemini-embedding-001",
                 "content": {"parts": [{"text": content_text}]}
             }, timeout=30)
             

@@ -347,14 +347,11 @@ class MilvusBackend(VectorStore):
 
     def connect(self) -> bool:
         try:
-            from pymilvus import connections
-            connections.connect(
-                alias="default",
-                host=self.host,
-                port=str(self.port),
+            from pymilvus import MilvusClient
+            self._client = MilvusClient(
+                uri=f"http://{self.host}:{self.port}",
                 token=self.token,
             )
-            self._client = True
             logger.info(f"Connected to Milvus at {self.host}:{self.port}")
             return True
         except ImportError:
@@ -372,27 +369,51 @@ class MilvusBackend(VectorStore):
         hnsw_preset: str = "production",
     ) -> bool:
         try:
-            from pymilvus import (
-                CollectionSchema, FieldSchema, DataType,
-                Collection, utility,
-            )
-
-            if utility.has_collection(name):
+            if self._client is None:
+                self.connect()
+            
+            # Check if collection exists
+            collections = self._client.list_collections()
+            if name in collections:
                 logger.info(f"Milvus collection '{name}' already exists")
                 return False
 
             preset = HNSW_PRESETS.get(hnsw_preset, HNSW_PRESETS["production"])
 
             # Define schema
-            fields = [
-                FieldSchema(name="id", dtype=DataType.VARCHAR, is_primary=True, max_length=256),
-                FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=dimension),
-                FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535),
-                FieldSchema(name="metadata_json", dtype=DataType.VARCHAR, max_length=65535),
-            ]
-            schema = CollectionSchema(fields=fields, description=f"Legal RAG vectors ({hnsw_preset})")
+            schema = {
+                "fields": [
+                    {
+                        "name": "id",
+                        "description": "Primary key",
+                        "type": "varChar",
+                        "is_primary": True,
+                        "max_length": 256,
+                    },
+                    {
+                        "name": "vector",
+                        "description": "Vector embedding",
+                        "type": "floatVector",
+                        "dim": dimension,
+                    },
+                    {
+                        "name": "content",
+                        "description": "Document content",
+                        "type": "varChar",
+                        "max_length": 65535,
+                    },
+                    {
+                        "name": "metadata_json",
+                        "description": "Metadata as JSON",
+                        "type": "varChar",
+                        "max_length": 65535,
+                    },
+                ],
+                "description": f"Legal RAG vectors ({hnsw_preset})",
+            }
 
-            collection = Collection(name=name, schema=schema)
+            # Create collection
+            self._client.create_collection(name=name, schema=schema)
 
             # Create HNSW index with ByteDance-tuned parameters
             metric_map = {"cosine": "COSINE", "dotproduct": "IP", "euclidean": "L2"}
@@ -404,8 +425,7 @@ class MilvusBackend(VectorStore):
                     "efConstruction": preset["ef_construction"],
                 },
             }
-            collection.create_index("vector", index_params)
-            collection.load()
+            self._client.create_index(name=name, field_name="vector", index_params=index_params)
 
             logger.info(
                 f"Created Milvus collection '{name}' with HNSW "
@@ -427,23 +447,32 @@ class MilvusBackend(VectorStore):
         batch_size: int = 1000,
     ) -> int:
         try:
-            from pymilvus import Collection
-
-            col = Collection(collection)
+            if self._client is None:
+                self.connect()
+            
+            if not collection:
+                logger.error("Collection name is required for upsert")
+                return 0
+            
             total = 0
 
             for i in range(0, len(records), batch_size):
                 batch = records[i:i + batch_size]
-                data = [
-                    [r.id for r in batch],
-                    [r.values for r in batch],
-                    [r.metadata.get("content", "") for r in batch],
-                    [json.dumps(r.metadata) for r in batch],
-                ]
-                col.upsert(data)
+                
+                # Prepare data for MilvusClient
+                data = []
+                for r in batch:
+                    data.append({
+                        "id": r.id,
+                        "vector": r.values,
+                        "content": r.metadata.get("content", ""),
+                        "metadata_json": json.dumps(r.metadata),
+                    })
+                
+                # Upsert using MilvusClient
+                self._client.upsert(collection=collection, data=data)
                 total += len(batch)
 
-            col.flush()
             return total
         except Exception as e:
             logger.error(f"Milvus upsert failed: {e}")
@@ -458,17 +487,16 @@ class MilvusBackend(VectorStore):
         filter: Optional[Dict[str, Any]] = None,
     ) -> List[VectorSearchResult]:
         try:
-            from pymilvus import Collection
+            if self._client is None:
+                self.connect()
+            
+            if not collection:
+                logger.error("Collection name is required for search")
+                return []
 
             preset = HNSW_PRESETS["production"]
-            col = Collection(collection)
-
-            search_params = {
-                "metric_type": "COSINE",
-                "params": {"ef": preset["ef_search"]},
-            }
-
-            # Build filter expression
+            
+            # Build filter expression for MilvusClient
             expr = None
             if filter:
                 parts = []
@@ -478,7 +506,14 @@ class MilvusBackend(VectorStore):
                 if parts:
                     expr = " and ".join(parts)
 
-            results = col.search(
+            # Search using MilvusClient
+            search_params = {
+                "metric_type": "COSINE",
+                "params": {"ef": preset["ef_search"]},
+            }
+            
+            results = self._client.search(
+                collection=collection,
                 data=[query_vector],
                 anns_field="vector",
                 param=search_params,
@@ -488,20 +523,19 @@ class MilvusBackend(VectorStore):
             )
 
             output = []
-            for hits in results:
-                for hit in hits:
-                    metadata = {}
-                    try:
-                        metadata = json.loads(hit.entity.get("metadata_json", "{}"))
-                    except json.JSONDecodeError:
-                        pass
+            for hit in results:
+                metadata = {}
+                try:
+                    metadata = json.loads(hit.get("metadata_json", "{}"))
+                except json.JSONDecodeError:
+                    pass
 
-                    output.append(VectorSearchResult(
-                        id=str(hit.id),
-                        score=hit.score,
-                        content=hit.entity.get("content", ""),
-                        metadata=metadata,
-                    ))
+                output.append(VectorSearchResult(
+                    id=str(hit.get("id", "")),
+                    score=hit.get("score", 0.0),
+                    content=hit.get("content", ""),
+                    metadata=metadata,
+                ))
             return output
         except Exception as e:
             logger.error(f"Milvus search failed: {e}")
@@ -515,14 +549,19 @@ class MilvusBackend(VectorStore):
         delete_all: bool = False,
     ) -> int:
         try:
-            from pymilvus import Collection, utility
+            if self._client is None:
+                self.connect()
+            
+            if not collection:
+                logger.error("Collection name is required for delete")
+                return 0
+            
             if delete_all:
-                utility.drop_collection(collection)
+                self._client.drop_collection(collection)
                 return -1
             elif ids:
-                col = Collection(collection)
                 expr = f'id in {ids}'
-                col.delete(expr)
+                self._client.delete(collection=collection, expr=expr)
                 return len(ids)
         except Exception as e:
             logger.error(f"Milvus delete failed: {e}")
@@ -530,15 +569,24 @@ class MilvusBackend(VectorStore):
 
     def stats(self, collection: str = "") -> Dict[str, Any]:
         try:
-            from pymilvus import Collection
-            col = Collection(collection)
+            if self._client is None:
+                self.connect()
+            
+            if not collection:
+                logger.error("Collection name is required for stats")
+                return {"backend": "milvus", "error": "Collection name required"}
+            
+            # Get collection statistics using MilvusClient
+            collection_info = self._client.describe_collection(collection)
+            
             return {
                 "backend": "milvus",
                 "collection": collection,
-                "num_entities": col.num_entities,
-                "description": col.description,
+                "num_entities": collection_info.get("row_count", 0),
+                "description": collection_info.get("description", ""),
             }
         except Exception as e:
+            logger.error(f"Milvus stats failed: {e}")
             return {"backend": "milvus", "error": str(e)}
 
 

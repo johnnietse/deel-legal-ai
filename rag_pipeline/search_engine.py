@@ -85,12 +85,13 @@ class ElasticsearchBM25:
                         "type": "synonym",
                         "synonyms": [
                             "employee,worker,staff",
-                            "independent contractor,IC,freelancer,self-employed",
+                            "ic,freelancer,self_employed",
+                            "contractor,freelancer",
                             "termination,dismissal,firing",
-                            "notice period,severance,termination pay",
-                            "ESA,Employment Standards Act",
-                            "CLC,Canada Labour Code",
-                            "OHSA,Occupational Health and Safety Act",
+                            "esa,employment_standards_act",
+                            "clc,canada_labour_code",
+                            "ohsa,occupational_health_safety_act",
+                            "notice_period,severance,termination_pay",
                         ],
                     },
                 },
@@ -293,7 +294,7 @@ class ElasticsearchBM25:
                     filter_clauses.append({"term": {key: value}})
 
         # Assemble full query
-        body = {
+        query_body = {
             "query": {
                 "bool": {
                     "must": [must_clause],
@@ -304,7 +305,7 @@ class ElasticsearchBM25:
         }
 
         try:
-            response = self._client.search(index=self.index_name, body=body)
+            response = self._client.search(index=self.index_name, **query_body)
 
             results = []
             for hit in response["hits"]["hits"]:

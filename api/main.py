@@ -40,13 +40,13 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Add CORS middleware
+# Add CORS middleware with restricted origins for security
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://deel.ai", "https://app.deel.ai", "http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # Initialize services (lazy loading)
@@ -171,6 +171,13 @@ async def rag_query_endpoint(request: RAGQueryRequest):
     
     Returns relevant legal information with sources and citations.
     """
+    # Input validation
+    if not request.question or len(request.question.strip()) < 10:
+        raise HTTPException(status_code=400, detail="Question must be at least 10 characters long")
+    
+    if len(request.question) > 5000:
+        raise HTTPException(status_code=400, detail="Question too long (max 5000 characters)")
+    
     rag = get_rag_query()
     if not rag:
         raise HTTPException(status_code=503, detail="RAG service unavailable")

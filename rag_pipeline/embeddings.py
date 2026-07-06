@@ -2,7 +2,7 @@
 """
 Vector embeddings generation using Google Gemini API.
 
-Uses text-embedding-004 model for generating high-quality embeddings
+Uses gemini-embedding-001 model for generating high-quality embeddings
 suitable for legal document retrieval.
 """
 
@@ -15,8 +15,15 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 
-import requests
-from tenacity import retry, stop_after_attempt, wait_exponential
+# Use the new google-genai SDK for gemini-embedding-001
+try:
+    from google import genai
+    from google.genai import types
+    GENAI_AVAILABLE = True
+except ImportError:
+    GENAI_AVAILABLE = False
+    import requests
+    from tenacity import retry, stop_after_attempt, wait_exponential
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))

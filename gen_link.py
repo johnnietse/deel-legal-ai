@@ -19,7 +19,7 @@ flowchart TB
             direction TB
             SCRAPER["🌐 Data Ingestion Engine<br><i>Selenium & BS4 (10K+ CanLII Cases)</i>"]:::data
             CHUNKER["✂️ Semantic Document Processor<br><i>Structure-Aware Chunking (-30% Hallucinations)</i>"]:::compute
-            EMBEDDING["🧬 Embedding Model<br><i>Gemini text-embedding-004</i>"]:::model
+            EMBEDDING["🧬 Embedding Model<br><i>Gemini gemini-embedding-001</i>"]:::model
             VECTOR_DB[("🗄️ Pinecone Vector Database<br><i>Scalable Semantic Indexing</i>")]:::data
             GENERATOR["🧠 LLM Generation Engine<br><i>Gemini 2.0 Flash</i>"]:::model
             

@@ -71,3 +71,6 @@ Thumbs.db
 # Kubernetes secrets
 *-secret.yaml
 *.secret.yaml
+
+# Temp session files
+.tmp/

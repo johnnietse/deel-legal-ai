@@ -7,6 +7,20 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
+def _has_gemini_key() -> bool:
+    """Check if .env has a GEMINI_API_KEY set."""
+    env_path = Path(__file__).parent.parent.joinpath(".env")
+    if not env_path.exists():
+        return False
+    for line in env_path.read_text().splitlines():
+        line = line.strip()
+        if line.startswith("GEMINI_API_KEY=") and not line.startswith("#"):
+            val = line.split("=", 1)[1].strip().strip('"').strip("'")
+            if val:
+                return True
+    return False
+
+
 class TestDocumentProcessor:
     """Tests for the document processor"""
     
@@ -94,12 +108,22 @@ class TestAPI:
 class TestEmbeddings:
     """Tests for Gemini embeddings (requires API key)"""
     
-    @pytest.mark.skipif(
-        not Path(__file__).parent.parent.joinpath(".env").exists(),
-        reason="No .env file with API keys"
-    )
+    @pytest.mark.skipif(not _has_gemini_key(), reason="No GEMINI_API_KEY in .env")
     def test_embedding_generation(self):
-        """Test embedding generation"""
+        """Test embedding generation (requires valid Gemini API key)"""
+        # Quick validation that the API key actually works
+        from config import GEMINI_API_KEY
+        import requests
+        try:
+            r = requests.get(
+                f"https://generativelanguage.googleapis.com/v1beta/models?key={GEMINI_API_KEY}",
+                timeout=5,
+            )
+            if r.status_code != 200:
+                pytest.skip(f"Gemini API key returned {r.status_code}: {r.json().get('error', {}).get('message', 'unknown')}")
+        except Exception as e:
+            pytest.skip(f"Cannot validate Gemini API key: {e}")
+
         from rag_pipeline.embeddings import GeminiEmbeddings
         
         embedder = GeminiEmbeddings()
