@@ -1,0 +1,32 @@
+# searxng/settings.yml
+use_default_settings: true
+general:
+  instance_name: "OpenJustice Search"
+  debug: false
+search:
+  safe_search: 0
+  autocomplete: ""
+  formats:
+    - html
+    - json
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "openjustice_dev_secret_key_change_in_prod"
+  limiter: false
+  image_proxy: false
+ui:
+  static_use_hash: true
+engines:
+  - name: duckduckgo
+    disabled: false
+  - name: google
+    disabled: false
+  - name: bing
+    disabled: false
+  - name: wikipedia
+    disabled: false
+outgoing:
+  request_timeout: 10.0
+  max_request_timeout: 15.0
+  useragent_suffix: ""

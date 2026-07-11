@@ -20,6 +20,12 @@ for dir_path in [DATA_DIR, MODELS_DIR, LOGS_DIR]:
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "")
 
+# Database (Neon PostgreSQL)
+DATABASE_URL = os.getenv("DATABASE_URL", "")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is required. "
+                     "Set it to your Neon PostgreSQL connection string.")
+
 # Validate API keys at runtime
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY environment variable is required")
@@ -35,7 +41,7 @@ GEMINI_CHAT_MODEL = "gemini-2.0-flash"
 # Pinecone Configuration
 PINECONE_INDEX_NAME = "deel-legal-cases"
 PINECONE_ENVIRONMENT = "us-east-1"
-PINECONE_DIMENSION = 768  # Gemini embedding dimension
+PINECONE_DIMENSION = 3072  # gemini-embedding-001 dimension
 PINECONE_METRIC = "cosine"
 
 # RAG Pipeline Configuration
@@ -108,6 +114,47 @@ EMPLOYMENT_CASES_CSV = DATA_DIR / "employment_cases_large.csv"
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_LEVEL = "INFO"
 
+# SearXNG Web Search
+SEARXNG_BASE_URL = os.getenv("SEARXNG_BASE_URL", "http://localhost:8888")
+SEARXNG_ENABLED = True
+
+# =============================================================================
+# OpenJustice.ai SaaS Configuration
+# =============================================================================
+
+# --- SaaS Authentication & Users ---
+_JWT_SECRET_KEY_ENV = os.getenv("JWT_SECRET_KEY")
+if _JWT_SECRET_KEY_ENV:
+    JWT_SECRET_KEY = _JWT_SECRET_KEY_ENV
+elif os.getenv("DEV_MODE", ""):
+    JWT_SECRET_KEY = "dev-mode-insecure-key-do-not-use-in-production"
+    import warnings
+    warnings.warn("DEV_MODE=1: JWT_SECRET_KEY set to insecure dev key. "
+                   "Set JWT_SECRET_KEY in .env for production.")
+else:
+    raise ValueError("JWT_SECRET_KEY environment variable is required for production. "
+                     "Set DEV_MODE=1 for development, or add JWT_SECRET_KEY to .env")
+JWT_ALGORITHM = "HS256"
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = 30
+JWT_REFRESH_TOKEN_EXPIRE_DAYS = 7
+GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "")
+
+# --- SaaS Rate Limiting ---
+RATE_LIMIT_FREE_RPM = 10
+RATE_LIMIT_FREE_RPD = 20
+RATE_LIMIT_PRO_RPM = 60
+RATE_LIMIT_PRO_RPD = 200
+RATE_LIMIT_ENTERPRISE_RPM = 300
+RATE_LIMIT_ENTERPRISE_RPD = 999999
+
+# --- File Uploads ---
+UPLOAD_DIR = str(DATA_DIR / "uploads")
+MAX_UPLOAD_SIZE_MB = 50
+ALLOWED_UPLOAD_EXTENSIONS = [".pdf"]
+
+# --- Chat & Conversations ---
+CONVERSATIONS_DIR = str(DATA_DIR / "conversations")
+
 # New module dependencies check
 NETWORKX_AVAILABLE = True
 try:
@@ -131,11 +178,14 @@ ELASTICSEARCH_INDEX_NAME = "deel-legal-chunks"
 MILVUS_HOST = os.getenv("MILVUS_HOST", "localhost")
 MILVUS_PORT = int(os.getenv("MILVUS_PORT", "19530"))
 MILVUS_TOKEN = os.getenv("MILVUS_TOKEN", "")
-MILVUS_COLLECTION_NAME = "deel_legal_vectors"
+MILVUS_COLLECTION_NAME = "deel_legal_cases"
 
 # --- Vector Store Backend Selection ---
-# Options: "pinecone" (managed), "milvus" (self-hosted)
+# Options: "pinecone" (managed), "milvus" (self-hosted), "both" (dual-write)
 VECTOR_STORE_BACKEND = os.getenv("VECTOR_STORE_BACKEND", "pinecone")
+
+# Fallback vector store (used when primary fails)
+VECTOR_STORE_FALLBACK = os.getenv("VECTOR_STORE_FALLBACK", "milvus")
 
 # --- HNSW Index Tuning (ByteDance §4.2.1) ---
 # Options: "development", "production", "high_recall", "billion_scale"
@@ -163,9 +213,11 @@ SEMANTIC_CHUNK_NARRATIVE_TARGET = 384    # Narrative reasoning text
 SEMANTIC_CHUNK_STRUCTURED_TARGET = 128   # Statutes, lists, tables
 
 # --- Multi-Granularity Vectors (ByteDance §4.1.2) ---
-MULTI_GRANULARITY_ENABLED = False  # Enable when ready to re-index
+MULTI_GRANULARITY_ENABLED = True   # Index document summaries alongside chunks
+MULTI_GRANULARITY_SEARCH_ENABLED = True  # Search both namespaces on query
 DOCUMENT_SUMMARY_NAMESPACE = "legal_cases_docs"
 CHUNK_NAMESPACE = "legal_cases"
+DOCUMENT_SUMMARY_MAX_TOKENS = 1024  # First N chars of document as summary proxy
 
 # --- Prompt Template Configuration (ByteDance §6.2) ---
 PROMPT_MAX_SOURCES = 5               # Max sources to inject into prompt

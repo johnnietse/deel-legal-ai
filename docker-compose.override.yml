@@ -1,0 +1,23 @@
+# docker-compose.override.yml — adds SearXNG to existing stack
+# Docker Compose automatically merges this with docker-compose.yml
+version: "3.8"
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8888
+      - SEARXNG_SECRET_KEY=openjustice_dev_secret_key_change_in_prod
+    cap_add:
+      - NET_BIND_SERVICE
+    restart: unless-stopped
+    networks:
+      - deel-legal-ai-network
+
+networks:
+  deel-legal-ai-network:
+    external: true
