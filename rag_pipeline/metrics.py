@@ -51,6 +51,7 @@ class QueryMetrics:
     query_id: str = ""
     query_text: str = ""
     timestamp: str = ""
+    user_id: str = ""  # Track which user made the query
 
     # Retrieval metrics
     retrieval_latency_ms: float = 0.0

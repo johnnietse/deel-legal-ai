@@ -12,42 +12,83 @@ Endpoints:
 
 import sys
 import logging
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from typing import Optional
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from rag_pipeline import LegalRAGPipeline, LegalRAGQuery
+from config import CHUNK_NAMESPACE
 from ml_classifier import WorkerClassificationAPI, ClassificationRequest
+from rag_pipeline import LegalRAGQuery
 from config import LOG_FORMAT, LOG_LEVEL
+from db.database import init_db, close_db
+from api.auth import get_optional_user, get_api_key_user
 
 # Setup logging
 logging.basicConfig(level=getattr(logging, LOG_LEVEL), format=LOG_FORMAT)
 logger = logging.getLogger(__name__)
 
-# Initialize FastAPI app
+# ── Lifespan handler (FastAPI 2.6+) ──────────────────
+
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    """Initialize DB on startup, dispose on shutdown."""
+    logger.info("Starting up — initializing database…")
+    try:
+        await init_db()
+        logger.info("Database tables ready.")
+    except Exception as e:
+        logger.warning("Database init failed (non-fatal): %s", e)
+    yield
+    logger.info("Shutting down — closing database…")
+    await close_db()
+
+
+# Initialize FastAPI app with lifespan
 app = FastAPI(
     title="Deel Lab Legal AI API",
     description="Legal Research Assistant API for worker classification and case law retrieval",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan,
 )
 
-# Add CORS middleware with restricted origins for security
+# Add CORS middleware for frontend access
+import os as _os
+_ALLOWED_ORIGINS = _os.getenv("CORS_ORIGINS", "").split(",") if _os.getenv("CORS_ORIGINS") else []
+_DEFAULT_ORIGINS = [
+    "https://deel.ai",
+    "https://app.deel.ai",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://[::1]:5173",
+    "http://[::1]:5174",
+    "https://green-field-0674bf00f.7.azurestaticapps.net",
+    "https://*.7.azurestaticapps.net",
+    "http://openjustice-api.eastus2.azurecontainer.io:8000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://deel.ai", "https://app.deel.ai", "http://localhost:3000"],
+    allow_origins=_DEFAULT_ORIGINS + _ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"],
 )
+
+# Add rate limiting middleware for SaaS endpoints
+from api.middleware import RateLimitMiddleware
+app.add_middleware(RateLimitMiddleware)
 
 # Initialize services (lazy loading)
 rag_query = None
@@ -55,11 +96,22 @@ classification_api = None
 
 
 def get_rag_query():
-    """Lazy load RAG query interface"""
+    """Lazy load RAG query interface.
+    
+    Uses VECTOR_STORE_BACKEND from .env (can be 'pinecone', 'milvus',
+    or 'both' for DualVectorStore with Pinecone primary + Milvus failover).
+    """
     global rag_query
     if rag_query is None:
         try:
-            rag_query = LegalRAGQuery()
+            from config import PINECONE_INDEX_NAME, VECTOR_STORE_BACKEND
+            from rag_pipeline.vector_store import create_vector_store
+            rag_query = LegalRAGQuery(
+                vector_store=create_vector_store(
+                    backend=VECTOR_STORE_BACKEND,
+                    index_name=PINECONE_INDEX_NAME,
+                )
+            )
         except Exception as e:
             logger.error(f"Failed to initialize RAG query: {e}")
     return rag_query
@@ -165,31 +217,48 @@ async def health_check():
 
 
 @app.post("/rag/query", response_model=RAGQueryResponse)
-async def rag_query_endpoint(request: RAGQueryRequest):
+async def rag_query_endpoint(
+    request: Request,
+    query_data: RAGQueryRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Query the legal knowledge base using RAG.
     
     Returns relevant legal information with sources and citations.
     """
+    effective_user = user or api_user
+    
     # Input validation
-    if not request.question or len(request.question.strip()) < 10:
+    if not query_data.question or len(query_data.question.strip()) < 10:
         raise HTTPException(status_code=400, detail="Question must be at least 10 characters long")
     
-    if len(request.question) > 5000:
-        raise HTTPException(status_code=400, detail="Question too long (max 5000 characters)")
+    # Unauthenticated: stricter limits
+    if not effective_user:
+        if len(query_data.question) > 1000:
+            raise HTTPException(status_code=400, detail="Query too long for unauthenticated access (max 1000 chars)")
+    else:
+        if len(query_data.question) > 5000:
+            raise HTTPException(status_code=400, detail="Question too long (max 5000 characters)")
     
     rag = get_rag_query()
     if not rag:
         raise HTTPException(status_code=503, detail="RAG service unavailable")
     
     try:
-        filter_dict = {"jurisdiction": request.jurisdiction} if request.jurisdiction else None
+        filter_dict = {"jurisdiction": query_data.jurisdiction} if query_data.jurisdiction else None
+        
+        # Pass user_id to RAG query for metrics tracking
+        user_id = effective_user.get("sub") if effective_user else None
         
         response = rag.query(
-            question=request.question,
-            top_k=request.top_k,
+            question=query_data.question,
+            top_k=query_data.top_k,
             filter=filter_dict,
-            verify=request.verify
+            verify=query_data.verify,
+            namespace=CHUNK_NAMESPACE,
+            user_id=user_id,
         )
         
         return RAGQueryResponse(
@@ -206,12 +275,19 @@ async def rag_query_endpoint(request: RAGQueryRequest):
 
 
 @app.post("/classify", response_model=ClassificationResponseModel)
-async def classify_worker(request: ClassificationRequestModel):
+async def classify_worker(
+    request: Request,
+    classify_data: ClassificationRequestModel,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Classify a worker as employee or independent contractor.
     
     Uses Random Forest classifier trained on 700+ employment law cases.
     """
+    effective_user = user or api_user
+    
     clf = get_classification_api()
     if not clf or not clf.model.is_trained:
         raise HTTPException(
@@ -222,16 +298,16 @@ async def classify_worker(request: ClassificationRequestModel):
     try:
         # Convert to internal request format
         internal_request = ClassificationRequest(
-            supervision_review=request.supervision_review,
-            ability_hire=request.ability_hire,
-            delegation_tasks=request.delegation_tasks,
-            ownership_tools=request.ownership_tools,
-            chance_profit=request.chance_profit,
-            risk_loss=request.risk_loss,
-            exclusivity_services=request.exclusivity_services,
-            work_hours_setter=request.work_hours_setter,
-            work_location=request.work_location,
-            uniform_required=request.uniform_required
+            supervision_review=classify_data.supervision_review,
+            ability_hire=classify_data.ability_hire,
+            delegation_tasks=classify_data.delegation_tasks,
+            ownership_tools=classify_data.ownership_tools,
+            chance_profit=classify_data.chance_profit,
+            risk_loss=classify_data.risk_loss,
+            exclusivity_services=classify_data.exclusivity_services,
+            work_hours_setter=classify_data.work_hours_setter,
+            work_location=classify_data.work_location,
+            uniform_required=classify_data.uniform_required
         )
         
         response = clf.classify(internal_request)
@@ -251,10 +327,17 @@ async def classify_worker(request: ClassificationRequestModel):
 
 
 @app.post("/classify/batch", response_model=List[ClassificationResponseModel])
-async def classify_workers_batch(requests: List[ClassificationRequestModel]):
+async def classify_workers_batch(
+    request: Request,
+    requests: List[ClassificationRequestModel],
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Classify multiple workers in batch.
     """
+    effective_user = user or api_user
+    
     clf = get_classification_api()
     if not clf or not clf.model.is_trained:
         raise HTTPException(
@@ -263,9 +346,9 @@ async def classify_workers_batch(requests: List[ClassificationRequestModel]):
         )
     
     results = []
-    for request in requests:
+    for classify_data in requests:
         try:
-            result = await classify_worker(request)
+            result = await classify_worker(request, classify_data, user, api_user)
             results.append(result)
         except HTTPException:
             raise
@@ -335,26 +418,44 @@ class MultiHopQueryResponse(BaseModel):
 
 
 @app.post("/rag/query/multi-hop", response_model=MultiHopQueryResponse)
-async def rag_multi_hop_query(request: MultiHopQueryRequest):
+async def rag_multi_hop_query(
+    request: Request,
+    query_data: MultiHopQueryRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Query using multi-hop retrieval for complex legal questions.
     
     Performs iterative retrieve-read-reason cycles to build complete
     evidence chains across multiple document nodes.
     """
+    effective_user = user or api_user
+    
+    # Unauthenticated: stricter limits
+    if not effective_user:
+        if len(query_data.question) > 1000:
+            raise HTTPException(status_code=400, detail="Query too long for unauthenticated access (max 1000 chars)")
+    else:
+        if len(query_data.question) > 5000:
+            raise HTTPException(status_code=400, detail="Question too long (max 5000 characters)")
+    
     rag = get_rag_query()
     if not rag:
         raise HTTPException(status_code=503, detail="RAG service unavailable")
     
     try:
-        filter_dict = {"jurisdiction": request.jurisdiction} if request.jurisdiction else None
+        filter_dict = {"jurisdiction": query_data.jurisdiction} if query_data.jurisdiction else None
+        
+        user_id = effective_user.get("sub") if effective_user else None
         
         response = rag.query_multi_hop(
-            question=request.question,
-            max_hops=request.max_hops,
-            top_k_per_hop=request.top_k_per_hop,
+            question=query_data.question,
+            max_hops=query_data.max_hops,
+            top_k_per_hop=query_data.top_k_per_hop,
             filter=filter_dict,
-            verify=request.verify,
+            verify=query_data.verify,
+            user_id=user_id,
         )
         
         return MultiHopQueryResponse(
@@ -373,22 +474,40 @@ async def rag_multi_hop_query(request: MultiHopQueryRequest):
 
 
 @app.post("/rag/query/smart", response_model=MultiHopQueryResponse)
-async def rag_smart_query(request: RAGQueryRequest):
+async def rag_smart_query(
+    request: Request,
+    query_data: RAGQueryRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Smart query that auto-routes between single-hop and multi-hop
     based on question complexity analysis.
     """
+    effective_user = user or api_user
+    
+    # Unauthenticated: stricter limits
+    if not effective_user:
+        if len(query_data.question) > 1000:
+            raise HTTPException(status_code=400, detail="Query too long for unauthenticated access (max 1000 chars)")
+    else:
+        if len(query_data.question) > 5000:
+            raise HTTPException(status_code=400, detail="Question too long (max 5000 characters)")
+    
     rag = get_rag_query()
     if not rag:
         raise HTTPException(status_code=503, detail="RAG service unavailable")
     
     try:
-        filter_dict = {"jurisdiction": request.jurisdiction} if request.jurisdiction else None
+        filter_dict = {"jurisdiction": query_data.jurisdiction} if query_data.jurisdiction else None
+        
+        user_id = effective_user.get("sub") if effective_user else None
         
         response = rag.query_smart(
-            question=request.question,
+            question=query_data.question,
             filter=filter_dict,
-            verify=request.verify,
+            verify=query_data.verify,
+            user_id=user_id,
         )
         
         return MultiHopQueryResponse(
@@ -410,17 +529,24 @@ class VerifyRequest(BaseModel):
     sources: List[Dict[str, Any]] = Field(..., description="Sources retrieved from Pinecone/Graph")
 
 @app.post("/rag/verify")
-async def verify_standalone(request: VerifyRequest):
+async def verify_standalone(
+    request: Request,
+    verify_data: VerifyRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Standalone endpoint to fact-check an arbitrary answer against sources
     using the NLI Verifier and assumption extraction.
     """
+    effective_user = user or api_user
+    
     rag = get_rag_query()
     if not rag or not hasattr(rag, 'verifier'):
         raise HTTPException(status_code=503, detail="Verification service unavailable")
         
     try:
-        verification = rag.verifier.verify_grounding(request.answer, request.sources)
+        verification = rag.verifier.verify_grounding(verify_data.answer, verify_data.sources)
         return verification.to_dict()
     except Exception as e:
         logger.error(f"Standalone verification error: {e}")
@@ -553,7 +679,12 @@ class MCTSClassificationResponse(BaseModel):
 
 
 @app.post("/classify/reasoning", response_model=MCTSClassificationResponse)
-async def classify_with_reasoning(request: MCTSClassificationRequest):
+async def classify_with_reasoning(
+    request: Request,
+    classify_data: MCTSClassificationRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Classify worker using MCTS-based legal reasoning.
     
@@ -561,11 +692,13 @@ async def classify_with_reasoning(request: MCTSClassificationRequest):
     Tree Search, scoring each against RAG-retrieved precedents.
     Returns full reasoning trace with per-factor analysis.
     """
+    effective_user = user or api_user
+    
     from rag_pipeline.legal_reasoning_agent import LegalReasoningAgent
     
     try:
-        agent = LegalReasoningAgent(n_simulations=request.n_simulations)
-        result = agent.classify_with_reasoning(request.facts)
+        agent = LegalReasoningAgent(n_simulations=classify_data.n_simulations)
+        result = agent.classify_with_reasoning(classify_data.facts)
         
         return MCTSClassificationResponse(
             classification=result.classification,
@@ -591,18 +724,25 @@ class BenchmarkRequest(BaseModel):
 
 
 @app.post("/evaluate/generate-suite")
-async def generate_benchmark_suite(request: BenchmarkRequest):
+async def generate_benchmark_suite(
+    request: Request,
+    benchmark_data: BenchmarkRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Generate a dynamic, anti-contamination legal evaluation test suite.
     
     Each test case is parameterized with randomized names, companies,
     and amounts while preserving legal logic. Same seed = same suite.
     """
+    effective_user = user or api_user
+    
     from evaluation.dynamic_benchmark import LegalBenchmarkGenerator
     
     try:
-        generator = LegalBenchmarkGenerator(base_seed=request.seed)
-        suite = generator.generate_suite(n_cases=request.n_cases)
+        generator = LegalBenchmarkGenerator(base_seed=benchmark_data.seed)
+        suite = generator.generate_suite(n_cases=benchmark_data.n_cases)
         suite.save()
         
         return {
@@ -632,21 +772,28 @@ class JudgeRequest(BaseModel):
 
 
 @app.post("/evaluate/judge")
-async def judge_response(request: JudgeRequest):
+async def judge_response(
+    request: Request,
+    judge_data: JudgeRequest,
+    user: Optional[dict] = Depends(get_optional_user),
+    api_user: Optional[dict] = Depends(get_api_key_user),
+):
     """
     Score a legal AI response using the debiased LLM judge.
     
     Returns component-level scores with bias mitigation applied
     (rubric decomposition, length normalization).
     """
+    effective_user = user or api_user
+    
     from evaluation.llm_judge import DebiasedLegalJudge
     
     try:
         judge = DebiasedLegalJudge()
         result = judge.score(
-            question=request.question,
-            response=request.response,
-            reference=request.reference,
+            question=judge_data.question,
+            response=judge_data.response,
+            reference=judge_data.reference,
         )
         
         return result.to_dict()
@@ -655,6 +802,45 @@ async def judge_response(request: JudgeRequest):
         logger.error(f"Judge error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# =====================
+# OpenJustice.ai SaaS Endpoints (via aggregated router)
+# =====================
+
+from api.router import api_router
+app.include_router(api_router)
+
+# =====================
+# Frontend Static Files (OpenJustice.ai SaaS)
+# =====================
+
+# from fastapi.staticfiles import StaticFiles
+# from fastapi.responses import FileResponse
+
+# FRONTEND_DIST = Path(__file__).parent.parent / "openjustice-frontend" / "dist"
+
+# if FRONTEND_DIST.exists():
+#     # Serve static assets (JS, CSS, images)
+#     app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
+#     
+#     # Serve favicon and other root files
+#     @app.get("/favicon.svg")
+#     async def favicon():
+#         return FileResponse(FRONTEND_DIST / "favicon.svg")
+#     
+#     @app.get("/icons.svg")
+#     async def icons():
+#         return FileResponse(FRONTEND_DIST / "icons.svg")
+#     
+#     # Catch-all route for SPA - serves index.html for all non-API routes
+#     @app.get("/{full_path:path}")
+#     async def spa_catchall(full_path: str):
+#         # Don't intercept API routes
+#         if full_path.startswith("api/"):
+#             raise HTTPException(status_code=404, detail="Not found")
+#         return FileResponse(FRONTEND_DIST / "index.html")
+# else:
+#     logger.warning(f"Frontend build not found at {FRONTEND_DIST}. Run 'npm run build' in openjustice-frontend/")
 
 # =====================
 # Run Server

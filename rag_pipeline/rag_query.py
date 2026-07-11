@@ -34,6 +34,11 @@ from rag_pipeline.query_cache import RAGQueryCache
 from rag_pipeline.metrics import QueryMetrics, MetricsCollector, timed_stage
 
 import config
+from config import (
+    MULTI_GRANULARITY_SEARCH_ENABLED, MULTI_GRANULARITY_ENABLED,
+    DOCUMENT_SUMMARY_NAMESPACE, CHUNK_NAMESPACE,
+    HYBRID_DEFAULT_TOP_K,
+)
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -95,6 +100,12 @@ class LegalRAGQuery:
             default_top_k=config.HYBRID_DEFAULT_TOP_K,
         )
         
+        # Build BM25 index from vector store for hybrid search
+        try:
+            self.hybrid_retriever.build_bm25_from_vector_store(namespace=CHUNK_NAMESPACE)
+        except Exception as e:
+            logger.warning(f"Failed to build BM25 index from vector store: {e}")
+        
         self.prompt_library = PromptTemplateLibrary()
         
         self.confidence_gate = ConfidenceGate(
@@ -142,8 +153,8 @@ class LegalRAGQuery:
             
             # Add metadata
             if metadata:
-                source["case_name"] = metadata.get("case_name", "Unknown")
-                source["citation"] = metadata.get("primary_citation", "")
+                source["case_name"] = metadata.get("title", metadata.get("case_name", "Unknown"))
+                source["citation"] = metadata.get("citation", metadata.get("primary_citation", ""))
                 source["court"] = metadata.get("court", "")
                 source["jurisdiction"] = metadata.get("jurisdiction", "")
                 source["legal_section"] = metadata.get("legal_section", "")
@@ -162,6 +173,7 @@ class LegalRAGQuery:
         verify: bool = False,
         template_name: Optional[str] = None,
         force_retrieval_mode: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> RAGResponse:
         """
         Query the legal knowledge base with full ByteDance-enhanced pipeline.
@@ -190,7 +202,7 @@ class LegalRAGQuery:
             RAGResponse with answer, sources, confidence, and metrics
         """
         query_id = str(uuid.uuid4())[:8]
-        metrics = QueryMetrics(query_id=query_id, query_text=question[:200])
+        metrics = QueryMetrics(query_id=query_id, query_text=question[:200], user_id=user_id or "")
         total_start = time.perf_counter()
         
         # --- Stage 1: Response Cache Check ---
@@ -237,6 +249,41 @@ class LegalRAGQuery:
         if search_results:
             scores = [r.score for r in search_results]
             metrics.retrieval_avg_score = sum(scores) / len(scores)
+        
+        # --- Multi-Granularity Search: Supplement with doc-level results (ByteDance §4.1.2) ---
+        if MULTI_GRANULARITY_SEARCH_ENABLED and MULTI_GRANULARITY_ENABLED:
+            try:
+                doc_ns = DOCUMENT_SUMMARY_NAMESPACE
+                query_embed = self.embeddings.embed_text(question)
+                if query_embed.embedding:
+                    doc_level_results = self.vector_store.search(
+                        query_vector=query_embed.embedding,
+                        top_k=top_k,
+                        namespace=doc_ns,
+                        filter=filter,
+                    )
+                    if doc_level_results:
+                        # Tag doc-level results so they're distinguishable
+                        for r in doc_level_results:
+                            if not hasattr(r, 'retrieved_by'):
+                                r.retrieved_by = ["vector_doc_level"]
+                            else:
+                                r.retrieved_by.append("vector_doc_level")
+                        # Merge: dedup by ID, interleave doc-level results (which provide broader context)
+                        existing_ids = {r.id for r in search_results}
+                        doc_results_filtered = [r for r in doc_level_results if r.id not in existing_ids]
+                        if doc_results_filtered:
+                            # Insert doc-level results at the bottom of the main list
+                            search_results = list(search_results) + doc_results_filtered
+                            # Re-sort by score descending
+                            search_results.sort(key=lambda r: r.score, reverse=True)
+                            logger.info(
+                                f"Multi-granularity: added {len(doc_results_filtered)} "
+                                f"doc-level results from namespace '{doc_ns}'"
+                            )
+                            metrics.retrieval_result_count = len(search_results)
+            except Exception as e:
+                logger.warning(f"Multi-granularity search failed (non-fatal): {e}")
         
         if not search_results:
             return RAGResponse(
@@ -358,13 +405,13 @@ class LegalRAGQuery:
                     "sources": response.sources,
                     "confidence": response.confidence,
                     "retrieval_mode": response.retrieval_mode,
-                    "template_used": response.template_used,
+"template_used": response.template_used,
                 },
                 top_k=top_k, namespace=namespace,
             )
         
         return response
-    
+
     def query_multi_hop(
         self,
         question: str,
@@ -373,6 +420,7 @@ class LegalRAGQuery:
         namespace: str = "",
         filter: Optional[Dict[str, Any]] = None,
         verify: bool = False,
+        user_id: Optional[str] = None,
     ) -> RAGResponse:
         """
         Query using multi-hop retrieval for complex questions.
@@ -381,11 +429,20 @@ class LegalRAGQuery:
         evidence chain before generating the final answer.
         """
         from rag_pipeline.multi_hop_retriever import MultiHopRetriever
+        import time
+        import uuid
+        from rag_pipeline.metrics import QueryMetrics
+        
+        # Initialize metrics
+        query_id = str(uuid.uuid4())[:8]
+        metrics = QueryMetrics(query_id=query_id, query_text=question[:200], user_id=user_id or "")
+        total_start = time.perf_counter()
         
         retriever = MultiHopRetriever(
             embeddings=self.embeddings,
             chat=self.chat,
             vector_store=self.vector_store,
+            hybrid_retriever=self.hybrid_retriever if config.HYBRID_SEARCH_ENABLED else None,
             max_hops=max_hops,
         )
         
@@ -423,6 +480,12 @@ class LegalRAGQuery:
                 else:
                     answer = f"{answer}\n\n[System Warning: The verification module flagged the following claims as potentially unsupported by the documents: {', '.join(verification.unsupported_claims)}]"
         
+        # Record metrics
+        metrics.total_latency_ms = (time.perf_counter() - total_start) * 1000
+        metrics.retrieval_mode = "multi_hop"
+        if self.metrics_collector:
+            self.metrics_collector.record(metrics)
+        
         return RAGResponse(
             query=question,
             answer=answer,
@@ -430,6 +493,7 @@ class LegalRAGQuery:
             confidence=confidence,
             verification=verification_report,
             retrieval_mode="multi_hop",
+metrics=metrics.to_dict(),
         )
     
     def query_smart(
@@ -438,6 +502,7 @@ class LegalRAGQuery:
         namespace: str = "",
         filter: Optional[Dict[str, Any]] = None,
         verify: bool = False,
+        user_id: Optional[str] = None,
     ) -> RAGResponse:
         """
         Smart query that auto-routes between single-hop and multi-hop
@@ -447,10 +512,10 @@ class LegalRAGQuery:
         
         if complexity == "complex":
             logger.info("Auto-routing to multi-hop retrieval")
-            return self.query_multi_hop(question, namespace=namespace, filter=filter, verify=verify)
+            return self.query_multi_hop(question, namespace=namespace, filter=filter, verify=verify, user_id=user_id)
         else:
             logger.info("Auto-routing to single-hop retrieval")
-            return self.query(question, namespace=namespace, filter=filter, verify=verify)
+            return self.query(question, namespace=namespace, filter=filter, verify=verify, user_id=user_id)
     
     def _estimate_complexity(self, question: str) -> str:
         """
