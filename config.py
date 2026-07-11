@@ -118,6 +118,10 @@ LOG_LEVEL = "INFO"
 SEARXNG_BASE_URL = os.getenv("SEARXNG_BASE_URL", "http://localhost:8888")
 SEARXNG_ENABLED = True
 
+# Redis
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_ENABLED = True
+
 # =============================================================================
 # OpenJustice.ai SaaS Configuration
 # =============================================================================
