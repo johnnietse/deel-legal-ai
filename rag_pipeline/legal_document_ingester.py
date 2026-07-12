@@ -508,11 +508,12 @@ def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0
     import random
     from rag_pipeline.gemini_key_manager import key_manager, search_key_manager
 
-    # Prefer the dedicated search key manager; fall back to the shared pool only
-    # if no dedicated search key is configured.
-    km = km or search_key_manager
+    # Default to the shared 12-key pool (used by the background embedder). The
+    # API search/DeepSearch paths pass search_key_manager explicitly to isolate
+    # them from ingestion. Fall back to the dedicated key only if the pool is empty.
+    km = km or key_manager
     if not km._keys:
-        km = key_manager
+        km = search_key_manager
 
     for attempt in range(max_retries):
         # Check global cooldown
