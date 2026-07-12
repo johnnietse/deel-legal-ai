@@ -14,7 +14,14 @@ from fastapi.testclient import TestClient
 def client():
     """Create test client with the full app (includes api_router)."""
     from api.main import app
-    return TestClient(app)
+    # Disable rate limiting for tests (free tier is 10/min, too low for test suite)
+    from api.middleware import RateLimitMiddleware
+    original_dispatch = RateLimitMiddleware.dispatch
+    async def no_rate_limit(self, request, call_next):
+        return await call_next(request)
+    RateLimitMiddleware.dispatch = no_rate_limit
+    yield TestClient(app)
+    RateLimitMiddleware.dispatch = original_dispatch
 
 
 @pytest.fixture
