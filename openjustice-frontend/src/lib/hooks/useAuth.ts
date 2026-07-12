@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { login as apiLogin, register as apiRegister, logout as apiLogout } from "@/lib/api/realClient";
 import { useAuthStore } from "@/lib/stores/authStore";
 import type { LoginRequest, SignupRequest } from "@/types";
 
@@ -10,7 +9,7 @@ export function useLogin() {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: LoginRequest) => apiLogin(data),
+    mutationFn: (data: LoginRequest) => login(data.email, data.password),
     onSuccess: () => {
       toast.success("Welcome back!");
       navigate("/dashboard");
@@ -26,7 +25,7 @@ export function useSignup() {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: SignupRequest) => apiRegister(data),
+    mutationFn: (data: SignupRequest) => register(data.name, data.email, data.password),
     onSuccess: () => {
       toast.success("Account created successfully!");
       navigate("/dashboard");
