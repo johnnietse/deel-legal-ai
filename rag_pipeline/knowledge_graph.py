@@ -452,20 +452,20 @@ Respond ONLY with the JSON object."""
         # Precedent chains
         cites_edges = edges_by_relation.get("cites", [])
         if cites_edges:
-            lines.append("  Precedent chain: " + " → ".join(
-                [e["source"] for e in cites_edges[:5]] + [cites_edges[-1]["target"]]
-            ))
-        
+            chain = [e.get("source", e.get("from", "?")) for e in cites_edges[:5]]
+            chain.append(cites_edges[-1].get("target", cites_edges[-1].get("to", "?")))
+            lines.append("  Precedent chain: " + " → ".join(chain))
+
         # Applied tests
         test_edges = edges_by_relation.get("applies_test", [])
         if test_edges:
-            tests = set(e["target"] for e in test_edges)
+            tests = set(e.get("target", e.get("to", "?")) for e in test_edges)
             lines.append(f"  Legal tests applied: {', '.join(tests)}")
-        
+
         # Factors involved
         factor_edges = edges_by_relation.get("involves_factor", [])
         if factor_edges:
-            factors = set(e["target"] for e in factor_edges)
+            factors = set(e.get("target", e.get("to", "?")) for e in factor_edges)
             lines.append(f"  Factors considered: {', '.join(factors)}")
         
         return "\n".join(lines)

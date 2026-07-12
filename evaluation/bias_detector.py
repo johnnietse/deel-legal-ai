@@ -238,13 +238,16 @@ class BiasDetector:
             direction = "unknown"
             correlation = 0.0
         
+        length_details = ", ".join(
+            f"{s['length_words']}w→{s['score']:.3f}" for s in scores
+        )
         return BiasMetric(
             bias_type="length",
             magnitude=round(abs(magnitude), 4),
             direction=direction,
             confidence=round(abs(correlation), 4),
             details=(
-                f"Scores by length: {', '.join(f'{s['length_words']}w→{s['score']:.3f}' for s in scores)}. "
+                f"Scores by length: {length_details}. "
                 f"Length-score correlation: {correlation:.3f}"
             ),
         )
