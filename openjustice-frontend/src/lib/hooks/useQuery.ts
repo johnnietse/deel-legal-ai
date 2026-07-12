@@ -72,3 +72,22 @@ export function useUpgradeSubscription() {
     mutationFn: (tier: 'pro' | 'enterprise') => realApi.upgradeSubscription(tier),
   });
 }
+
+export function useDeepSearch() {
+  return useMutation({
+    mutationFn: (query: string) => realApi.deepSearch(query),
+  });
+}
+
+export function useSearch() {
+  return useMutation({
+    mutationFn: ({ query, filters }: { query: string; filters: any }) =>
+      realApi.search(query, filters),
+  });
+}
+
+export function useGenerateAudio() {
+  return useMutation({
+    mutationFn: (text: string) => realApi.generateAudio(text),
+  });
+}

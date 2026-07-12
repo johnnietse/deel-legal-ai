@@ -168,7 +168,7 @@ export interface UsageStats {
 export interface UsageDataPoint {
   date: string;
   queries: number;
-  classifications: number;
+  classifications?: number;
 }
 
 export interface RecentActivity {

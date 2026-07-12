@@ -107,7 +107,19 @@ export async function getUsageStats(): Promise<UsageStats> {
   const response = await fetch(`${API_BASE}/users/me/usage`, {
     headers: getAuthHeaders(),
   });
-  return handleResponse(response);
+  const data = await handleResponse<{
+    queries_used: number;
+    queries_limit: number;
+    documents_uploaded: number;
+    tier: string;
+  }>(response);
+  return {
+    queriesThisMonth: data.queries_used,
+    queriesLimit: data.queries_limit,
+    documentsAnalyzed: data.documents_uploaded,
+    classificationsRun: 0,
+    tier: data.tier as UsageStats["tier"],
+  };
 }
 
 // =====================
@@ -272,28 +284,19 @@ export async function deleteDocument(id: string): Promise<void> {
 // =====================
 
 export async function getUsageChartData(days: number = 30): Promise<UsageDataPoint[]> {
-  // Backend doesn't have this endpoint yet, return mock data
-  const data: UsageDataPoint[] = [];
-  const now = new Date();
-  for (let i = days - 1; i >= 0; i--) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i);
-    data.push({
-      date: date.toISOString().split("T")[0],
-      queries: Math.floor(Math.random() * 15),
-      classifications: Math.floor(Math.random() * 5),
-    });
-  }
-  return data;
+  const response = await fetch(`${API_BASE}/users/me/usage/chart?days=${days}`, {
+    headers: getAuthHeaders(),
+  });
+  const result = await handleResponse<{ data: UsageDataPoint[] }>(response);
+  return result.data;
 }
 
 export async function getRecentActivity(): Promise<RecentActivity[]> {
-  // Backend doesn't have this endpoint yet, return mock data
-  return [
-    { id: "1", type: "query", description: "What are the notice requirements for termination in Ontario?", timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString() },
-    { id: "2", type: "classification", description: "Classified driver for LastMile Logistics", timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString() },
-    { id: "3", type: "document", description: "Analyzed Employment Agreement - Acme Corp", timestamp: new Date(Date.now() - 1000 * 60 * 240).toISOString() },
-  ];
+  const response = await fetch(`${API_BASE}/users/me/activity`, {
+    headers: getAuthHeaders(),
+  });
+  const result = await handleResponse<{ data: RecentActivity[] }>(response);
+  return result.data;
 }
 
 // =====================
@@ -376,30 +379,70 @@ export async function getVoices(): Promise<TTSVoice[]> {
 }
 
 // =====================
-// API Keys (mock for now)
+// API Keys
 // =====================
 
 export async function getApiKeys(): Promise<ApiKey[]> {
-  return [
-    { id: "1", name: "Production", key: "oj-prod-...", createdAt: new Date(Date.now() - 86400000 * 30).toISOString(), lastUsed: new Date().toISOString() },
-    { id: "2", name: "Development", key: "oj-dev-...", createdAt: new Date(Date.now() - 86400000 * 7).toISOString(), lastUsed: new Date(Date.now() - 86400000).toISOString() },
-  ];
+  const response = await fetch(`${API_BASE}/auth/keys`, {
+    headers: getAuthHeaders(),
+  });
+  const result = await handleResponse<{ keys: Array<{
+    id: string;
+    name: string;
+    key_preview: string;
+    created_at: string | null;
+    last_used_at: string | null;
+  }> }>(response);
+  return result.keys.map((k) => ({
+    id: k.id,
+    name: k.name,
+    key: k.key_preview,
+    createdAt: k.created_at || "",
+    lastUsed: k.last_used_at || undefined,
+  }));
 }
 
 export async function createApiKey(name: string): Promise<ApiKey> {
-  return { id: "new", name, key: "oj-" + Math.random().toString(36).substring(2, 26), createdAt: new Date().toISOString() };
+  const response = await fetch(`${API_BASE}/auth/keys?name=${encodeURIComponent(name)}`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+  });
+  const result = await handleResponse<{
+    id: string;
+    name: string;
+    key: string;
+    created_at: string | null;
+  }>(response);
+  return {
+    id: result.id,
+    name: result.name,
+    key: result.key,
+    createdAt: result.created_at || new Date().toISOString(),
+  };
 }
 
 export async function revokeApiKey(id: string): Promise<void> {
-  // Mock
+  const response = await fetch(`${API_BASE}/auth/keys/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Failed to revoke key" }));
+    throw new Error(error.detail || `HTTP ${response.status}`);
+  }
 }
 
 // =====================
-// Subscription (mock for now)
+// Subscription
 // =====================
 
 export async function upgradeSubscription(tier: 'pro' | 'enterprise'): Promise<{ success: boolean; tier: string }> {
-  return { success: true, tier };
+  const response = await fetch(`${API_BASE}/subscriptions/upgrade`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+    body: JSON.stringify({ tier }),
+  });
+  return handleResponse(response);
 }
 
 // =====================
