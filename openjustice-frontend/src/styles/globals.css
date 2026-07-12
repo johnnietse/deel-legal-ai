@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #eef2f7;
+  --color-primary-100: #d9e0ed;
+  --color-primary-200: #b3c1db;
+  --color-primary-300: #8da3c9;
+  --color-primary-400: #6684b7;
+  --color-primary-500: #1e3a5f;
+  --color-primary-600: #1a3353;
+  --color-primary-700: #162b47;
+  --color-primary-800: #12233b;
+  --color-primary-900: #0e1b2f;
+  --color-primary-950: #0a1323;
+  --color-accent-50: #fef3f2;
+  --color-accent-100: #fde8e5;
+  --color-accent-200: #fbd1cb;
+  --color-accent-300: #f9b9b1;
+  --color-accent-400: #f7a297;
+  --color-accent-500: #c0392b;
+  --color-accent-600: #a83226;
+  --color-accent-700: #902b20;
+  --color-accent-800: #78241b;
+  --color-accent-900: #601d16;
+  --color-surface-50: #fafafa;
+  --color-surface-100: #f4f4f5;
+  --color-surface-200: #e4e4e7;
+  --color-surface-300: #d4d4d8;
+  --color-surface-400: #a1a1aa;
+  --color-surface-500: #71717a;
+  --color-surface-600: #52525b;
+  --color-surface-700: #3f3f46;
+  --color-surface-800: #27272a;
+  --color-surface-900: #18181b;
+  --color-surface-950: #09090b;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "IBM Plex Serif", ui-serif, Georgia, serif;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+*/
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+  border-color: var(--color-surface-200, currentColor);
+}
+
+:where(.dark) *,
+:where(.dark) ::after,
+:where(.dark) ::before,
+:where(.dark) ::backdrop,
+:where(.dark) ::file-selector-button {
+  border-color: var(--color-surface-700, currentColor);
+}
+
+body {
+  background-color: white;
+  color: var(--color-surface-900);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+:where(.dark) body {
+  background-color: var(--color-surface-950);
+  color: var(--color-surface-50);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-300);
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-surface-600);
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface-200) 25%, var(--color-surface-100) 50%, var(--color-surface-200) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+:where(.dark) .skeleton {
+  background: linear-gradient(90deg, var(--color-surface-800) 25%, var(--color-surface-700) 50%, var(--color-surface-800) 75%);
+}
+
+/* Typing indicator animation */
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.typing-dot {
+  animation: typing-dot 1.4s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
