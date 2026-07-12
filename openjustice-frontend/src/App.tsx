@@ -15,6 +15,7 @@ import { ClassifyPage } from "@/app/classify/ClassifyPage";
 import { AnalyzePage } from "@/app/analyze/AnalyzePage";
 import { SettingsPage } from "@/app/settings/SettingsPage";
 import SearchPage from "@/app/search/SearchPage";
+import DeepSearchPage from "@/app/deepsearch/DeepSearchPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -97,6 +98,14 @@ function App() {
               element={
                 <ErrorBoundary>
                   <SearchPage />
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="/deepsearch"
+              element={
+                <ErrorBoundary>
+                  <DeepSearchPage />
                 </ErrorBoundary>
               }
             />

@@ -228,6 +228,31 @@ export interface SearchFilters {
 }
 
 // =====================
+// DeepSearch Types
+// =====================
+export interface DeepSearchSource {
+  id: string;
+  title: string;
+  excerpt: string;
+  url: string;
+  source_type: string;
+  relevance_score: number;
+}
+
+export interface DeepSearchResponse {
+  answer: string;
+  sources: DeepSearchSource[];
+  source_type_counts?: Record<string, number>;
+  suggested_follow_ups?: string[];
+  processing_time_ms?: number;
+}
+
+export interface TTSVoice {
+  id: string;
+  description: string;
+}
+
+// =====================
 // API Response wrapper
 // =====================
 export interface ApiResponse<T> {
