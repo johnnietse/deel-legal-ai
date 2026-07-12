@@ -43,6 +43,7 @@ async def search_endpoint(
     # Search vector store with filters
     from rag_pipeline.vector_store import create_vector_store
     from rag_pipeline.legal_document_ingester import generate_embedding
+    from rag_pipeline.gemini_key_manager import search_key_manager
     from config import VECTOR_STORE_BACKEND, CHUNK_NAMESPACE
 
     store = create_vector_store(backend=VECTOR_STORE_BACKEND)
@@ -52,8 +53,9 @@ async def search_endpoint(
     if year_from:
         filter_dict["year"] = {"$gte": str(year_from)}
 
-    # Embed the query into a vector — the store requires query_vector, not raw text
-    query_vector = generate_embedding(query)
+    # Embed the query into a vector — the store requires query_vector, not raw text.
+    # Route through the dedicated search key manager so ingestion never starves search.
+    query_vector = generate_embedding(query, km=search_key_manager)
     results = store.search(
         query_vector=query_vector,
         top_k=page_size * page,
@@ -68,15 +70,15 @@ async def search_endpoint(
     return {
         "results": [
             SearchResult(
-                id=r.get("id", ""),
-                title=r.get("metadata", {}).get("title", ""),
-                excerpt=(r.get("metadata", {}).get("content", "") or "")[:500],
+                id=r.id,
+                title=r.metadata.get("title", ""),
+                excerpt=(r.metadata.get("content", "") or "")[:500],
                 source_type="case_law",
-                jurisdiction=r.get("metadata", {}).get("jurisdiction", ""),
-                court=r.get("metadata", {}).get("court", ""),
-                year=r.get("metadata", {}).get("year", ""),
-                citation=r.get("metadata", {}).get("citation", ""),
-                relevance_score=r.get("score", 0.0),
+                jurisdiction=str(r.metadata.get("jurisdiction", "") or ""),
+                court=str(r.metadata.get("court", "") or ""),
+                year=str(r.metadata.get("year", "") or ""),
+                citation=str(r.metadata.get("citation", "") or ""),
+                relevance_score=r.score,
             )
             for r in page_results
         ],

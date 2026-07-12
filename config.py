@@ -20,6 +20,10 @@ for dir_path in [DATA_DIR, MODELS_DIR, LOGS_DIR]:
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY", "")
 
+# Dedicated Gemini key for the user-facing API (search + deepsearch), kept
+# separate from the embedder's 12-key pool so ingestion never starves search.
+SEARCH_GEMINI_API_KEY = os.getenv("SEARCH_GEMINI_API_KEY", "")
+
 # Database (Neon PostgreSQL)
 DATABASE_URL = os.getenv("DATABASE_URL", "")
 if not DATABASE_URL:

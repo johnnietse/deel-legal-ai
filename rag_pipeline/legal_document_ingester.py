@@ -498,7 +498,7 @@ def chunk_document(
 # Embedding + Upsert
 # ---------------------------------------------------------------------------
 
-def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0) -> List[float]:
+def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0, km=None) -> List[float]:
     """Generate an embedding vector using Gemini embedding API with key rotation.
     
     On 429 rate limit, rotates to the next API key instead of waiting.
@@ -506,14 +506,20 @@ def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0
     """
     import requests as http_req
     import random
-    from rag_pipeline.gemini_key_manager import key_manager
-    
+    from rag_pipeline.gemini_key_manager import key_manager, search_key_manager
+
+    # Prefer the dedicated search key manager; fall back to the shared pool only
+    # if no dedicated search key is configured.
+    km = km or search_key_manager
+    if not km._keys:
+        km = key_manager
+
     for attempt in range(max_retries):
         # Check global cooldown
-        key_manager.check_cooldown()
+        km.check_cooldown()
         
-        current_key = key_manager.get_key()
-        key_masked = key_manager.get_key_masked()
+        current_key = km.get_key()
+        key_masked = km.get_key_masked()
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key={current_key}"
         
         try:
@@ -523,11 +529,11 @@ def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0
             }, timeout=30)
             
             if response.status_code == 200:
-                key_manager.report_success()
+                km.report_success()
                 return response.json()["embedding"]["values"]
             elif response.status_code == 429:
                 # Rotate to next key instead of waiting
-                new_key = key_manager.report_rate_limit()
+                new_key = km.report_rate_limit()
                 logger.warning(f"Key {key_masked} rate limited (attempt {attempt+1}), rotated")
                 # Small delay between key switches to be safe
                 time.sleep(1)

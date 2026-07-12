@@ -205,11 +205,13 @@ class GeminiChat:
     def __init__(
         self,
         api_key: str = GEMINI_API_KEY,
-        model: str = GEMINI_CHAT_MODEL
+        model: str = GEMINI_CHAT_MODEL,
+        key_manager=None,
     ):
         self.api_key = api_key
         self.model = model
         self.base_url = GEMINI_API_BASE
+        self.key_manager = key_manager
     
     def generate(
         self, 
@@ -234,16 +236,21 @@ class GeminiChat:
         """
         import time
         from rag_pipeline.gemini_key_manager import key_manager
-        
+
+        # Use the dedicated search key manager if configured, else the shared pool.
+        km = self.key_manager or key_manager
+        if not km._keys:
+            km = key_manager
+
         endpoint = f"models/{self.model}:generateContent"
         
         last_error = None
         for attempt in range(max_retries):
             # Check global cooldown
-            key_manager.check_cooldown()
+            km.check_cooldown()
             
-            current_key = key_manager.get_key()
-            key_masked = key_manager.get_key_masked()
+            current_key = km.get_key()
+            key_masked = km.get_key_masked()
             url = f"{self.base_url}/{endpoint}?key={current_key}"
             
             headers = {
@@ -271,7 +278,7 @@ class GeminiChat:
                 response = requests.post(url, headers=headers, json=payload, timeout=60)
                 
                 if response.status_code == 200:
-                    key_manager.report_success()
+                    km.report_success()
                     result = response.json()
                     # Extract text from response
                     try:
@@ -286,7 +293,7 @@ class GeminiChat:
                     return ""
                 
                 elif response.status_code == 429:
-                    key_manager.report_rate_limit()
+                    km.report_rate_limit()
                     logger.warning(f"Key {key_masked} rate limited (attempt {attempt+1}), rotated key")
                     time.sleep(1)
                     last_error = "429 rate limited (keys rotated)"

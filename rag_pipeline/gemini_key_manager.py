@@ -31,22 +31,23 @@ logger = logging.getLogger(__name__)
 class GeminiKeyManager:
     """Thread-safe Gemini API key rotation manager for independent keys."""
 
-    def __init__(self):
+    def __init__(self, primary_env="GEMINI_API_KEY", backup_env="GEMINI_BACKUP_KEYS"):
         self._lock = threading.Lock()
         self._keys: List[str] = []
         self._current_index = 0
         self._last_used: List[float] = []  # timestamps per key
         self._rate_limits_hit: List[int] = []
+        self._primary_env = primary_env
+        self._backup_env = backup_env
         self._load_keys()
 
     def _load_keys(self):
         """Load keys from environment variables."""
-        from config import GEMINI_API_KEY
+        primary = os.environ.get(self._primary_env, "")
+        if primary:
+            self._keys.append(primary)
 
-        if GEMINI_API_KEY:
-            self._keys.append(GEMINI_API_KEY)
-
-        backup_str = os.environ.get("GEMINI_BACKUP_KEYS", "")
+        backup_str = os.environ.get(self._backup_env, "")
         if backup_str:
             backup_keys = [k.strip() for k in backup_str.split(",") if k.strip()]
             self._keys.extend(backup_keys)
@@ -120,5 +121,12 @@ class GeminiKeyManager:
         return self._current_index + 1
 
 
-# Singleton instance
+# Singleton instance (used by the embedder / batch pipeline — the 12-key pool)
 key_manager = GeminiKeyManager()
+
+# Dedicated key manager for the user-facing API (search + deepsearch), isolated
+# from the embedder's key pool so search is never starved by background ingestion.
+search_key_manager = GeminiKeyManager(
+    primary_env="SEARCH_GEMINI_API_KEY",
+    backup_env="SEARCH_GEMINI_BACKUP_KEYS",
+)

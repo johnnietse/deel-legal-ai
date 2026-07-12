@@ -78,29 +78,31 @@ class DeepSearchEngine:
     def __init__(self):
         from rag_pipeline.rag_query import LegalRAGQuery
         from rag_pipeline.embeddings import GeminiChat
+        from rag_pipeline.gemini_key_manager import search_key_manager
         self.rag_query = LegalRAGQuery()
-        self.chat = GeminiChat()
+        self.chat = GeminiChat(key_manager=search_key_manager)
 
     async def _search_vector(self, query: str, top_k: int = 10) -> List[UnifiedSource]:
         """Search Pinecone vector store."""
         try:
             from rag_pipeline.vector_store import create_vector_store
             from rag_pipeline.legal_document_ingester import generate_embedding
+            from rag_pipeline.gemini_key_manager import search_key_manager
             from config import VECTOR_STORE_BACKEND, CHUNK_NAMESPACE
             store = create_vector_store(backend=VECTOR_STORE_BACKEND)
-            query_vector = generate_embedding(query)
+            query_vector = generate_embedding(query, km=search_key_manager)
             results = await asyncio.to_thread(
                 store.search, query_vector, top_k=top_k, namespace=CHUNK_NAMESPACE
             )
             sources = []
             for r in results:
                 sources.append(UnifiedSource(
-                    id=r.get("id", ""),
-                    title=r.get("metadata", {}).get("title", "Unknown Case"),
-                    excerpt=(r.get("metadata", {}).get("content", "") or "")[:500],
+                    id=r.id,
+                    title=r.metadata.get("title", "Unknown Case"),
+                    excerpt=(r.metadata.get("content", "") or "")[:500],
                     source_type="case_law",
-                    relevance_score=r.get("score", 0.0),
-                    metadata=r.get("metadata", {}),
+                    relevance_score=r.score,
+                    metadata=r.metadata,
                 ))
             return sources
         except Exception as e:
