@@ -18,6 +18,7 @@ services:
       - SEARCH_GEMINI_API_KEY=${SEARCH_GEMINI_API_KEY}
       - DEV_MODE=${DEV_MODE:-1}
       - LOG_LEVEL=INFO
+      - CORS_ORIGINS=${CORS_ORIGINS}
       - VECTOR_STORE_BACKEND=${VECTOR_STORE_BACKEND:-pinecone}
       - BM25_BACKEND=${BM25_BACKEND:-elasticsearch}
       - ELASTICSEARCH_URL=http://elasticsearch:9200
@@ -122,6 +123,7 @@ services:
       - SEARCH_GEMINI_API_KEY=${SEARCH_GEMINI_API_KEY}
       - DEV_MODE=${DEV_MODE:-1}
       - LOG_LEVEL=INFO
+      - CORS_ORIGINS=${CORS_ORIGINS}
       - VECTOR_STORE_BACKEND=${VECTOR_STORE_BACKEND:-pinecone}
       - BM25_BACKEND=${BM25_BACKEND:-elasticsearch}
       - ELASTICSEARCH_URL=http://elasticsearch:9200
