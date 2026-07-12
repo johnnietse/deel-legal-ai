@@ -74,3 +74,11 @@ Thumbs.db
 
 # Temp session files
 .tmp/
+
+# Large / generated datasets (not version controlled)
+data/*.parquet
+data/*.backup
+data/bg_embedder_checkpoint.json
+data/conversations/
+data/users.json
+data/canlii_pdfs/

@@ -24,7 +24,7 @@ class SearchResult(BaseModel):
 
 @router.post("/rag/search")
 async def search_endpoint(
-    query: str = Field(..., min_length=1, max_length=2000),
+    query: str = Query(..., min_length=1, max_length=2000),
     jurisdiction: Optional[str] = Query(None),
     source_type: Optional[str] = Query(None, pattern="^(case_law|web|statute|bm25)$"),
     year_from: Optional[int] = Query(None, ge=1900, le=2030),
