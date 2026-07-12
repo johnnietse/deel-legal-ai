@@ -1,0 +1,174 @@
+{
+  "suite_id": "legal_bench_4c247208",
+  "generated_at": "2026-07-06T07:45:58.529940",
+  "n_cases": 5,
+  "difficulty_distribution": {
+    "easy": 2,
+    "hard": 2,
+    "medium": 1
+  },
+  "cases": [
+    {
+      "case_id": "dyn_hard_8fb955ff",
+      "seed": 45,
+      "difficulty": "hard",
+      "scenario": "Omar Hassan has been working in environmental consulting for Ironwood Manufacturing in NS for 38 months. Omar Hassan has a Ironwood Manufacturing email address, attends all-hands meetings, and is listed on the org chart Omar Hassan is guaranteed their salary regardless of project outcomes Omar Hassan provides their own equipment, vehicle, and workspace Omar Hassan's manager at Ironwood Manufacturing sets weekly priorities but Omar Hassan chooses daily tasks Omar Hassan has a base salary with occasional discretionary bonuses",
+      "expected_classification": "Employee",
+      "expected_factors": {
+        "integration": "strong_employee",
+        "risk_of_loss": "strong_employee",
+        "ownership_of_tools": "strong_contractor",
+        "control": "ambiguous",
+        "chance_of_profit": "ambiguous"
+      },
+      "evaluation_rubric": {
+        "factor_identification": "Should identify all 5 Sagaz factors. Strong indicators present for: integration, risk_of_loss, ownership_of_tools. Ambiguous factors: control, chance_of_profit.",
+        "legal_reasoning_quality": "Should apply the Sagaz test systematically. The employee classification should follow logically from factor analysis. Reasoning chain should reference specific facts from the scenario.",
+        "citation_accuracy": "Should cite Sagaz Industries v. 671122 Ontario Ltd. (2001 SCC 59). May also cite Wiebe Door Services v. MNR. Citations should be to real cases with correct legal principles.",
+        "risk_assessment": "Should flag risks of misclassification. If classified as Employee, should note what happens if the classification is wrong (e.g., back taxes, penalties, benefits liability).",
+        "completeness": "Should address all five Sagaz factors, provide a clear classification, and note any ambiguous factors that could support either direction.",
+        "hedging_appropriateness": "With 2 ambiguous factor(s), should express appropriate uncertainty. Over-confidence on ambiguous factors is a flaw. Under-confidence on clear factors is also a flaw."
+      },
+      "metadata": {
+        "worker": "Omar Hassan",
+        "company": "Ironwood Manufacturing",
+        "industry": "environmental consulting",
+        "jurisdiction": "NS",
+        "salary": 39934,
+        "tenure_months": 38
+      }
+    },
+    {
+      "case_id": "dyn_easy_abae9a6d",
+      "seed": 43,
+      "difficulty": "easy",
+      "scenario": "Maria Santos has been working in retail management for Silverline Staffing in AB for 4 months. Maria Santos's work schedule is set by Silverline Staffing management with no flexibility Silverline Staffing provides all equipment including laptop, phone, and office space Maria Santos bears no financial risk — Silverline Staffing covers all expenses and errors Maria Santos receives a fixed monthly salary of $246,961 with no performance bonuses Maria Santos has a Silverline Staffing email address, attends all-hands meetings, and is listed on the org chart",
+      "expected_classification": "Employee",
+      "expected_factors": {
+        "control": "strong_employee",
+        "ownership_of_tools": "strong_employee",
+        "risk_of_loss": "strong_employee",
+        "chance_of_profit": "strong_employee",
+        "integration": "strong_employee"
+      },
+      "evaluation_rubric": {
+        "factor_identification": "Should identify all 5 Sagaz factors. Strong indicators present for: control, ownership_of_tools, risk_of_loss, chance_of_profit, integration. Ambiguous factors: none.",
+        "legal_reasoning_quality": "Should apply the Sagaz test systematically. The employee classification should follow logically from factor analysis. Reasoning chain should reference specific facts from the scenario.",
+        "citation_accuracy": "Should cite Sagaz Industries v. 671122 Ontario Ltd. (2001 SCC 59). May also cite Wiebe Door Services v. MNR. Citations should be to real cases with correct legal principles.",
+        "risk_assessment": "Should flag risks of misclassification. If classified as Employee, should note what happens if the classification is wrong (e.g., back taxes, penalties, benefits liability).",
+        "completeness": "Should address all five Sagaz factors, provide a clear classification, and note any ambiguous factors that could support either direction.",
+        "hedging_appropriateness": "With 0 ambiguous factor(s), should express appropriate uncertainty. Over-confidence on ambiguous factors is a flaw. Under-confidence on clear factors is also a flaw."
+      },
+      "metadata": {
+        "worker": "Maria Santos",
+        "company": "Silverline Staffing",
+        "industry": "retail management",
+        "jurisdiction": "AB",
+        "salary": 246961,
+        "tenure_months": 4
+      }
+    },
+    {
+      "case_id": "dyn_hard_fb529a42",
+      "seed": 44,
+      "difficulty": "hard",
+      "scenario": "Yuki Nakamura has been working in data analytics for Redstone Energy in BC for 15 months. Yuki Nakamura works exclusively for Redstone Energy and wears a company uniform Yuki Nakamura is guaranteed their salary regardless of project outcomes Yuki Nakamura negotiates per-project fees and earns more by working efficiently Yuki Nakamura uses some Redstone Energy equipment but also maintains their own tools Yuki Nakamura's manager at Redstone Energy sets weekly priorities but Yuki Nakamura chooses daily tasks",
+      "expected_classification": "Employee",
+      "expected_factors": {
+        "integration": "strong_employee",
+        "risk_of_loss": "strong_employee",
+        "chance_of_profit": "strong_contractor",
+        "ownership_of_tools": "ambiguous",
+        "control": "ambiguous"
+      },
+      "evaluation_rubric": {
+        "factor_identification": "Should identify all 5 Sagaz factors. Strong indicators present for: integration, risk_of_loss, chance_of_profit. Ambiguous factors: ownership_of_tools, control.",
+        "legal_reasoning_quality": "Should apply the Sagaz test systematically. The employee classification should follow logically from factor analysis. Reasoning chain should reference specific facts from the scenario.",
+        "citation_accuracy": "Should cite Sagaz Industries v. 671122 Ontario Ltd. (2001 SCC 59). May also cite Wiebe Door Services v. MNR. Citations should be to real cases with correct legal principles.",
+        "risk_assessment": "Should flag risks of misclassification. If classified as Employee, should note what happens if the classification is wrong (e.g., back taxes, penalties, benefits liability).",
+        "completeness": "Should address all five Sagaz factors, provide a clear classification, and note any ambiguous factors that could support either direction.",
+        "hedging_appropriateness": "With 2 ambiguous factor(s), should express appropriate uncertainty. Over-confidence on ambiguous factors is a flaw. Under-confidence on clear factors is also a flaw."
+      },
+      "metadata": {
+        "worker": "Yuki Nakamura",
+        "company": "Redstone Energy",
+        "industry": "data analytics",
+        "jurisdiction": "BC",
+        "salary": 74875,
+        "tenure_months": 15
+      }
+    },
+    {
+      "case_id": "dyn_medium_0fe9aedd",
+      "seed": 46,
+      "difficulty": "medium",
+      "scenario": "James Okonkwo has been working in software development for Summit Healthcare Partners in PE for 24 months. James Okonkwo uses exclusively Summit Healthcare Partners-owned tools and technology James Okonkwo has a Summit Healthcare Partners email address, attends all-hands meetings, and is listed on the org chart James Okonkwo is guaranteed their salary regardless of project outcomes James Okonkwo determines their own work methods and priorities without oversight from Summit Healthcare Partners James Okonkwo is paid a day rate but cannot negotiate the rate",
+      "expected_classification": "Employee",
+      "expected_factors": {
+        "ownership_of_tools": "strong_employee",
+        "integration": "strong_employee",
+        "risk_of_loss": "strong_employee",
+        "control": "strong_contractor",
+        "chance_of_profit": "ambiguous"
+      },
+      "evaluation_rubric": {
+        "factor_identification": "Should identify all 5 Sagaz factors. Strong indicators present for: ownership_of_tools, integration, risk_of_loss, control. Ambiguous factors: chance_of_profit.",
+        "legal_reasoning_quality": "Should apply the Sagaz test systematically. The employee classification should follow logically from factor analysis. Reasoning chain should reference specific facts from the scenario.",
+        "citation_accuracy": "Should cite Sagaz Industries v. 671122 Ontario Ltd. (2001 SCC 59). May also cite Wiebe Door Services v. MNR. Citations should be to real cases with correct legal principles.",
+        "risk_assessment": "Should flag risks of misclassification. If classified as Employee, should note what happens if the classification is wrong (e.g., back taxes, penalties, benefits liability).",
+        "completeness": "Should address all five Sagaz factors, provide a clear classification, and note any ambiguous factors that could support either direction.",
+        "hedging_appropriateness": "With 1 ambiguous factor(s), should express appropriate uncertainty. Over-confidence on ambiguous factors is a flaw. Under-confidence on clear factors is also a flaw."
+      },
+      "metadata": {
+        "worker": "James Okonkwo",
+        "company": "Summit Healthcare Partners",
+        "industry": "software development",
+        "jurisdiction": "PE",
+        "salary": 83798,
+        "tenure_months": 24
+      }
+    },
+    {
+      "case_id": "dyn_easy_5bf584ff",
+      "seed": 42,
+      "difficulty": "easy",
+      "scenario": "Priya Sharma has been working in retail management for TechNova Solutions in NS for 29 months. TechNova Solutions provides all equipment including laptop, phone, and office space Priya Sharma receives a fixed bi-weekly salary of $64,628 with no performance bonuses Priya Sharma bears no financial risk — TechNova Solutions covers all expenses and errors Priya Sharma works exclusively for TechNova Solutions and wears a company uniform Priya Sharma reports to a direct manager at TechNova Solutions who assigns daily tasks and reviews all completed work",
+      "expected_classification": "Employee",
+      "expected_factors": {
+        "ownership_of_tools": "strong_employee",
+        "chance_of_profit": "strong_employee",
+        "risk_of_loss": "strong_employee",
+        "integration": "strong_employee",
+        "control": "strong_employee"
+      },
+      "evaluation_rubric": {
+        "factor_identification": "Should identify all 5 Sagaz factors. Strong indicators present for: ownership_of_tools, chance_of_profit, risk_of_loss, integration, control. Ambiguous factors: none.",
+        "legal_reasoning_quality": "Should apply the Sagaz test systematically. The employee classification should follow logically from factor analysis. Reasoning chain should reference specific facts from the scenario.",
+        "citation_accuracy": "Should cite Sagaz Industries v. 671122 Ontario Ltd. (2001 SCC 59). May also cite Wiebe Door Services v. MNR. Citations should be to real cases with correct legal principles.",
+        "risk_assessment": "Should flag risks of misclassification. If classified as Employee, should note what happens if the classification is wrong (e.g., back taxes, penalties, benefits liability).",
+        "completeness": "Should address all five Sagaz factors, provide a clear classification, and note any ambiguous factors that could support either direction.",
+        "hedging_appropriateness": "With 0 ambiguous factor(s), should express appropriate uncertainty. Over-confidence on ambiguous factors is a flaw. Under-confidence on clear factors is also a flaw."
+      },
+      "metadata": {
+        "worker": "Priya Sharma",
+        "company": "TechNova Solutions",
+        "industry": "retail management",
+        "jurisdiction": "NS",
+        "salary": 64628,
+        "tenure_months": 29
+      }
+    }
+  ],
+  "metadata": {
+    "base_seed": 42,
+    "requested_n": 5,
+    "dimensions": [
+      "factor_identification",
+      "legal_reasoning_quality",
+      "citation_accuracy",
+      "risk_assessment",
+      "completeness",
+      "hedging_appropriateness"
+    ]
+  }
+}

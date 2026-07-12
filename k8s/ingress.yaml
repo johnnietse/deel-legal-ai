@@ -1,22 +1,142 @@
-# Kubernetes Ingress for Deel Lab Legal AI API
+# OpenJustice.ai — Kubernetes Ingress
+# Routes:
+#   /api/* → backend (legal-ai-api-service)
+#   /ws/*  → backend (WebSocket for streaming)
+#   /*     → frontend (frontend-service)
+#
+# TLS via cert-manager + Let's Encrypt
+# Rate limiting at ingress level (nginx)
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: legal-ai-api-ingress
+  name: openjustice-ingress
   annotations:
+    # Ingress class
     kubernetes.io/ingress.class: nginx
+
+    # TLS/SSL
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+
+    # cert-manager for auto TLS
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/acme-challenge-type: http01
+
+    # Request size limits (for document uploads)
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+
+    # Timeouts
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+
+    # Buffering — OFF for SSE streaming support
+    # Individual path annotations in rules override this per-route
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+
+    # Rate limiting — 100 requests/minute per IP
+    nginx.ingress.kubernetes.io/limit-rps: "10"
+    nginx.ingress.kubernetes.io/limit-rpm: "100"
+    nginx.ingress.kubernetes.io/limit-burst-multiplier: "3"
+    nginx.ingress.kubernetes.io/limit-whitelist: ""
+
+    # CORS
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://openjustice.ai"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    nginx.ingress.kubernetes.io/cors-max-age: "86400"
+
+    # Security headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Frame-Options: SAMEORIGIN";
+      more_set_headers "X-Content-Type-Options: nosniff";
+      more_set_headers "X-XSS-Protection: 1; mode=block";
+      more_set_headers "Referrer-Policy: strict-origin-when-cross-origin";
+      more_set_headers "Permissions-Policy: camera=(), microphone=(), geolocation=()";
+      more_set_headers "Strict-Transport-Security: max-age=31536000; includeSubDomains; preload";
+      more_set_headers "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.openjustice.ai; font-src 'self' data:;";
+
+    # WAF-like ModSecurity (if enabled in nginx ingress controller)
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+
+    # Blue-green / canary support
+    nginx.ingress.kubernetes.io/canary-by-header: "X-Canary"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "0"
+
 spec:
   tls:
     - hosts:
-        - legal-ai.deel.com
-      secretName: legal-ai-tls
+        - openjustice.ai
+        - api.openjustice.ai
+      secretName: openjustice-tls
   rules:
-    - host: legal-ai.deel.com
+    - host: openjustice.ai
+      http:
+        paths:
+          # API routes → backend service
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: legal-ai-api-service
+                port:
+                  number: 80
+
+          # WebSocket routes → backend service (for SSE streaming)
+          - path: /ws/
+            pathType: Prefix
+            backend:
+              service:
+                name: legal-ai-api-service
+                port:
+                  number: 80
+
+          # Health check → backend service
+          - path: /health
+            pathType: Exact
+            backend:
+              service:
+                name: legal-ai-api-service
+                port:
+                  number: 80
+
+          # All other routes → frontend service (SPA)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+---
+# API-specific ingress for api.openjustice.ai subdomain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openjustice-api-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/limit-rps: "20"
+    nginx.ingress.kubernetes.io/limit-rpm: "200"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+spec:
+  tls:
+    - hosts:
+        - api.openjustice.ai
+      secretName: openjustice-api-tls
+  rules:
+    - host: api.openjustice.ai
       http:
         paths:
           - path: /
@@ -27,15 +147,15 @@ spec:
                 port:
                   number: 80
 ---
-# Network Policy for Security
+# Network Policy — Frontend tier
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: legal-ai-api-network-policy
+  name: frontend-network-policy
 spec:
   podSelector:
     matchLabels:
-      app: legal-ai-api
+      app: frontend
   policyTypes:
     - Ingress
     - Egress
@@ -46,9 +166,10 @@ spec:
               name: ingress-nginx
       ports:
         - protocol: TCP
-          port: 8000
+          port: 80
+        - protocol: TCP
+          port: 443
   egress:
-    # Allow DNS
     - to:
         - namespaceSelector: {}
           podSelector:
@@ -57,10 +178,10 @@ spec:
       ports:
         - protocol: UDP
           port: 53
-    # Allow HTTPS (for external APIs)
     - to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
+        - podSelector:
+            matchLabels:
+              app: legal-ai-api
       ports:
         - protocol: TCP
-          port: 443
+          port: 8000

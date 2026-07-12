@@ -1,0 +1,124 @@
+{
+  "report_id": "9580ae03",
+  "generated_at": "2026-07-06T07:48:20.168441",
+  "suite_id": "legal_bench_4c247208",
+  "model_name": "deel-legal-ai",
+  "total_cases": 5,
+  "correct_classifications": 0,
+  "accuracy": 0.0,
+  "mean_overall_score": 0.5,
+  "dimension_averages": {
+    "factor_identification": 0.5,
+    "legal_reasoning_quality": 0.5,
+    "citation_accuracy": 0.5,
+    "risk_assessment": 0.5,
+    "completeness": 0.5,
+    "hedging_appropriateness": 0.5
+  },
+  "difficulty_breakdown": {
+    "easy": {
+      "count": 2,
+      "accuracy": 0.0,
+      "mean_score": 0.5
+    },
+    "medium": {
+      "count": 1,
+      "accuracy": 0.0,
+      "mean_score": 0.5
+    },
+    "hard": {
+      "count": 2,
+      "accuracy": 0.0,
+      "mean_score": 0.5
+    }
+  },
+  "case_results": [
+    {
+      "case_id": "dyn_hard_8fb955ff",
+      "difficulty": "hard",
+      "expected_classification": "Employee",
+      "predicted_classification": "Unknown",
+      "is_correct": false,
+      "dimension_scores": {
+        "factor_identification": 0.5,
+        "legal_reasoning_quality": 0.5,
+        "citation_accuracy": 0.5,
+        "risk_assessment": 0.5,
+        "completeness": 0.5,
+        "hedging_appropriateness": 0.5
+      },
+      "overall_score": 0.5,
+      "response_excerpt": "No relevant legal documents found in the knowledge base."
+    },
+    {
+      "case_id": "dyn_easy_abae9a6d",
+      "difficulty": "easy",
+      "expected_classification": "Employee",
+      "predicted_classification": "Unknown",
+      "is_correct": false,
+      "dimension_scores": {
+        "factor_identification": 0.5,
+        "legal_reasoning_quality": 0.5,
+        "citation_accuracy": 0.5,
+        "risk_assessment": 0.5,
+        "completeness": 0.5,
+        "hedging_appropriateness": 0.5
+      },
+      "overall_score": 0.5,
+      "response_excerpt": "No relevant legal documents found in the knowledge base."
+    },
+    {
+      "case_id": "dyn_hard_fb529a42",
+      "difficulty": "hard",
+      "expected_classification": "Employee",
+      "predicted_classification": "Unknown",
+      "is_correct": false,
+      "dimension_scores": {
+        "factor_identification": 0.5,
+        "legal_reasoning_quality": 0.5,
+        "citation_accuracy": 0.5,
+        "risk_assessment": 0.5,
+        "completeness": 0.5,
+        "hedging_appropriateness": 0.5
+      },
+      "overall_score": 0.5,
+      "response_excerpt": "No relevant legal documents found in the knowledge base."
+    },
+    {
+      "case_id": "dyn_medium_0fe9aedd",
+      "difficulty": "medium",
+      "expected_classification": "Employee",
+      "predicted_classification": "Unknown",
+      "is_correct": false,
+      "dimension_scores": {
+        "factor_identification": 0.5,
+        "legal_reasoning_quality": 0.5,
+        "citation_accuracy": 0.5,
+        "risk_assessment": 0.5,
+        "completeness": 0.5,
+        "hedging_appropriateness": 0.5
+      },
+      "overall_score": 0.5,
+      "response_excerpt": "No relevant legal documents found in the knowledge base."
+    },
+    {
+      "case_id": "dyn_easy_5bf584ff",
+      "difficulty": "easy",
+      "expected_classification": "Employee",
+      "predicted_classification": "Unknown",
+      "is_correct": false,
+      "dimension_scores": {
+        "factor_identification": 0.5,
+        "legal_reasoning_quality": 0.5,
+        "citation_accuracy": 0.5,
+        "risk_assessment": 0.5,
+        "completeness": 0.5,
+        "hedging_appropriateness": 0.5
+      },
+      "overall_score": 0.5,
+      "response_excerpt": "No relevant legal documents found in the knowledge base."
+    }
+  ],
+  "duration_seconds": 141.6,
+  "metadata": {}
+}

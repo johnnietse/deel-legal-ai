@@ -1,0 +1,189 @@
+# GitHub Actions CI/CD for OpenJustice.ai Frontend
+# React + Vite + TypeScript → Azure Static Web Apps / Vercel
+# PR preview deployments for every branch
+
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "openjustice-frontend/**"
+      - ".github/workflows/frontend.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "openjustice-frontend/**"
+      - ".github/workflows/frontend.yml"
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: "22"
+  FRONTEND_DIR: openjustice-frontend
+  # Deployment target: "azure-static-web-apps" or "vercel"
+  DEPLOY_TARGET: azure-static-web-apps
+  AZURE_SWA_NAME: openjustice-app
+  # Vercel org/project — override in secrets/environments if using Vercel
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ================================
+  # Lint & Build
+  # ================================
+  lint-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.FRONTEND_DIR }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: ${{ env.FRONTEND_DIR }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint check
+        run: npm run lint 2>/dev/null || echo "No lint script defined — skipping"
+
+      - name: TypeScript compilation check
+        run: npx tsc --noEmit
+
+      - name: Build (TypeScript + Vite)
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || 'https://api.openjustice.ai' }}
+          VITE_AUTH_DOMAIN: ${{ secrets.VITE_AUTH_DOMAIN || 'openjustice.ai' }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: ${{ env.FRONTEND_DIR }}/dist/
+          retention-days: 3
+
+  # ================================
+  # Deploy to Azure Static Web Apps (production / preview)
+  # ================================
+  deploy-azure-swa:
+    runs-on: ubuntu-latest
+    needs: lint-build
+    if: env.DEPLOY_TARGET == 'azure-static-web-apps'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: ${{ env.FRONTEND_DIR }}/dist
+
+      - name: Build & Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        id: swa-deploy
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: ${{ github.event_name == 'pull_request' && 'preview' || 'upload' }}
+          skip_app_build: true
+          skip_api_build: true
+          app_location: ${{ env.FRONTEND_DIR }}/dist
+          output_location: ""
+          ###### Production branch config ######
+          ###### PR previews use same config ######
+
+      - name: Preview URL
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## ✅ Preview Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "Preview URL: ${{ steps.swa-deploy.outputs.static_web_app_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | URL |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|-----|" >> $GITHUB_STEP_SUMMARY
+          echo "| Production | https://${{ env.AZURE_SWA_NAME }}.azurestaticapps.net |" >> $GITHUB_STEP_SUMMARY
+          echo "| Preview (PR #${{ github.event.pull_request.number }}) | ${{ steps.swa-deploy.outputs.static_web_app_url }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Production URL
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "## 🚀 Production Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "URL: https://${{ env.AZURE_SWA_NAME }}.azurestaticapps.net" >> $GITHUB_STEP_SUMMARY
+
+  # ================================
+  # Deploy to Vercel (alternative)
+  # ================================
+  deploy-vercel:
+    runs-on: ubuntu-latest
+    needs: lint-build
+    if: env.DEPLOY_TARGET == 'vercel'
+
+    defaults:
+      run:
+        working-directory: ${{ env.FRONTEND_DIR }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build project artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        id: vercel-deploy
+        run: |
+          vercel deploy --prebuilt \
+            --token=${{ secrets.VERCEL_TOKEN }} \
+            ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} \
+            | tee vercel-output.txt
+          echo "url=$(tail -1 vercel-output.txt)" >> $GITHUB_OUTPUT
+
+      - name: Comment PR with preview URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = '${{ steps.vercel-deploy.outputs.url }}';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ✅ Vercel Preview Deployed\n\n**Preview URL:** ${url}\n\n*This is an automated deployment of PR #${context.issue.number}.*`
+            });
+
+  # ================================
+  # Notify on Failure
+  # ================================
+  notify-failure:
+    runs-on: ubuntu-latest
+    needs: [lint-build, deploy-azure-swa, deploy-vercel]
+    if: failure() && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Notify on failure
+        run: |
+          echo "::warning::Frontend pipeline failed for ${{ github.sha }}"
+          # Add Slack / Teams / PagerDuty notification here

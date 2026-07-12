@@ -1,0 +1,129 @@
+# OpenJustice.ai — Automated Backup CronJob
+# Runs backup.sh on a schedule: daily full, hourly incremental WAL
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-daily
+  labels:
+    app: backup
+    tier: data
+spec:
+  schedule: "0 2 * * *"  # Daily at 02:00 UTC
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: backup-sa
+          containers:
+            - name: backup
+              image: openjustice-backup:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/bash
+                - /scripts/backup.sh
+                - --all
+              env:
+                - name: PG_HOST
+                  value: postgres-service
+                - name: PG_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-secrets
+                      key: DATABASE_USER
+                - name: PG_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-secrets
+                      key: DATABASE_PASSWORD
+                - name: AZURE_STORAGE_ACCOUNT
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-secrets
+                      key: AZURE_STORAGE_ACCOUNT
+                - name: AZURE_STORAGE_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-secrets
+                      key: AZURE_STORAGE_KEY
+                - name: RETENTION_DAYS
+                  value: "30"
+              envFrom:
+                - configMapRef:
+                    name: backend-config
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                - name: backup-data
+                  mountPath: /backups
+          volumes:
+            - name: scripts
+              configMap:
+                name: backup-scripts
+                defaultMode: 0755
+            - name: backup-data
+              persistentVolumeClaim:
+                claimName: backup-pvc
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-postgres-wal
+  labels:
+    app: backup
+    tier: data
+spec:
+  schedule: "*/15 * * * *"  # Every 15 minutes
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: backup-sa
+          containers:
+            - name: wal-archive
+              image: openjustice-backup:latest
+              command:
+                - /bin/bash
+                - /scripts/backup.sh
+                - --postgres
+              env:
+                - name: PG_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-secrets
+                      key: DATABASE_PASSWORD
+                - name: AZURE_STORAGE_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-secrets
+                      key: AZURE_STORAGE_KEY
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+          volumes:
+            - name: scripts
+              configMap:
+                name: backup-scripts
+                defaultMode: 0755
+          restartPolicy: OnFailure
+---
+# Backup ServiceAccount and PVC
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backup-sa
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backup-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: managed-premium
+  resources:
+    requests:
+      storage: 100Gi

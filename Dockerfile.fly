@@ -1,0 +1,33 @@
+# OpenJustice.ai - Production Backend (lightweight, ~450MB)
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install only runtime deps
+COPY requirements-api.txt .
+RUN pip install --no-cache-dir -r requirements-api.txt
+
+# Copy application code
+COPY config.py .
+COPY rag_pipeline/ ./rag_pipeline/
+COPY ml_classifier/ ./ml_classifier/
+COPY api/ ./api/
+COPY data/ ./data/
+
+# Copy trained model (132KB) for classifier API
+COPY models/worker_classifier.joblib ./models/worker_classifier.joblib
+
+# Create required dirs
+RUN mkdir -p /app/logs
+
+# Environment
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV DEV_MODE=0
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+CMD ["python", "-m", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--proxy-headers"]

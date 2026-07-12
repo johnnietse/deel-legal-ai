@@ -1,10 +1,14 @@
-# Kubernetes Deployment for Deel Lab Legal AI API
+# Kubernetes Deployment for OpenJustice.ai Backend API
+# References environment config from ConfigMap and secrets from Key Vault
+# Blue-green compatible rolling update strategy
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: legal-ai-api
   labels:
     app: legal-ai-api
+    tier: backend
     version: v1
 spec:
   replicas: 2
@@ -13,7 +17,7 @@ spec:
       app: legal-ai-api
   strategy:
     type: RollingUpdate
-    # Ensures zero-downtime deployments to maintain 99.5% SLA
+    # Zero-downtime: keep all existing pods running until new ones are ready
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
@@ -21,7 +25,12 @@ spec:
     metadata:
       labels:
         app: legal-ai-api
+        tier: backend
         version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
     spec:
       securityContext:
         runAsNonRoot: true
@@ -43,7 +52,12 @@ spec:
           ports:
             - containerPort: 8000
               protocol: TCP
+          envFrom:
+            # Load non-sensitive config from ConfigMap
+            - configMapRef:
+                name: backend-config
           env:
+            # Secrets from Key Vault via CSI driver or external-secrets operator
             - name: GEMINI_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -54,15 +68,38 @@ spec:
                 secretKeyRef:
                   name: api-secrets
                   key: PINECONE_API_KEY
-            - name: LOG_LEVEL
-              value: "INFO"
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: SECRET_KEY
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: JWT_SECRET
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: DATABASE_PASSWORD
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: ELASTIC_PASSWORD
+            - name: AZURE_KEY_VAULT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: AZURE_KEY_VAULT_URL
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
-            limits:
               memory: "1Gi"
               cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
           livenessProbe:
             httpGet:
               path: /health
@@ -79,11 +116,20 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30  # 2.5 min startup window for model loading
           volumeMounts:
             - name: data-volume
               mountPath: /app/data
             - name: models-volume
               mountPath: /app/models
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: data-volume
           persistentVolumeClaim:
@@ -91,10 +137,25 @@ spec:
         - name: models-volume
           persistentVolumeClaim:
             claimName: legal-ai-models-pvc
+        - name: tmp
+          emptyDir:
+            sizeLimit: 1Gi
       imagePullSecrets:
         - name: acr-secret
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: legal-ai-api
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: legal-ai-api
 ---
-# Persistent Volume Claims
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -105,7 +166,7 @@ spec:
   storageClassName: managed-premium
   resources:
     requests:
-      storage: 10Gi
+      storage: 50Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -117,4 +178,59 @@ spec:
   storageClassName: managed-premium
   resources:
     requests:
-      storage: 5Gi
+      storage: 20Gi
+---
+# Azure Key Vault Secret Store (external-secrets operator)
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: azure-keyvault
+spec:
+  provider:
+    azurekv:
+      vaultUrl: ${AZURE_KEY_VAULT_URL}
+      servicePrincipalRef:
+        clientId:
+          secretKeyRef:
+            name: azure-sp
+            key: client-id
+        clientSecret:
+          secretKeyRef:
+            name: azure-sp
+            key: client-secret
+      tenantId: ${AZURE_TENANT_ID}
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: api-secrets-external
+spec:
+  refreshInterval: "1h"
+  secretStoreRef:
+    name: azure-keyvault
+    kind: ClusterSecretStore
+  target:
+    name: api-secrets
+    creationPolicy: Owner
+  data:
+    - secretKey: GEMINI_API_KEY
+      remoteRef:
+        key: gemini-api-key
+    - secretKey: PINECONE_API_KEY
+      remoteRef:
+        key: pinecone-api-key
+    - secretKey: SECRET_KEY
+      remoteRef:
+        key: secret-key
+    - secretKey: JWT_SECRET
+      remoteRef:
+        key: jwt-secret
+    - secretKey: DATABASE_PASSWORD
+      remoteRef:
+        key: postgres-password
+    - secretKey: ELASTIC_PASSWORD
+      remoteRef:
+        key: elastic-password
+    - secretKey: AZURE_KEY_VAULT_URL
+      remoteRef:
+        key: key-vault-url

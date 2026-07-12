@@ -1,0 +1,14 @@
+# OpenJustice.ai — Grafana Dashboard Provisioning
+
+apiVersion: 1
+
+providers:
+  - name: "OpenJustice"
+    orgId: 1
+    folder: "OpenJustice"
+    type: file
+    disableDeletion: true
+    editable: true
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/provisioning/dashboards

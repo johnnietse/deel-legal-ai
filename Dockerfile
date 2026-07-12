@@ -11,11 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for layer caching
-COPY requirements.txt .
+# Copy API requirements first for layer caching
+COPY requirements-api.txt requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --user -r requirements.txt
+# Install Python dependencies (using API-specific requirements for smaller image)
+RUN pip install --no-cache-dir --user -r requirements-api.txt
 
 # ===========================
 # Production image
@@ -40,6 +40,7 @@ ENV PATH=/root/.local/bin:$PATH
 
 # Copy application code
 COPY config.py .
+COPY db/ ./db/
 COPY rag_pipeline/ ./rag_pipeline/
 COPY ml_classifier/ ./ml_classifier/
 COPY api/ ./api/

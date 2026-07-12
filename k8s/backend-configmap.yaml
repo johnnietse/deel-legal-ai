@@ -1,0 +1,65 @@
+# OpenJustice.ai — Backend Configuration ConfigMap
+# Environment variables for the API service
+# Secrets managed via Azure Key Vault (not stored here)
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  labels:
+    app: legal-ai-api
+    tier: backend
+data:
+  # Logging
+  LOG_LEVEL: "INFO"
+  PYTHONUNBUFFERED: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+
+  # Backend Service URLs
+  ELASTICSEARCH_URL: "http://elasticsearch:9200"
+  MILVUS_HOST: "milvus-standalone"
+  MILVUS_PORT: "19530"
+
+  # Vector Store Configuration
+  VECTOR_STORE_BACKEND: "milvus"
+  BM25_BACKEND: "elasticsearch"
+
+  # Database (PostgreSQL)
+  DATABASE_HOST: "postgres-service"
+  DATABASE_PORT: "5432"
+  DATABASE_NAME: "openjustice"
+  DATABASE_USER: "openjustice_admin"
+
+  # Redis
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  REDIS_DB: "0"
+
+  # JWT Configuration
+  JWT_ALGORITHM: "HS256"
+  JWT_EXPIRE_MINUTES: "1440"
+  CORS_ORIGINS: "https://openjustice.ai,https://*.openjustice.ai"
+
+  # Rate Limiting
+  RATE_LIMIT_ENABLED: "true"
+  RATE_LIMIT_REQUESTS: "100"
+  RATE_LIMIT_WINDOW: "60"
+
+  # File Upload Limits
+  MAX_UPLOAD_SIZE_MB: "50"
+
+  # RAG Pipeline Configuration
+  RAG_TOP_K: "10"
+  RAG_RERANK_ENABLED: "true"
+  RAG_STREAMING_ENABLED: "true"
+  RAG_MAX_TOKENS: "2048"
+  RAG_TEMPERATURE: "0.1"
+
+  # Evaluation & Monitoring
+  EVALUATION_TRACKING_ENABLED: "true"
+  METRICS_EXPORT_INTERVAL: "60"
+
+  # Feature Flags
+  FEATURE_MCTS_REASONING: "true"
+  FEATURE_CLASSIFICATION: "true"
+  FEATURE_DOCUMENT_DRAFTING: "true"

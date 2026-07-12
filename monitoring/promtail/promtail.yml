@@ -1,0 +1,48 @@
+# OpenJustice.ai — Promtail Configuration
+
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+client:
+  url: http://loki:3100/loki/api/v1/push
+  batchsize: 102400
+  batchwait: 5s
+  backoff_config:
+    min_period: 100ms
+    max_period: 10s
+    max_retries: 10
+  timeout: 30s
+
+scrape_configs:
+  # Docker container logs via Docker socket
+  - job_name: docker
+    pipeline_stages:
+      - docker: {}
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker
+          __path__: /var/lib/docker/containers/*/*-log.json
+
+  # Application logs from mounted volumes
+  - job_name: app-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: app-logs
+          __path__: /var/log/app/*.log
+
+  # System logs
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: syslog
+          __path__: /var/log/syslog

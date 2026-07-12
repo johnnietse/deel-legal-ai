@@ -1,0 +1,88 @@
+# OpenJustice.ai — AlertManager Configuration
+
+route:
+  receiver: "default"
+  group_by:
+    - alertname
+    - severity
+    - team
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+  routes:
+    # Critical alerts → notify on-call immediately
+    - receiver: "oncall-critical"
+      match:
+        severity: critical
+      repeat_interval: 15m
+      group_wait: 10s
+
+    # Warning alerts → notify team channel
+    - receiver: "team-warning"
+      match:
+        severity: warning
+      repeat_interval: 2h
+
+    # ML-specific alerts
+    - receiver: "ml-team"
+      match:
+        team: ml
+      repeat_interval: 30m
+
+    # Data store alerts
+    - receiver: "data-team"
+      match:
+        team: data
+      repeat_interval: 15m
+
+receivers:
+  - name: "default"
+    email_configs:
+      - to: "oncall@openjustice.ai"
+        from: "alertmanager@openjustice.ai"
+        smarthost: "smtp.sendgrid.net:587"
+        auth_username: "apikey"
+        auth_password: "${SENDGRID_API_KEY}"
+        send_resolved: true
+
+  - name: "oncall-critical"
+    email_configs:
+      - to: "oncall@openjustice.ai"
+        send_resolved: true
+    webhook_configs:
+      - url: "${PAGERDUTY_WEBHOOK_URL}"
+        send_resolved: true
+    slack_configs:
+      - api_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#oncall-critical"
+        title: '{{ template "slack.title" . }}'
+        text: '{{ template "slack.text" . }}'
+        send_resolved: true
+
+  - name: "team-warning"
+    slack_configs:
+      - api_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#team-alerts"
+        title: '{{ template "slack.title" . }}'
+        text: '{{ template "slack.text" . }}'
+        send_resolved: true
+
+  - name: "ml-team"
+    slack_configs:
+      - api_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#ml-alerts"
+        title: '{{ template "slack.title" . }}'
+        text: '{{ template "slack.text" . }}'
+        send_resolved: true
+
+  - name: "data-team"
+    slack_configs:
+      - api_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#data-alerts"
+        title: '{{ template "slack.title" . }}'
+        text: '{{ template "slack.text" . }}'
+        send_resolved: true
+
+templates:
+  - "/etc/alertmanager/templates/*.tmpl"
