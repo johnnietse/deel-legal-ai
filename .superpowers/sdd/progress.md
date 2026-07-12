@@ -31,3 +31,5 @@
 |------------|--------|------|
 | Pre-flight plan review | ✅ Passed | 2026-07-11 |
 | API Key model & CRUD already exist in codebase | ✅ Noted | 2026-07-11 |
+| All 12 tasks implemented & committed | ✅ Done | 2026-07-11 |
+| Repo integrity restored (core db/api/rag_pipeline/frontend committed) | ✅ Done | 2026-07-11 |
