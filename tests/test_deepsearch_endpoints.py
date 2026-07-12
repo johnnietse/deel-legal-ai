@@ -14,14 +14,20 @@ from fastapi.testclient import TestClient
 def client():
     """Create test client with the full app (includes api_router)."""
     from api.main import app
-    # Disable rate limiting for tests (free tier is 10/min, too low for test suite)
-    from api.middleware import RateLimitMiddleware
+    # Disable rate limiting for tests (free tier is 10/min, too low for test suite
+    # and the in-memory store is shared across the whole pytest session).
+    from api.middleware import RateLimitMiddleware, _rate_store
     original_dispatch = RateLimitMiddleware.dispatch
+    original_check = _rate_store.check_limits
     async def no_rate_limit(self, request, call_next):
         return await call_next(request)
+    def always_allow(user_id, tier):
+        return (True, None, "")
     RateLimitMiddleware.dispatch = no_rate_limit
+    _rate_store.check_limits = always_allow
     yield TestClient(app)
     RateLimitMiddleware.dispatch = original_dispatch
+    _rate_store.check_limits = original_check
 
 
 @pytest.fixture
