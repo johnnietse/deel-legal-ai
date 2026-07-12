@@ -42,7 +42,8 @@ async def search_endpoint(
 
     # Search vector store with filters
     from rag_pipeline.vector_store import create_vector_store
-    from config import VECTOR_STORE_BACKEND
+    from rag_pipeline.legal_document_ingester import generate_embedding
+    from config import VECTOR_STORE_BACKEND, CHUNK_NAMESPACE
 
     store = create_vector_store(backend=VECTOR_STORE_BACKEND)
     filter_dict = {}
@@ -51,9 +52,12 @@ async def search_endpoint(
     if year_from:
         filter_dict["year"] = {"$gte": str(year_from)}
 
+    # Embed the query into a vector — the store requires query_vector, not raw text
+    query_vector = generate_embedding(query)
     results = store.search(
-        query=query,
+        query_vector=query_vector,
         top_k=page_size * page,
+        namespace=CHUNK_NAMESPACE,
         filter=filter_dict if filter_dict else None,
     )
 

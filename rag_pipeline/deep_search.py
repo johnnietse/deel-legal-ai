@@ -85,10 +85,12 @@ class DeepSearchEngine:
         """Search Pinecone vector store."""
         try:
             from rag_pipeline.vector_store import create_vector_store
-            from config import VECTOR_STORE_BACKEND
+            from rag_pipeline.legal_document_ingester import generate_embedding
+            from config import VECTOR_STORE_BACKEND, CHUNK_NAMESPACE
             store = create_vector_store(backend=VECTOR_STORE_BACKEND)
+            query_vector = generate_embedding(query)
             results = await asyncio.to_thread(
-                store.search, query, top_k=top_k
+                store.search, query_vector, top_k=top_k, namespace=CHUNK_NAMESPACE
             )
             sources = []
             for r in results:

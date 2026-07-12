@@ -148,6 +148,7 @@ def main():
     index = pc.Index(PINECONE_INDEX_NAME)
     
     batch = []
+    batch_ids = []
     upserted_count = 0
     failed_count = 0
     
@@ -175,7 +176,7 @@ def main():
                     "chunk_index": doc.chunk_index,
                 },
             })
-            processed_ids.add(doc.id)
+            batch_ids.append(doc.id)
             
             if (i + 1) % 10 == 0:
                 logger.info(f"  Embedded {i+1}/{len(to_process)} ({upserted_count} upserted, {failed_count} failed)")
@@ -186,15 +187,19 @@ def main():
                     try:
                         index.upsert(vectors=batch, namespace=CHUNK_NAMESPACE)
                         upserted_count += len(batch)
+                        processed_ids.update(batch_ids)  # mark done ONLY after successful upsert
                         logger.info(f"  Upserted {len(batch)} vectors (total {upserted_count})")
                         batch = []
+                        batch_ids = []
                         break
                     except Exception as e:
                         logger.warning(f"  Upsert error (attempt {attempt+1}): {e}")
                         time.sleep(5)
                 else:
                     failed_count += len(batch)
+                    logger.error(f"  Batch upsert failed after 3 retries; will retry on resume (NOT marked done)")
                     batch = []
+                    batch_ids = []
             
             # Save checkpoint every 50
             if (i + 1) % 50 == 0:
@@ -204,16 +209,19 @@ def main():
         except Exception as e:
             failed_count += 1
             logger.error(f"  Failed doc {doc.id}: {e}")
+            # doc not in processed_ids -> retried on resume (no silent loss)
     
     # Final upsert
     if batch:
         try:
             index.upsert(vectors=batch, namespace=CHUNK_NAMESPACE)
             upserted_count += len(batch)
+            processed_ids.update(batch_ids)  # mark done ONLY after successful upsert
             logger.info(f"  Final upsert of {len(batch)} vectors")
         except Exception as e:
             logger.error(f"  Final upsert failed: {e}")
             failed_count += len(batch)
+            logger.error(f"  Final batch NOT marked done; will retry on resume (no silent loss)")
     
     # Save final checkpoint
     with open(checkpoint_file, 'w') as f:

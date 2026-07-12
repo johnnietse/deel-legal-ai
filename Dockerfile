@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy API requirements first for layer caching
 COPY requirements-api.txt requirements.txt .
 
-# Install Python dependencies (using API-specific requirements for smaller image)
-RUN pip install --no-cache-dir --user -r requirements-api.txt
+# Install Python dependencies system-wide (using API-specific requirements for smaller image)
+RUN pip install --no-cache-dir -r requirements-api.txt
 
 # ===========================
 # Production image
@@ -32,11 +32,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Python packages from builder
-COPY --from=builder /root/.local /root/.local
+# Copy Python packages from builder (system site-packages, accessible by any user)
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 
-# Update PATH
-ENV PATH=/root/.local/bin:$PATH
+# Ensure standard bin path
+ENV PATH=/usr/local/bin:$PATH
 
 # Copy application code
 COPY config.py .
@@ -64,6 +64,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 # Create non-root user for security
 RUN useradd -m -u 1000 appuser
+RUN chown -R appuser:appuser /app
 USER appuser
 
 # Run the API server with production settings
