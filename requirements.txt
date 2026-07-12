@@ -50,6 +50,9 @@ networkx>=3.2.0
 tqdm>=4.66.0
 tenacity>=8.2.0
 
+# TTS (Text-to-Speech, Microsoft Edge TTS - free, no API key)
+edge-tts>=6.1.0
+
 # ===========================================================================
 # ByteDance RAG Enhancements — Sparse & Vector Retrieval
 # ===========================================================================
