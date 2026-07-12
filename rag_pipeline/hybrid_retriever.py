@@ -435,6 +435,47 @@ class HybridRetriever:
         """Build BM25 index from chunks (call during ingestion)."""
         self.bm25.build(chunks)
 
+    def build_bm25_from_vector_store(self, namespace: str = "", top_k: int = 10000):
+        """
+        Build BM25 index by fetching all vectors from the vector store.
+        This should be called after ingestion to populate the BM25 index.
+        """
+        logger.info(f"Building BM25 index from vector store (namespace={namespace})...")
+        
+        # Use a dummy query vector to fetch all vectors
+        # We'll fetch in batches
+        dummy_vector = [0.0] * 3072  # gemini-embedding-001 dimension
+        
+        try:
+            # Fetch vectors from Pinecone
+            results = self.vector_store.search(
+                query_vector=dummy_vector,
+                top_k=top_k,
+                namespace=namespace,
+                filter=None,
+            )
+            
+            if not results:
+                logger.warning("No vectors found in vector store to build BM25 index")
+                return
+            
+            # Convert to BM25 format
+            bm25_chunks = []
+            for r in results:
+                bm25_chunks.append({
+                    "id": r.id,
+                    "chunk_id": r.id,
+                    "content": r.content,
+                    "metadata": r.metadata,
+                })
+            
+            self.bm25.build(bm25_chunks)
+            logger.info(f"BM25 index built from vector store with {len(bm25_chunks)} chunks")
+            
+        except Exception as e:
+            logger.error(f"Failed to build BM25 from vector store: {e}")
+            raise
+
     def retrieve(
         self,
         query: str,

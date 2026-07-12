@@ -72,8 +72,10 @@ _LAZY_IMPORTS = {
     "MilvusBackend":          ("rag_pipeline.vector_store", "MilvusBackend"),
     "create_vector_store":    ("rag_pipeline.vector_store", "create_vector_store"),
     "ElasticsearchBM25":      ("rag_pipeline.search_engine", "ElasticsearchBM25"),
-    "create_bm25_engine":     ("rag_pipeline.search_engine", "create_bm25_engine"),
+"create_bm25_engine":     ("rag_pipeline.search_engine", "create_bm25_engine"),
 }
+
+__all__ = list(_LAZY_IMPORTS.keys())
 
 
 def __getattr__(name):

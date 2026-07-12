@@ -198,6 +198,9 @@ class PineconeBackend(VectorStore):
     ) -> bool:
         try:
             from pinecone import Pinecone, ServerlessSpec
+            # Ensure connected
+            if self._pc is None:
+                self.connect()
             existing = [idx.name for idx in self._pc.list_indexes()]
             if name in existing:
                 logger.info(f"Pinecone index '{name}' already exists")
@@ -594,20 +597,147 @@ class MilvusBackend(VectorStore):
 # Factory
 # ---------------------------------------------------------------------------
 
+def _pinecone_kwargs(**kwargs) -> dict:
+    """Extract Pinecone-relevant kwargs from general kwargs + config defaults."""
+    from config import PINECONE_API_KEY, PINECONE_INDEX_NAME, PINECONE_ENVIRONMENT
+    result = {
+        "api_key": kwargs.get("api_key", PINECONE_API_KEY),
+        "index_name": kwargs.get("index_name", PINECONE_INDEX_NAME),
+        "environment": kwargs.get("environment", PINECONE_ENVIRONMENT),
+    }
+    # Allow override via explicit kwargs
+    for k in ("api_key", "index_name", "environment"):
+        if k in kwargs:
+            result[k] = kwargs[k]
+    return result
+
+
+def _milvus_kwargs(**kwargs) -> dict:
+    """Extract Milvus-relevant kwargs from general kwargs + config defaults."""
+    from config import MILVUS_HOST, MILVUS_PORT, MILVUS_TOKEN
+    result = {
+        "host": kwargs.get("host", MILVUS_HOST),
+        "port": kwargs.get("port", MILVUS_PORT),
+        "token": kwargs.get("token", MILVUS_TOKEN),
+    }
+    for k in ("host", "port", "token"):
+        if k in kwargs:
+            result[k] = kwargs[k]
+    return result
+
+
 def create_vector_store(backend: str = "pinecone", **kwargs) -> VectorStore:
     """
     Factory function to create a vector store backend.
 
     Args:
-        backend: "pinecone" or "milvus"
-        **kwargs: Backend-specific configuration
+        backend: "pinecone", "milvus", or "both" (dual-write with fallback)
+        **kwargs: Backend-specific configuration (filtered per backend)
 
     Returns:
         VectorStore instance
     """
     if backend == "pinecone":
-        return PineconeBackend(**kwargs)
+        return PineconeBackend(**_pinecone_kwargs(**kwargs))
     elif backend == "milvus":
-        return MilvusBackend(**kwargs)
+        return MilvusBackend(**_milvus_kwargs(**kwargs))
+    elif backend == "both":
+        # Dual-write with fallback — only pass relevant kwargs per backend
+        primary = PineconeBackend(**_pinecone_kwargs(**kwargs))
+        fallback = MilvusBackend(**_milvus_kwargs(**kwargs))
+        return DualVectorStore(primary, fallback)
     else:
         raise ValueError(f"Unknown vector store backend: {backend}")
+
+
+class DualVectorStore(VectorStore):
+    """
+    Dual-write vector store with automatic fallback.
+    Writes to primary, falls back to secondary on failure.
+    Reads from primary, falls back to secondary on failure.
+    """
+    
+    def __init__(self, primary: VectorStore, fallback: VectorStore):
+        self.primary = primary
+        self.fallback = fallback
+
+    def connect(self) -> bool:
+        """Connect both primary and fallback stores."""
+        primary_ok = self.primary.connect()
+        fallback_ok = self.fallback.connect()
+        return primary_ok or fallback_ok
+
+    def create_collection(
+        self,
+        name: str,
+        dimension: int,
+        metric: str = "cosine",
+        hnsw_preset: str = "production",
+    ) -> bool:
+        """Create collection on primary, fallback on failure."""
+        try:
+            return self.primary.create_collection(name, dimension, metric, hnsw_preset)
+        except Exception as e:
+            logger.warning(f"Primary create_collection failed, falling back: {e}")
+            return self.fallback.create_collection(name, dimension, metric, hnsw_preset)
+
+    def upsert(
+        self,
+        records: List[VectorRecord],
+        collection: str = "",
+        namespace: str = "",
+        batch_size: int = 100,
+    ) -> int:
+        """Upsert to primary, fallback on failure. Writes to both when possible."""
+        try:
+            count = self.primary.upsert(records, collection, namespace, batch_size)
+            # Also write to fallback silently
+            try:
+                self.fallback.upsert(records, collection, namespace, batch_size)
+            except Exception:
+                pass
+            return count
+        except Exception as e:
+            logger.warning(f"Primary upsert failed, falling back: {e}")
+            return self.fallback.upsert(records, collection, namespace, batch_size)
+
+    def search(
+        self,
+        query_vector: List[float],
+        top_k: int = 10,
+        collection: str = "",
+        namespace: str = "",
+        filter: Optional[Dict[str, Any]] = None,
+    ) -> List[VectorSearchResult]:
+        """Search primary, fallback on failure."""
+        try:
+            return self.primary.search(
+                query_vector, top_k, collection, namespace, filter
+            )
+        except Exception as e:
+            logger.warning(f"Primary search failed, falling back: {e}")
+            return self.fallback.search(
+                query_vector, top_k, collection, namespace, filter
+            )
+
+    def delete(
+        self,
+        ids: Optional[List[str]] = None,
+        collection: str = "",
+        namespace: str = "",
+        delete_all: bool = False,
+    ) -> int:
+        """Delete from primary, fallback on failure."""
+        try:
+            return self.primary.delete(ids, collection, namespace, delete_all)
+        except Exception as e:
+            logger.warning(f"Primary delete failed, falling back: {e}")
+            return self.fallback.delete(ids, collection, namespace, delete_all)
+
+    def stats(self, collection: str = "") -> Dict[str, Any]:
+        """Get stats from primary, fallback on failure."""
+        try:
+            return self.primary.stats(collection)
+        except Exception as e:
+            logger.warning(f"Primary stats failed, falling back: {e}")
+            return self.fallback.stats(collection)

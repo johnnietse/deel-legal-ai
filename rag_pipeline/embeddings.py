@@ -15,19 +15,21 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 
-# Use the new google-genai SDK for gemini-embedding-001
+# Always import requests and tenacity for API calls
+import requests
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+
+# Optional google-genai SDK for advanced features
 try:
     from google import genai
     from google.genai import types
     GENAI_AVAILABLE = True
 except ImportError:
     GENAI_AVAILABLE = False
-    import requests
-    from tenacity import retry, stop_after_attempt, wait_exponential
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config import GEMINI_API_KEY, GEMINI_API_BASE, GEMINI_EMBEDDING_MODEL
+from config import GEMINI_API_KEY, GEMINI_API_BASE, GEMINI_EMBEDDING_MODEL, GEMINI_CHAT_MODEL
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -85,8 +87,16 @@ class GeminiEmbeddings:
         return response.json()
     
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=10)
+        stop=stop_after_attempt(5),
+        wait=wait_exponential(multiplier=2, min=5, max=60),
+        retry=retry_if_exception_type(requests.exceptions.HTTPError),
+        before_sleep=lambda retry_state: logger.warning(
+            f"Rate limited, waiting before retry {retry_state.attempt_number}/5..."
+        ) if retry_state.outcome.exception() and 
+           hasattr(retry_state.outcome.exception(), 'response') and
+           retry_state.outcome.exception().response is not None and
+           retry_state.outcome.exception().response.status_code == 429
+        else None
     )
     def embed_text(self, text: str) -> EmbeddingResult:
         """
@@ -195,64 +205,105 @@ class GeminiChat:
     def __init__(
         self,
         api_key: str = GEMINI_API_KEY,
-        model: str = "gemini-2.0-flash"
+        model: str = GEMINI_CHAT_MODEL
     ):
         self.api_key = api_key
         self.model = model
         self.base_url = GEMINI_API_BASE
     
-    @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=10)
-    )
     def generate(
         self, 
         prompt: str,
         system_instruction: Optional[str] = None,
         temperature: float = 0.7,
-        max_tokens: int = 2048
+        max_tokens: int = 2048,
+        max_retries: int = 10,
     ) -> str:
         """
-        Generate a response using Gemini.
+        Generate a response using Gemini with key rotation on rate limits.
         
         Args:
             prompt: User prompt
             system_instruction: Optional system instruction
             temperature: Sampling temperature
             max_tokens: Maximum tokens to generate
+            max_retries: Maximum retry attempts (default 10)
             
         Returns:
             Generated text response
         """
+        import time
+        from rag_pipeline.gemini_key_manager import key_manager
+        
         endpoint = f"models/{self.model}:generateContent"
-        url = f"{self.base_url}/{endpoint}"
         
-        headers = {
-            "Content-Type": "application/json",
-            "X-goog-api-key": self.api_key
-        }
-        
-        payload = {
-            "contents": [
-                {
-                    "parts": [{"text": prompt}]
+        last_error = None
+        for attempt in range(max_retries):
+            # Check global cooldown
+            key_manager.check_cooldown()
+            
+            current_key = key_manager.get_key()
+            key_masked = key_manager.get_key_masked()
+            url = f"{self.base_url}/{endpoint}?key={current_key}"
+            
+            headers = {
+                "Content-Type": "application/json",
+            }
+            
+            payload = {
+                "contents": [
+                    {
+                        "parts": [{"text": prompt}]
+                    }
+                ],
+                "generationConfig": {
+                    "temperature": temperature,
+                    "maxOutputTokens": max_tokens
                 }
-            ],
-            "generationConfig": {
-                "temperature": temperature,
-                "maxOutputTokens": max_tokens
             }
-        }
+            
+            if system_instruction:
+                payload["systemInstruction"] = {
+                    "parts": [{"text": system_instruction}]
+                }
+            
+            try:
+                response = requests.post(url, headers=headers, json=payload, timeout=60)
+                
+                if response.status_code == 200:
+                    key_manager.report_success()
+                    result = response.json()
+                    # Extract text from response
+                    try:
+                        candidates = result.get("candidates", [])
+                        if candidates:
+                            content = candidates[0].get("content", {})
+                            parts = content.get("parts", [])
+                            if parts:
+                                return parts[0].get("text", "")
+                    except (KeyError, IndexError) as e:
+                        logger.error(f"Error parsing Gemini response: {e}")
+                    return ""
+                
+                elif response.status_code == 429:
+                    key_manager.report_rate_limit()
+                    logger.warning(f"Key {key_masked} rate limited (attempt {attempt+1}), rotated key")
+                    time.sleep(1)
+                    last_error = "429 rate limited (keys rotated)"
+                    continue
+                else:
+                    response.raise_for_status()
+                    
+            except requests.exceptions.Timeout:
+                logger.warning(f"Timeout (attempt {attempt+1}/{max_retries}), retrying...")
+                time.sleep(5)
+                last_error = "Timeout"
+            except Exception as e:
+                logger.warning(f"Error (attempt {attempt+1}/{max_retries}): {e}, retrying...")
+                time.sleep(5)
+                last_error = str(e)
         
-        if system_instruction:
-            payload["systemInstruction"] = {
-                "parts": [{"text": system_instruction}]
-            }
-        
-        response = requests.post(url, headers=headers, json=payload, timeout=60)
-        response.raise_for_status()
-        
-        result = response.json()
+        raise Exception(f"Gemini generate failed after {max_retries} retries: {last_error}")
         
         # Extract text from response
         try:

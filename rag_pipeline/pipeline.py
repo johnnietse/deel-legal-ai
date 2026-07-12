@@ -28,10 +28,16 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from rag_pipeline.canlii_scraper import CanLIIScraper
 from rag_pipeline.document_processor import LegalDocumentProcessor, ProcessedDocument, SemanticChunker
 from rag_pipeline.embeddings import GeminiEmbeddings
-from rag_pipeline.vector_store import create_vector_store
+from rag_pipeline.vector_store import create_vector_store, VectorRecord
 from rag_pipeline.search_engine import create_bm25_engine
 from rag_pipeline.rag_query import LegalRAGQuery
-from config import CANLII_PDF_DOWNLOAD_DIR, DATA_DIR, LOG_FORMAT, LOG_LEVEL
+from config import (
+    CANLII_PDF_DOWNLOAD_DIR, DATA_DIR, LOG_FORMAT, LOG_LEVEL,
+    MULTI_GRANULARITY_ENABLED, DOCUMENT_SUMMARY_NAMESPACE,
+    CHUNK_NAMESPACE, DOCUMENT_SUMMARY_MAX_TOKENS,
+    VECTOR_STORE_BACKEND, BM25_BACKEND,
+    PINECONE_INDEX_NAME,
+)
 
 # Setup logging
 logging.basicConfig(level=getattr(logging, LOG_LEVEL), format=LOG_FORMAT)
@@ -66,8 +72,8 @@ class LegalRAGPipeline:
         self.embeddings = GeminiEmbeddings()
         
         # Dual-store indexing (v3.0)
-        self.vector_store = create_vector_store()
-        self.bm25_engine = create_bm25_engine()
+        self.vector_store = create_vector_store(backend=VECTOR_STORE_BACKEND, index_name=PINECONE_INDEX_NAME)
+        self.bm25_engine = create_bm25_engine(backend=BM25_BACKEND)
         self.query_interface = None
         
         # Pipeline state
@@ -119,8 +125,8 @@ class LegalRAGPipeline:
             if doc.processing_status == "success":
                 semantic_chunks = self.semantic_chunker.chunk_document(
                     doc.full_text,
-                    doc_id=doc.document_id,
-                    metadata=doc.metadata
+                    document_id=doc.document_id,
+                    base_metadata=doc.metadata
                 )
 
                 doc.chunks = semantic_chunks
@@ -159,18 +165,79 @@ class LegalRAGPipeline:
         logger.info(f"Generated {len(valid_chunks)} embeddings")
         return valid_chunks
     
+    def _generate_document_summaries(
+        self,
+        documents: List[ProcessedDocument],
+    ) -> List[Dict[str, Any]]:
+        """
+        Generate document-level summary embeddings for multi-granularity indexing.
+        
+        For each document, uses the first N characters as a summary proxy,
+        generates an embedding, and returns a list of VectorRecord-compatible dicts.
+        This gives a document-level semantic vector that captures overall topic,
+        complementing finer-grained chunk-level vectors (ByteDance §4.1.2).
+        """
+        summaries = []
+        for doc in documents:
+            if doc.processing_status != "success":
+                continue
+            # Use first N chars of full text as summary proxy
+            summary_text = doc.full_text[:DOCUMENT_SUMMARY_MAX_TOKENS]
+            if not summary_text.strip():
+                continue
+            try:
+                embed_result = self.embeddings.embed_text(summary_text)
+                if embed_result.embedding:
+                    summaries.append({
+                        "id": f"doc_summary_{doc.document_id}",
+                        "values": embed_result.embedding,
+                        "metadata": {
+                            "content": summary_text,
+                            "document_id": doc.document_id,
+                            "level": "document_summary",
+                            "granularity": "document",
+                            **{k: v for k, v in doc.metadata.items()
+                               if isinstance(v, (str, int, float, bool))},
+                        },
+                    })
+            except Exception as e:
+                logger.warning(f"Failed to embed summary for {doc.document_id}: {e}")
+        logger.info(f"Generated {len(summaries)} document-level summary embeddings")
+        return summaries
+
     def upsert_to_stores(
         self, 
-        embedded_chunks: List[Dict[str, Any]]
+        embedded_chunks: List[Dict[str, Any]],
+        documents: Optional[List[ProcessedDocument]] = None,
     ) -> None:
         """Upsert chunks to both Vector Store and BM25 Sparse Store."""
         logger.info("Upserting vectors to Vector Store...")
         
         # Vector Store (Pinecone/Milvus)
         try:
-            self.vector_store.create_index()
-            upserted_count = self.vector_store.upsert_documents(
-                embedded_chunks,
+            # VectorStore uses create_collection and upsert methods
+            if hasattr(self.vector_store, 'create_collection'):
+                self.vector_store.create_collection(
+                    name=self.namespace,
+                    dimension=3072,  # gemini-embedding-001 dimension
+                    metric="cosine"
+                )
+            elif hasattr(self.vector_store, 'create_index'):
+                self.vector_store.create_index()
+            
+            # Convert embedded_chunks to VectorRecord format
+            from rag_pipeline.vector_store import VectorRecord
+            records = []
+            for chunk in embedded_chunks:
+                records.append(VectorRecord(
+                    id=chunk.get("id", chunk.get("chunk_id", "")),
+                    values=chunk.get("values", chunk.get("embedding", [])),
+                    metadata=chunk.get("metadata", {})
+                ))
+            
+            upserted_count = self.vector_store.upsert(
+                records=records,
+                collection=self.namespace,
                 namespace=self.namespace
             )
             self.stats["vectors_upserted"] = upserted_count
@@ -183,16 +250,46 @@ class LegalRAGPipeline:
         logger.info("Indexing to BM25 Sparse Store...")
         try:
             # We don't need the dense embeddings for BM25, just the text/metadata
-            self.bm25_engine.create_index()
-            indexed_count = self.bm25_engine.index_documents(
-                embedded_chunks,
-                namespace=self.namespace
-            )
+            # BM25Index uses build() method
+            if hasattr(self.bm25_engine, 'build'):
+                self.bm25_engine.build(embedded_chunks)
+                indexed_count = len(embedded_chunks)
+            elif hasattr(self.bm25_engine, 'index_documents'):
+                indexed_count = self.bm25_engine.index_documents(
+                    embedded_chunks,
+                    namespace=self.namespace
+                )
+            else:
+                raise AttributeError("BM25 engine has no build or index_documents method")
             self.stats["bm25_indexed"] = indexed_count
             logger.info(f"Indexed {indexed_count} documents to {self.bm25_engine.__class__.__name__}")
         except Exception as e:
             logger.error(f"BM25 Store index failed: {e}")
             self.stats["errors"].append(f"BM25Store: {e}")
+        
+        # Multi-Granularity: Also upsert document-level summary embeddings (ByteDance §4.1.2)
+        if MULTI_GRANULARITY_ENABLED and documents:
+            logger.info("Adding document-level summary embeddings for multi-granularity...")
+            try:
+                doc_summaries = self._generate_document_summaries(documents)
+                if doc_summaries:
+                    records = [
+                        VectorRecord(
+                            id=s["id"],
+                            values=s["values"],
+                            metadata=s["metadata"],
+                        )
+                        for s in doc_summaries
+                    ]
+                    summary_count = self.vector_store.upsert(
+                        records,
+                        namespace=DOCUMENT_SUMMARY_NAMESPACE,
+                    )
+                    self.stats["doc_summaries_upserted"] = summary_count
+                    logger.info(f"Upserted {summary_count} doc summaries to namespace '{DOCUMENT_SUMMARY_NAMESPACE}'")
+            except Exception as e:
+                logger.warning(f"Document summary upsert failed (non-fatal): {e}")
+                self.stats["errors"].append(f"DocSummary: {e}")
             
     def run_full_pipeline(
         self,
@@ -226,8 +323,8 @@ class LegalRAGPipeline:
                 logger.warning("No embeddings generated")
                 return self.stats
             
-            # Step 4 & 5: Dual Upsert
-            self.upsert_to_stores(embedded_chunks)
+            # Step 4 & 5: Dual Upsert (chunks + optional doc summaries)
+            self.upsert_to_stores(embedded_chunks, documents=documents)
             
             # Step 6: Initialize query interface
             self.query_interface = LegalRAGQuery()

@@ -35,10 +35,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat
 from rag_pipeline.vector_store import VectorSearchResult
+from rag_pipeline.hybrid_retriever import HybridRetriever, HybridResult
 from config import (
     MULTI_HOP_MAX_HOPS,
     MULTI_HOP_COMPLETENESS_THRESHOLD,
     MULTI_HOP_MIN_NEW_INFO_TOKENS,
+    HYBRID_SEARCH_ENABLED, HYBRID_FUSION_METHOD, HYBRID_MMR_LAMBDA,
 )
 
 # Setup logging
@@ -111,6 +113,7 @@ class MultiHopRetriever:
         embeddings: Optional[GeminiEmbeddings] = None,
         chat: Optional[GeminiChat] = None,
         vector_store=None,
+        hybrid_retriever: Optional[HybridRetriever] = None,
         max_hops: int = MULTI_HOP_MAX_HOPS,
         completeness_threshold: float = MULTI_HOP_COMPLETENESS_THRESHOLD,
         min_new_info_tokens: int = MULTI_HOP_MIN_NEW_INFO_TOKENS,
@@ -122,6 +125,19 @@ class MultiHopRetriever:
         self.max_hops = max_hops
         self.completeness_threshold = completeness_threshold
         self.min_new_info_tokens = min_new_info_tokens
+
+        # Hybrid retriever for BM25 + vector fusion per hop (ByteDance §5.2)
+        if hybrid_retriever is not None:
+            self.hybrid_retriever = hybrid_retriever
+        elif HYBRID_SEARCH_ENABLED:
+            self.hybrid_retriever = HybridRetriever(
+                vector_store=self.vector_store,
+                embeddings=self.embeddings,
+                fusion_method=HYBRID_FUSION_METHOD,
+                mmr_lambda=HYBRID_MMR_LAMBDA,
+            )
+        else:
+            self.hybrid_retriever = None
 
         # Ensure vector store is connected
         self.vector_store.connect()
@@ -264,10 +280,33 @@ class MultiHopRetriever:
         top_k: int,
         namespace: str,
         filter: Optional[Dict[str, Any]],
-    ) -> List[VectorSearchResult]:
-        """Retrieve documents from vector store for a given query."""
-        query_result = self.embeddings.embed_text(query)
+    ) -> List:
+        """
+        Retrieve documents for a given query.
+        
+        Uses HybridRetriever (BM25 + vector fusion) when available for
+        higher recall across both keyword and semantic matching.
+        Falls back to pure vector search if hybrid retriever is not configured.
+        
+        Returns:
+            List of HybridResult (if hybrid) or VectorSearchResult (if pure vector).
+            Both types expose .id, .score, .content, .metadata for downstream use.
+        """
+        if self.hybrid_retriever is not None:
+            # Hybrid search with BM25 + vector fusion (ByteDance §5.2)
+            try:
+                return self.hybrid_retriever.retrieve(
+                    query=query,
+                    top_k=top_k,
+                    namespace=namespace,
+                    filter=filter,
+                )
+            except Exception as e:
+                logger.warning(f"Hybrid retrieval failed, falling back to pure vector: {e}")
+                # Fall through to pure vector search
 
+        # Pure vector search fallback
+        query_result = self.embeddings.embed_text(query)
         if not query_result.embedding:
             return []
 
