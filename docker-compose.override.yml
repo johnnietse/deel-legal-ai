@@ -14,9 +14,3 @@ services:
     cap_add:
       - NET_BIND_SERVICE
     restart: unless-stopped
-    networks:
-      - deel-legal-ai-network
-
-networks:
-  deel-legal-ai-network:
-    external: true
