@@ -1,0 +1,97 @@
+# Optional infrastructure services for OpenJustice.ai
+# These are NOT needed for normal operation — the API uses Pinecone (cloud)
+# and Neon Postgres (cloud) by default.
+#
+# Start with:  docker-compose -f docker-compose.infra.yml up -d
+# Combine with: docker-compose -f docker-compose.yml -f docker-compose.infra.yml up -d
+
+services:
+  # Elasticsearch BM25 backend (sparse retrieval)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: deel-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=${ES_SECURITY_ENABLED:-false}
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-}
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://elasticsearch:9200 | grep -q 'You Know, for Search'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Milvus vector store fallback (self-hosted alternative to Pinecone)
+  milvus-etcd:
+    image: quay.io/coreos/etcd:v3.5.5
+    container_name: deel-milvus-etcd
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - milvus_etcd:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus-minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    container_name: deel-milvus-minio
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    volumes:
+      - milvus_minio:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus-standalone:
+    image: milvusdb/milvus:v2.3.5
+    container_name: deel-milvus-standalone
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: milvus-etcd:2379
+      MINIO_ADDRESS: milvus-minio:9000
+    volumes:
+      - milvus_data:/var/lib/milvus
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      milvus-etcd:
+        condition: service_healthy
+      milvus-minio:
+        condition: service_healthy
+
+volumes:
+  es_data:
+  milvus_etcd:
+  milvus_minio:
+  milvus_data:
+
+networks:
+  default:
+    name: deel-legal-ai-network
+    external: true
