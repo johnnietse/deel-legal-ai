@@ -16,7 +16,7 @@ services:
       - PINECONE_API_KEY=${PINECONE_API_KEY}
       - DATABASE_URL=${DATABASE_URL}
       - SEARCH_GEMINI_API_KEY=${SEARCH_GEMINI_API_KEY}
-      - DEV_MODE=${DEV_MODE:-1}
+      - DEV_MODE=${DEV_MODE:-0}
       - LOG_LEVEL=INFO
       - CORS_ORIGINS=${CORS_ORIGINS}
       - VECTOR_STORE_BACKEND=${VECTOR_STORE_BACKEND:-pinecone}
@@ -29,7 +29,8 @@ services:
       - ./models:/app/models
       - ./logs:/app/logs
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
@@ -105,9 +106,17 @@ services:
     ports:
       - "19530:19530"
       - "9091:9091"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     depends_on:
-      - milvus-etcd
-      - milvus-minio
+      milvus-etcd:
+        condition: service_healthy
+      milvus-minio:
+        condition: service_healthy
 
   # RAG Pipeline Worker (for background processing)
   rag-worker:
@@ -121,7 +130,7 @@ services:
       - PINECONE_API_KEY=${PINECONE_API_KEY}
       - DATABASE_URL=${DATABASE_URL}
       - SEARCH_GEMINI_API_KEY=${SEARCH_GEMINI_API_KEY}
-      - DEV_MODE=${DEV_MODE:-1}
+      - DEV_MODE=${DEV_MODE:-0}
       - LOG_LEVEL=INFO
       - CORS_ORIGINS=${CORS_ORIGINS}
       - VECTOR_STORE_BACKEND=${VECTOR_STORE_BACKEND:-pinecone}
@@ -134,7 +143,8 @@ services:
       - ./models:/app/models
       - ./logs:/app/logs
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     command: [ "python", "-m", "rag_pipeline.pipeline", "--reindex" ]
     profiles:
       - worker # Only starts with --profile worker

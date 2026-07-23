@@ -42,14 +42,14 @@ export function DashboardPage() {
       <Card className="mb-8 bg-gradient-to-r from-primary-500 to-primary-700 border-0">
         <CardContent className="p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-white">
-                Welcome back, {user?.name?.split(" ")[0] || "there"}
-              </h1>
-              <p className="text-primary-100 mt-1">
-                You're on the <Badge variant="secondary" className="bg-white/20 text-white border-0 capitalize">{stats?.tier || "free"}</Badge> plan
-              </p>
-            </div>
+<div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white">
+                  Welcome back, {user?.name?.split(" ")[0] || "there"}
+                </h1>
+                <div className="text-primary-100 mt-1">
+                  You're on the <Badge variant="secondary" className="bg-white/20 text-white border-0 capitalize">{stats?.tier || "free"}</Badge> plan
+                </div>
+              </div>
             <Link to="/chat">
               <Button className="bg-white text-primary-600 hover:bg-primary-50 shadow-lg">
                 <Sparkles className="h-4 w-4 mr-2" />

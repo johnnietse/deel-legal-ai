@@ -1,0 +1,70 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.coverage
+htmlcov
+*.egg-info
+.eggs
+dist
+build
+
+# Environment
+.env
+.env.*
+*.env
+
+# Data and large files
+data/
+models/
+*.pdf
+*.parquet
+*.joblib
+*.pkl
+
+# Logs
+logs/
+*.log
+
+# Node
+node_modules
+openjustice-frontend/node_modules
+openjustice-frontend/dist
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker
+docker-compose*.yml
+Dockerfile*
+Dockerfile.fly
+
+# K8s
+k8s/
+
+# Monitoring
+monitoring/
+
+# Reports
+*_REPORT.md
+
+# Temp
+.tmp
+.pytest_cache
+.wrangler

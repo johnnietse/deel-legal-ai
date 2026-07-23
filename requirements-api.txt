@@ -18,11 +18,11 @@ sse-starlette>=2.0.0
 anyio>=4.3.0
 
 # Vector Database (Pinecone primary + Milvus fallback)
-pinecone>=8.0.0
+pinecone>=6.0.2,<7.0
 pymilvus>=2.4.0
 
 # Sparse Retrieval — BM25 (Elasticsearch backend)
-elasticsearch>=8.12.0
+elasticsearch>=8.18.0,<9.0
 rank-bm25>=0.2.2
 
 # PostgreSQL (Neon)

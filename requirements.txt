@@ -20,7 +20,7 @@ scikit-learn>=1.3.0
 joblib>=1.3.0
 
 # Vector Database
-pinecone>=8.0.0
+pinecone>=6.0.2,<7.0
 
 # Text Processing
 tiktoken>=0.5.0
@@ -56,7 +56,7 @@ edge-tts>=6.1.0
 # ===========================================================================
 # ByteDance RAG Enhancements — Sparse & Vector Retrieval
 # ===========================================================================
-elasticsearch>=8.12.0
+elasticsearch>=8.18.0,<9.0
 rank-bm25>=0.2.2
 pymilvus>=2.4.0
 

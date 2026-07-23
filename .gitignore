@@ -85,3 +85,11 @@ data/canlii_pdfs/
 
 # Generated progress / runtime state
 rag_pipeline/ingestion_progress.json
+
+# Audit / generated reports
+DEPENDENCY_AUDIT_REPORT.md
+DEVOPS_AUDIT_REPORT.md
+SERVICE_AUDIT_REPORT.md
+
+# Error logs
+data/*.err

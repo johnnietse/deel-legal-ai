@@ -34,6 +34,7 @@ from config import (
     RATE_LIMIT_PRO_RPD,
     RATE_LIMIT_ENTERPRISE_RPM,
     RATE_LIMIT_ENTERPRISE_RPD,
+    DEV_MODE,
 )
 
 # Setup logging
@@ -266,6 +267,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     
     async def dispatch(self, request: Request, call_next) -> Response:
         """Process the request through rate limiting."""
+        
+        # Skip rate limiting entirely in development mode
+        if DEV_MODE:
+            return await call_next(request)
         
         # Skip rate limiting for exempt paths and non-rate-limited paths
         path = request.url.path
