@@ -32,6 +32,7 @@ from collections import defaultdict
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from rag_pipeline.embeddings import GeminiChat
+from rag_pipeline.mcts_reasoner import _extract_json_obj, extract_json_array
 from config import (
     KNOWLEDGE_GRAPH_PATH,
     KG_MAX_SUBGRAPH_DEPTH,
@@ -193,15 +194,12 @@ RULES:
                 max_tokens=2048,
             )
             
-            # Parse response
-            cleaned = response.strip()
-            if cleaned.startswith("```"):
-                cleaned = cleaned.split("\n", 1)[1]
-                if cleaned.endswith("```"):
-                    cleaned = cleaned[:-3]
-                cleaned = cleaned.strip()
-            
-            data = json.loads(cleaned)
+            # Parse response — robust extraction handles markdown fences,
+            # surrounding prose, and truncated JSON objects.
+            data = _extract_json_obj(response)
+            if data is None:
+                logger.warning(f"Triple extraction failed to parse JSON for {document_id}")
+                return []
             triples = []
             
             for t in data.get("triples", []):
@@ -475,13 +473,8 @@ Respond with ONLY the JSON array."""
         
         try:
             response = self.chat.generate(prompt, temperature=0.1, max_tokens=256)
-            cleaned = response.strip()
-            if cleaned.startswith("```"):
-                cleaned = cleaned.split("\n", 1)[1]
-                if cleaned.endswith("```"):
-                    cleaned = cleaned[:-3]
-                cleaned = cleaned.strip()
-            return json.loads(cleaned)
+            parsed = extract_json_array(response)
+            return [e for e in parsed if isinstance(e, str)]
         except Exception as e:
             logger.warning(f"Entity extraction error: {e}")
             return []

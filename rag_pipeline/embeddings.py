@@ -361,7 +361,8 @@ class GeminiChat:
                     ],
                     "generationConfig": {
                         "temperature": temperature,
-                        "maxOutputTokens": max_tokens
+                        "maxOutputTokens": max_tokens,
+                        "thinkingConfig": {"thinkingBudget": 0}
                     }
                 }
                 
@@ -388,10 +389,12 @@ class GeminiChat:
                                     )
                                 self._report_success()
                                 return parts[0].get("text", "")
-                        # 200 with empty candidates → treat as retryable failure
-                        last_error = "429 rate limited (keys rotated)"
-                        logger.warning(f"Empty Gemini response (attempt {attempt+1}/{max_retries}), retrying...")
-                        self._sleep_backoff(attempt)
+                        # 200 with empty candidates → key likely has no quota
+                        # for this model (thinking model burns budget on
+                        # thoughts). Rotate key, retry.
+                        last_error = "Empty Gemini response (key rotated)"
+                        logger.warning(f"Empty Gemini response on key {key_masked} (attempt {attempt+1}/{max_retries}), rotating key...")
+                        self._report_rate_limit()
                         continue
                     
                     elif response.status_code == 429:
@@ -402,13 +405,26 @@ class GeminiChat:
                         continue
 
                     elif response.status_code == 403:
-                        # Model not accessible with this key. Try next fallback.
+                        # Key lacks access to this model — rotate key, retry
+                        # same model before trying fallback models.
                         last_error = (
                             f"403 Forbidden for model {model} "
-                            f"(key {key_masked}); trying fallback model"
+                            f"(key {key_masked}); rotating key"
                         )
                         logger.warning(last_error)
-                        break
+                        self._report_rate_limit()
+                        continue
+
+                    elif response.status_code == 404:
+                        # Model not available for this key's project — rotate
+                        # key; a different key may have the model.
+                        last_error = (
+                            f"404 Not Found for model {model} "
+                            f"(key {key_masked}); rotating key"
+                        )
+                        logger.warning(last_error)
+                        self._report_rate_limit()
+                        continue
 
                     else:
                         response.raise_for_status()
