@@ -46,7 +46,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("kg_build")
 
-from rag_pipeline.a2aj_ingester import load_and_filter_dataset, get_all_datasets
+from rag_pipeline.a2aj_ingester import load_and_filter_dataset
 from rag_pipeline.knowledge_graph import LegalKnowledgeGraph
 
 CHECKPOINT_FILE = Path(__file__).parent.parent / "data" / "kg_build_checkpoint.json"
@@ -83,9 +83,10 @@ def main():
     else:
         logger.info("No existing graph — starting fresh")
 
-    # Determine datasets
+    # Determine datasets — default to the 6 employment datasets that exist in
+    # Pinecone (matches background_a2aj_embedder).
     if args.datasets == "all":
-        datasets = get_all_datasets()
+        datasets = ["CHRT", "CIRB", "FPSLREB", "OHSTC", "SST", "SCC"]
     else:
         datasets = [d.strip() for d in args.datasets.split(",")]
 

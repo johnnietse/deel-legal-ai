@@ -44,7 +44,6 @@ logger = logging.getLogger("enrich_metadata")
 
 from rag_pipeline.a2aj_ingester import (
     load_and_filter_dataset,
-    get_all_datasets,
     chunk_document,
 )
 from rag_pipeline.legal_document_ingester import (
@@ -78,9 +77,11 @@ def main():
             processed_ids = set(json.load(f).get("processed_ids", []))
         logger.info(f"Resuming with {len(processed_ids)} already-processed chunks")
 
-    # Determine datasets
+    # Determine datasets — default to the 6 employment datasets that exist in
+    # Pinecone (matches background_a2aj_embedder). Avoids get_all_datasets(),
+    # which lists every HF repo folder including non-ingested tribunals.
     if args.datasets == "all":
-        datasets = get_all_datasets()
+        datasets = ["CHRT", "CIRB", "FPSLREB", "OHSTC", "SST", "SCC"]
     else:
         datasets = [d.strip() for d in args.datasets.split(",")]
 
