@@ -29,9 +29,11 @@ from config import (
     LOG_FORMAT, LOG_LEVEL, GEMINI_API_KEY,
     PINECONE_API_KEY, PINECONE_INDEX_NAME,
     CHUNK_NAMESPACE, DOCUMENT_SUMMARY_NAMESPACE,
+    KEYWORD_BOOST_ENABLED, PARENT_CHILD_ENABLED,
 )
 from rag_pipeline.legal_document_ingester import (
-    LegalDocument, chunk_document, logger
+    LegalDocument, chunk_document, logger,
+    derive_parent_id, compute_boost_terms, store_parent_content,
 )
 
 logging.basicConfig(level=getattr(logging, LOG_LEVEL), format=LOG_FORMAT)
@@ -492,8 +494,12 @@ def fast_upsert_to_pinecone(documents: List[LegalDocument]) -> Dict[str, Any]:
     # Build vectors for Pinecone
     vectors_to_upsert = []
     failed = 0
+    seen_parents = set()
     for i, doc in enumerate(documents):
         if i in embeddings and embeddings[i]:
+            # Store parent content for chunked docs when PARENT_CHILD_ENABLED
+            store_parent_content(doc, seen_parents)
+            
             vectors_to_upsert.append({
                 "id": doc.id,
                 "values": embeddings[i],
@@ -510,6 +516,8 @@ def fast_upsert_to_pinecone(documents: List[LegalDocument]) -> Dict[str, Any]:
                     "topic": doc.topic,
                     "url": doc.url,
                     "chunk_index": doc.chunk_index,
+                    "boost_terms": compute_boost_terms(doc.content),
+                    "parent_id": derive_parent_id(doc.id),
                 },
             })
         else:
@@ -602,6 +610,8 @@ def fast_upsert_to_pinecone(documents: List[LegalDocument]) -> Dict[str, Any]:
                     "topic": doc.topic,
                     "url": doc.url,
                     "chunk_index": doc.chunk_index,
+                    "boost_terms": compute_boost_terms(doc.content),
+                    "parent_id": derive_parent_id(doc.id),
                 }
             })
         bm25.build(bm25_chunks)

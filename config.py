@@ -40,7 +40,20 @@ if not PINECONE_API_KEY:
 # Gemini API Configuration
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 GEMINI_EMBEDDING_MODEL = "gemini-embedding-001"
-GEMINI_CHAT_MODEL = "gemini-2.0-flash"
+GEMINI_CHAT_MODEL = "gemini-3.5-flash"
+# Fallback order when the configured model returns 403 (not accessible for key)
+GEMINI_CHAT_MODEL_FALLBACKS = [
+    "gemini-3.5-flash",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
+]
+
+# Groq API Configuration (OpenAI-compatible, fast Llama3)
+GROQ_API_BASE = "https://api.groq.com/openai/v1"
+GROQ_CHAT_MODEL = "llama-3.3-70b-versatile"  # or "llama-3.1-8b-instant" for faster/smaller
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 # Pinecone Configuration
 PINECONE_INDEX_NAME = "deel-legal-cases"
@@ -96,7 +109,7 @@ EVAL_DIMENSIONS = [
 ]
 
 # LLM Judge Configuration
-JUDGE_MODEL = "gemini-2.0-flash"  # Model used for judging
+JUDGE_MODEL = "gemini-3.5-flash"  # Model used for judging
 JUDGE_TEMPERATURE = 0.1  # Low temperature for consistent scoring
 JUDGE_POSITION_SWAP_TRIALS = 2  # Number of swap trials for position debiasing
 
@@ -131,10 +144,11 @@ REDIS_ENABLED = True
 # =============================================================================
 
 # --- SaaS Authentication & Users ---
+DEV_MODE = bool(os.getenv("DEV_MODE", ""))
 _JWT_SECRET_KEY_ENV = os.getenv("JWT_SECRET_KEY")
 if _JWT_SECRET_KEY_ENV:
     JWT_SECRET_KEY = _JWT_SECRET_KEY_ENV
-elif os.getenv("DEV_MODE", ""):
+elif DEV_MODE:
     JWT_SECRET_KEY = "dev-mode-insecure-key-do-not-use-in-production"
     import warnings
     warnings.warn("DEV_MODE=1: JWT_SECRET_KEY set to insecure dev key. "
@@ -268,7 +282,7 @@ QUANTISATION_BITS = 8                # 4 or 8
 QUANTISATION_METHOD = "bitsandbytes"  # "bitsandbytes", "gptq", "awq"
 
 # Knowledge distillation
-DISTILLATION_TEACHER = "gemini-2.0-flash"
+DISTILLATION_TEACHER = "gemini-3.5-flash"
 DISTILLATION_STUDENT = "google/gemma-2-2b-it"
 DISTILLATION_SAMPLES = 5000
 
@@ -284,4 +298,44 @@ AUTOSCALE_COOLDOWN_SECONDS = 300
 PRIMARY_REGION = os.getenv("PRIMARY_REGION", "us-east-1")
 REPLICA_REGIONS = os.getenv("REPLICA_REGIONS", "eu-west-1,ap-southeast-1").split(",")
 REPLICATION_STRATEGY = "async"       # "async" or "sync"
+
+# =============================================================================
+# RAGFlow-Inspired Features (keyword boosting, filters, rerank, parent-child, GraphRAG)
+# =============================================================================
+
+# --- Keyword Boosting (RAGFlow keyword boosting) ---
+KEYWORD_BOOST_ENABLED = bool(os.getenv("KEYWORD_BOOST_ENABLED", ""))
+KEYWORD_BOOST_MULTIPLIER = float(os.getenv("KEYWORD_BOOST_MULTIPLIER", "5.0"))  # RAGFlow uses x5/x6
+# Regex patterns used to extract legal boost terms from queries/chunks
+KEYWORD_BOOST_TERM_PATTERNS = [
+    r"\d{4}\s+[A-Z]{2,6}\s+\d+",            # Citation: "2020 ONSC 1234"
+    r"\b[Ss]\.?\s*\d+(\.\d+)*",              # Section: "s. 56", "s. 5(1)"
+    r"\b[Ss]ection\s+\d+(\.\d+)*",           # "Section 56"
+    r"\b(?:ESA|OHSA|CLC|SCC|HRC|ESA 2000)\b",  # Legal acronyms
+    r"\b[A-Z][a-z]+\s+v\.?\s+[A-Z][a-z]+",   # Case names: "Sagaz v. 671122"
+]
+
+# --- Metadata-Condition Retrieval (RAGFlow metadata_condition) ---
+# Fields accepted in filter dicts for both BM25 and vector retrieval
+METADATA_FILTER_FIELDS = ["jurisdiction", "court", "statute", "legal_section"]
+
+# --- Reranking (RAGFlow bge-reranker-v2-m3) ---
+# Backends: "off" (default), "tei" (Text Embeddings Inference HTTP), "local" (FlagEmbedding)
+RERANKER_BACKEND = os.getenv("RERANKER_BACKEND", "off")
+RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
+RERANKER_TEI_URL = os.getenv("RERANKER_TEI_URL", "http://localhost:8080")
+RERANKER_TOP_K = int(os.getenv("RERANKER_TOP_K", "20"))   # candidates to rerank
+RERANKER_TIMEOUT = float(os.getenv("RERANKER_TIMEOUT", "10.0"))
+
+# --- Parent-Child Chunking (RAGFlow parent-child) ---
+PARENT_CHILD_ENABLED = bool(os.getenv("PARENT_CHILD_ENABLED", ""))
+PARENT_STORE_ES_INDEX = os.getenv("PARENT_STORE_ES_INDEX", "deel-legal-parents")
+PARENT_CHUNK_MAX_SIZE = int(os.getenv("PARENT_CHUNK_MAX_SIZE", "4096"))  # chars stored per parent
+
+# --- GraphRAG / LightRAG (RAGFlow GraphRAG) ---
+GRAPHRAG_ENABLED = bool(os.getenv("GRAPHRAG_ENABLED", ""))
+GRAPHRAG_PAGERANK_DAMPING = float(os.getenv("GRAPHRAG_PAGERANK_DAMPING", "0.85"))
+GRAPHRAG_TOP_ENTITIES = int(os.getenv("GRAPHRAG_TOP_ENTITIES", "5"))
+GRAPHRAG_MAX_DEPTH = int(os.getenv("GRAPHRAG_MAX_DEPTH", "2"))
+GRAPHRAG_MERGE_TOP_K = int(os.getenv("GRAPHRAG_MERGE_TOP_K", "5"))
 

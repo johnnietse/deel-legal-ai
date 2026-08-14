@@ -33,7 +33,7 @@ from datetime import datetime
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from rag_pipeline.embeddings import GeminiChat
+from rag_pipeline.embeddings import MultiModelChat
 from rag_pipeline.rag_query import LegalRAGQuery
 from config import (
     MCTS_N_SIMULATIONS,
@@ -208,14 +208,14 @@ class LegalReasoningAgent:
     def __init__(
         self,
         rag_query: Optional[LegalRAGQuery] = None,
-        judge: Optional[GeminiChat] = None,
+        judge: Optional[MultiModelChat] = None,
         n_simulations: int = MCTS_N_SIMULATIONS,
         exploration_constant: float = MCTS_EXPLORATION_CONSTANT,
         max_depth: int = MCTS_MAX_DEPTH,
         min_score_threshold: float = MCTS_MIN_SCORE_THRESHOLD,
     ):
         self.rag = rag_query or LegalRAGQuery()
-        self.judge = judge or GeminiChat()
+        self.judge = judge or MultiModelChat()
         self.n_simulations = n_simulations
         self.exploration_constant = exploration_constant
         self.max_depth = max_depth

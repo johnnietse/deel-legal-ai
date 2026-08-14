@@ -67,20 +67,26 @@ async def search_endpoint(
     start = (page - 1) * page_size
     page_results = results[start:start + page_size]
 
+    def _norm(r):
+        if isinstance(r, dict):
+            return r.get("id", ""), r.get("metadata", {}), r.get("score", 0.0)
+        return r.id, r.metadata, r.score
+
     return {
         "results": [
             SearchResult(
-                id=r.id,
-                title=r.metadata.get("title", ""),
-                excerpt=(r.metadata.get("content", "") or "")[:500],
+                id=rid,
+                title=meta.get("title", ""),
+                excerpt=(meta.get("content", "") or "")[:500],
                 source_type="case_law",
-                jurisdiction=str(r.metadata.get("jurisdiction", "") or ""),
-                court=str(r.metadata.get("court", "") or ""),
-                year=str(r.metadata.get("year", "") or ""),
-                citation=str(r.metadata.get("citation", "") or ""),
-                relevance_score=r.score,
+                jurisdiction=str(meta.get("jurisdiction", "") or ""),
+                court=str(meta.get("court", "") or ""),
+                year=str(meta.get("year", "") or ""),
+                citation=str(meta.get("citation", "") or ""),
+                relevance_score=score,
             )
             for r in page_results
+            for rid, meta, score in [_norm(r)]
         ],
         "total": len(results),
         "page": page,

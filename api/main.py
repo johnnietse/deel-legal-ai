@@ -12,6 +12,7 @@ Endpoints:
 
 import sys
 import logging
+import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Dict, Any, List, Optional
@@ -20,14 +21,12 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException, Query, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import Optional
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config import CHUNK_NAMESPACE
 from ml_classifier import WorkerClassificationAPI, ClassificationRequest
-from rag_pipeline import LegalRAGQuery
 from config import LOG_FORMAT, LOG_LEVEL
 from db.database import init_db, close_db
 from api.auth import get_optional_user, get_api_key_user
@@ -93,27 +92,27 @@ app.add_middleware(RateLimitMiddleware)
 # Initialize services (lazy loading)
 rag_query = None
 classification_api = None
+_rag_query_lock = threading.Lock()
 
 
 def get_rag_query():
     """Lazy load RAG query interface.
-    
+
     Uses VECTOR_STORE_BACKEND from .env (can be 'pinecone', 'milvus',
     or 'both' for DualVectorStore with Pinecone primary + Milvus failover).
+
+    Uses the dedicated search_key_manager (SEARCH_GEMINI_API_KEY) so that
+    user-facing queries are isolated from the embedder's 12-key pool.
     """
     global rag_query
     if rag_query is None:
-        try:
-            from config import PINECONE_INDEX_NAME, VECTOR_STORE_BACKEND
-            from rag_pipeline.vector_store import create_vector_store
-            rag_query = LegalRAGQuery(
-                vector_store=create_vector_store(
-                    backend=VECTOR_STORE_BACKEND,
-                    index_name=PINECONE_INDEX_NAME,
-                )
-            )
-        except Exception as e:
-            logger.error(f"Failed to initialize RAG query: {e}")
+        with _rag_query_lock:
+            if rag_query is None:
+                try:
+                    from rag_pipeline.services import build_rag_query
+                    rag_query = build_rag_query()
+                except Exception as e:
+                    logger.error(f"Failed to initialize RAG query: {e}")
     return rag_query
 
 
@@ -142,6 +141,11 @@ class RAGQueryRequest(BaseModel):
     question: str = Field(..., description="Legal question to answer")
     top_k: int = Field(default=5, ge=1, le=20, description="Number of sources to retrieve")
     jurisdiction: Optional[str] = Field(default=None, description="Filter by jurisdiction (e.g., 'ON', 'BC')")
+    court: Optional[str] = Field(default=None, description="Filter by court (e.g. 'ONSC')")
+    statute: Optional[str] = Field(default=None, description="Filter by statute (e.g. 'ESA')")
+    legal_section: Optional[str] = Field(default=None, description="Filter by legal section")
+    filters: Optional[Dict[str, Any]] = Field(default=None, description="Additional metadata filters (supports $in/$eq)")
+    mode: Optional[str] = Field(default=None, description="Retrieval mode: 'graphrag' or None for auto")
     verify: bool = Field(default=False, description="Run post-hoc verification to check for hallucinations")
 
 
@@ -151,6 +155,11 @@ class RAGQueryResponse(BaseModel):
     confidence: str
     sources: List[Dict[str, Any]]
     verification: Optional[Dict[str, Any]] = None
+    retrieval_mode: str = "single_hop"
+    metrics: Optional[Dict[str, Any]] = None
+    status: str = "ok"
+    error_type: Optional[str] = None
+    error_message: Optional[str] = None
 
 
 class ClassificationRequestModel(BaseModel):
@@ -198,9 +207,17 @@ async def health_check():
     """Check health of all services"""
     services = {}
     
-    # Check RAG
-    rag = get_rag_query()
-    services["rag"] = "available" if rag else "unavailable"
+    # Check RAG - lightweight check without full initialization
+    try:
+        from rag_pipeline.vector_store import create_vector_store
+        from config import PINECONE_INDEX_NAME, VECTOR_STORE_BACKEND
+        store = create_vector_store(backend=VECTOR_STORE_BACKEND, index_name=PINECONE_INDEX_NAME)
+        store.connect()
+        # Simple ping to verify connectivity
+        services["rag"] = "available"
+    except Exception as e:
+        logger.warning(f"RAG health check failed: {e}")
+        services["rag"] = "unavailable"
     
     # Check classifier
     clf = get_classification_api()
@@ -212,7 +229,7 @@ async def health_check():
     return HealthResponse(
         status="healthy" if all(s == "available" for s in services.values()) else "degraded",
         timestamp=datetime.now().isoformat(),
-        services=services
+        services=services,
     )
 
 
@@ -247,18 +264,28 @@ async def rag_query_endpoint(
         raise HTTPException(status_code=503, detail="RAG service unavailable")
     
     try:
-        filter_dict = {"jurisdiction": query_data.jurisdiction} if query_data.jurisdiction else None
-        
+        # Build merged metadata filter from explicit fields + generic filters dict
+        filter_dict: Dict[str, Any] = {}
+        for field in ("jurisdiction", "court", "statute", "legal_section"):
+            val = getattr(query_data, field, None)
+            if val:
+                filter_dict[field] = val
+        extra = query_data.filters or {}
+        if isinstance(extra, dict):
+            filter_dict.update(extra)
+        if not filter_dict:
+            filter_dict = None
+
         # Pass user_id to RAG query for metrics tracking
         user_id = effective_user.get("sub") if effective_user else None
-        
-        response = rag.query(
+
+        response = rag.query_smart(
             question=query_data.question,
-            top_k=query_data.top_k,
             filter=filter_dict,
             verify=query_data.verify,
             namespace=CHUNK_NAMESPACE,
             user_id=user_id,
+            mode=query_data.mode,
         )
         
         return RAGQueryResponse(
@@ -266,7 +293,12 @@ async def rag_query_endpoint(
             answer=response.answer,
             confidence=response.confidence,
             sources=response.sources,
-            verification=response.verification
+            verification=response.verification,
+            retrieval_mode=getattr(response, "retrieval_mode", "single_hop"),
+            metrics=getattr(response, "metrics", None),
+            status=getattr(response, "status", "ok"),
+            error_type=getattr(response, "error_type", None),
+            error_message=getattr(response, "error_message", None),
         )
         
     except Exception as e:

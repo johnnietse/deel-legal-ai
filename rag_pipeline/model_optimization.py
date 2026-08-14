@@ -388,7 +388,7 @@ class DistillationConfig:
     smaller model (e.g., Gemma 2B) using RAG pipeline outputs as
     training signal. Reduces cost by 60% with 5-10% quality drop.
     """
-    teacher_model: str = "gemini-2.0-flash"     # API-based teacher
+    teacher_model: str = "gemini-3.5-flash"     # API-based teacher
     student_model: str = "google/gemma-2-2b-it"  # Local student
     temperature: float = 3.0                     # Distillation temperature
     alpha: float = 0.5                           # Weight: CE vs KD loss

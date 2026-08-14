@@ -20,6 +20,7 @@ Usage:
 import os
 import sys
 import json
+import re
 import time
 import logging
 import hashlib
@@ -36,6 +37,7 @@ from config import (
     GEMINI_API_KEY, PINECONE_API_KEY, PINECONE_INDEX_NAME,
     DATA_DIR, CHUNK_NAMESPACE, DOCUMENT_SUMMARY_NAMESPACE,
     LOG_FORMAT, LOG_LEVEL,
+    KEYWORD_BOOST_ENABLED, PARENT_CHILD_ENABLED,
 )
 
 logging.basicConfig(level=getattr(logging, LOG_LEVEL), format=LOG_FORMAT)
@@ -495,6 +497,47 @@ def chunk_document(
 
 
 # ---------------------------------------------------------------------------
+# RAGFlow-inspired metadata helpers (boost_terms + parent_id)
+# ---------------------------------------------------------------------------
+
+_CHUNK_SUFFIX_RE = re.compile(r"_chunk\d+$")
+
+
+def derive_parent_id(doc_id: str) -> str:
+    """Return the base document id by stripping a trailing '_chunkN' suffix."""
+    return _CHUNK_SUFFIX_RE.sub("", doc_id)
+
+
+def compute_boost_terms(content: str) -> List[str]:
+    """Extract legal boost terms for a chunk; [] when disabled or on failure."""
+    if not KEYWORD_BOOST_ENABLED:
+        return []
+    try:
+        from rag_pipeline.keyword_booster import extract_boost_terms
+        return extract_boost_terms(content) or []
+    except Exception as e:
+        logger.warning(f"Boost term extraction failed: {e}")
+        return []
+
+
+def store_parent_content(doc: LegalDocument, seen_parents: set) -> None:
+    """Store full parent content once per chunked doc when PARENT_CHILD_ENABLED."""
+    if not PARENT_CHILD_ENABLED:
+        return
+    if not _CHUNK_SUFFIX_RE.search(doc.id):
+        return
+    parent_id = derive_parent_id(doc.id)
+    if parent_id in seen_parents:
+        return
+    seen_parents.add(parent_id)
+    try:
+        from rag_pipeline.parent_store import ParentStore
+        ParentStore().put_parent(parent_id, doc.content)
+    except Exception as e:
+        logger.warning(f"ParentStore put_parent({parent_id}) failed: {e}")
+
+
+# ---------------------------------------------------------------------------
 # Embedding + Upsert
 # ---------------------------------------------------------------------------
 
@@ -583,11 +626,14 @@ def upsert_to_pinecone(
     # Upsert chunks
     vectors_to_upsert = []
     failed = 0
+    seen_parents = set()
     
     for i, doc in enumerate(documents):
         try:
             # Proactive delay to avoid rate limits (Gemini free tier: ~60 req/min)
             time.sleep(1.0)
+            
+            store_parent_content(doc, seen_parents)
             
             embedding = generate_embedding(doc.content)
             vectors_to_upsert.append({
@@ -606,6 +652,8 @@ def upsert_to_pinecone(
                     "topic": doc.topic,
                     "url": doc.url,
                     "chunk_index": doc.chunk_index,
+                    "boost_terms": compute_boost_terms(doc.content),
+                    "parent_id": derive_parent_id(doc.id),
                 },
             })
             
@@ -686,6 +734,8 @@ def upsert_to_pinecone(
                     "topic": doc.topic,
                     "url": doc.url,
                     "chunk_index": doc.chunk_index,
+                    "boost_terms": compute_boost_terms(doc.content),
+                    "parent_id": derive_parent_id(doc.id),
                 }
             })
         bm25.build(bm25_chunks)

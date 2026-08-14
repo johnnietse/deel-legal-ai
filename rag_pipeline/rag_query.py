@@ -17,6 +17,7 @@ import sys
 import time
 import uuid
 import logging
+import urllib.parse
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
@@ -24,7 +25,8 @@ from dataclasses import dataclass
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat
+from rag_pipeline.embeddings import GeminiEmbeddings, GeminiChat, MultiModelChat
+from rag_pipeline.gemini_key_manager import GeminiRateLimitError
 from rag_pipeline.vector_store import create_vector_store, VectorSearchResult
 from rag_pipeline.verifier import ResponseVerifier
 from rag_pipeline.hybrid_retriever import HybridRetriever, HybridResult
@@ -32,12 +34,16 @@ from rag_pipeline.prompt_templates import PromptTemplateLibrary
 from rag_pipeline.confidence_gate import ConfidenceGate
 from rag_pipeline.query_cache import RAGQueryCache
 from rag_pipeline.metrics import QueryMetrics, MetricsCollector, timed_stage
+from rag_pipeline.reranker import Reranker
+from rag_pipeline.parent_store import ParentStore
 
 import config
 from config import (
     MULTI_GRANULARITY_SEARCH_ENABLED, MULTI_GRANULARITY_ENABLED,
     DOCUMENT_SUMMARY_NAMESPACE, CHUNK_NAMESPACE,
     HYBRID_DEFAULT_TOP_K,
+    KEYWORD_BOOST_ENABLED, KEYWORD_BOOST_MULTIPLIER,
+    RERANKER_BACKEND, PARENT_CHILD_ENABLED, GRAPHRAG_ENABLED,
 )
 
 # Setup logging
@@ -56,6 +62,9 @@ class RAGResponse:
     metrics: Optional[Dict[str, Any]] = None
     retrieval_mode: str = "hybrid"
     template_used: str = ""
+    status: str = "ok"
+    error_type: Optional[str] = None
+    error_message: Optional[str] = None
     
 
 class LegalRAGQuery:
@@ -76,7 +85,7 @@ class LegalRAGQuery:
     def __init__(
         self,
         embeddings: Optional[GeminiEmbeddings] = None,
-        chat: Optional[GeminiChat] = None,
+        chat: Optional[MultiModelChat] = None,
         vector_store=None,
         enable_cache: bool = True,
         enable_confidence_gate: bool = True,
@@ -85,6 +94,7 @@ class LegalRAGQuery:
         # Core services
         self.embeddings = embeddings or GeminiEmbeddings()
         self.chat = chat or GeminiChat()
+        logger.debug(f"LegalRAGQuery initialized with chat key_manager: {self.chat.key_manager.key_count if self.chat.key_manager else 'default'} keys")
         self.vector_store = vector_store if vector_store is not None else create_vector_store()
         self.verifier = ResponseVerifier(chat=self.chat)
         
@@ -92,12 +102,16 @@ class LegalRAGQuery:
         self.vector_store.connect()
         
         # ByteDance enhancements
+        self.reranker = Reranker(backend=RERANKER_BACKEND) if RERANKER_BACKEND != "off" else None
+        self.parent_store = ParentStore() if PARENT_CHILD_ENABLED else None
         self.hybrid_retriever = HybridRetriever(
             vector_store=self.vector_store,
             embeddings=self.embeddings,
             fusion_method=config.HYBRID_FUSION_METHOD,
             mmr_lambda=config.HYBRID_MMR_LAMBDA,
             default_top_k=config.HYBRID_DEFAULT_TOP_K,
+            reranker=self.reranker,
+            boost_enabled=KEYWORD_BOOST_ENABLED,
         )
         
         # Build BM25 index from vector store for hybrid search
@@ -124,6 +138,21 @@ class LegalRAGQuery:
             log_dir=config.METRICS_LOG_DIR,
         ) if enable_metrics else None
     
+    @staticmethod
+    def _derive_source_url(metadata: Optional[Dict[str, Any]]) -> str:
+        """Resolve a clickable URL for a source, preferring stored url then best-effort lookups."""
+        if not metadata:
+            return ""
+        url = metadata.get("url", "") or ""
+        if url:
+            return url
+        citation = metadata.get("citation") or metadata.get("primary_citation") or ""
+        case_name = metadata.get("title") or metadata.get("case_name") or ""
+        query = citation or case_name
+        if query:
+            return "https://www.canlii.org/en/#search/text=" + urllib.parse.quote(query.strip())
+        return ""
+
     def _format_sources(self, results) -> List[Dict[str, Any]]:
         """Format search results as source citations (supports both types)."""
         sources = []
@@ -158,6 +187,10 @@ class LegalRAGQuery:
                 source["court"] = metadata.get("court", "")
                 source["jurisdiction"] = metadata.get("jurisdiction", "")
                 source["legal_section"] = metadata.get("legal_section", "")
+                source["url"] = self._derive_source_url(metadata)
+                # Preserve parent_id for parent-child expansion
+                if metadata.get("parent_id"):
+                    source["parent_id"] = metadata.get("parent_id")
             
             sources.append(source)
         
@@ -294,11 +327,36 @@ class LegalRAGQuery:
         
         # Format sources
         sources = self._format_sources(search_results)
+
+        # Parent-child expansion (RAGFlow-inspired): when enabled, for each
+        # source with a parent_id, fetch the full parent document content.
+        # The parent content is used as the source content passed to the prompt
+        # (so the LLM reasons over complete context), while the child excerpt
+        # is retained in the source listing for citation purposes.
+        # Graceful skip when parent missing or ES down -> fall back to child content.
+        if PARENT_CHILD_ENABLED and self.parent_store:
+            for src in sources:
+                parent_id = src.get("parent_id")
+                if not parent_id:
+                    continue
+                parent_content = self.parent_store.get_parent(parent_id)
+                if parent_content:
+                    # Store child excerpt for source listing
+                    src["child_excerpt"] = src["excerpt"]
+                    # Use parent content for the prompt
+                    src["parent_content"] = parent_content
+                    src["content"] = parent_content
+                    # Update excerpt to show parent preview (child excerpt still in child_excerpt)
+                    src["excerpt"] = parent_content[:500] + "..." if len(parent_content) > 500 else parent_content
+                # If parent_content is None (missing or ES down), gracefully fall back
+                # to child content - no crash, no error, just use what we have
         
         # Determine confidence based on top scores
         avg_score = metrics.retrieval_avg_score
         confidence = "high" if avg_score > 0.8 else "medium" if avg_score > 0.6 else "low"
-        
+
+        verification_degraded = False
+
         # --- Stage 3 & 4: Template Selection + Generation ---
         if include_analysis:
             with timed_stage("generation", metrics):
@@ -320,10 +378,47 @@ class LegalRAGQuery:
                 metrics.generation_model = self.chat.model
                 
                 # Generate answer
-                answer = self.chat.generate(
-                    user_prompt,
-                    system_instruction=system_instruction,
-                )
+                try:
+                    answer = self.chat.generate(
+                        user_prompt,
+                        system_instruction=system_instruction,
+                    )
+                except GeminiRateLimitError as e:
+                    logger.warning(f"[{query_id}] Generation rate limited: {e}")
+                    metrics.generation_output_tokens = 0
+                    if self.metrics_collector:
+                        self.metrics_collector.record(metrics)
+                    return RAGResponse(
+                        query=question,
+                        answer="The search sources are available below, but the AI summarizer is temporarily rate-limited. Please try again in a moment.",
+                        sources=sources,
+                        confidence="low",
+                        verification=None,
+                        metrics=metrics.to_dict(),
+                        retrieval_mode=metrics.retrieval_mode,
+                        template_used=template_used,
+                        status="degraded",
+                        error_type="rate_limit",
+                        error_message=str(e),
+                    )
+                except Exception as e:
+                    logger.error(f"[{query_id}] Generation failed: {e}")
+                    metrics.generation_output_tokens = 0
+                    if self.metrics_collector:
+                        self.metrics_collector.record(metrics)
+                    return RAGResponse(
+                        query=question,
+                        answer="I found relevant legal sources, but encountered an error generating the full answer. Please review the sources below.",
+                        sources=sources,
+                        confidence="low",
+                        verification=None,
+                        metrics=metrics.to_dict(),
+                        retrieval_mode=metrics.retrieval_mode,
+                        template_used=template_used,
+                        status="degraded",
+                        error_type="generation_failed",
+                        error_message=str(e),
+                    )
                 
                 metrics.generation_output_tokens = len(answer.split())
             
@@ -347,31 +442,40 @@ class LegalRAGQuery:
             if verify:
                 with timed_stage("verification", metrics):
                     logger.info(f"[{query_id}] Running post-hoc verification...")
-                    verification = self.verifier.verify_grounding(answer, sources)
-                    verification_report = verification.to_dict()
-                    
-                    metrics.verification_grounding_score = verification.grounding_score
-                    metrics.verification_claim_count = len(verification.claims)
-                    metrics.verification_hallucination_count = len(verification.unsupported_claims)
-                    
-                    if not verification.is_grounded:
-                        logger.warning(
-                            f"[{query_id}] Verification failed! "
-                            f"Unsupported: {verification.unsupported_claims}"
-                        )
-                        if verification.corrected_answer:
-                            answer = (
-                                f"{verification.corrected_answer}\n\n"
-                                "[System Note: The original response was modified because "
-                                "it contained claims unsupported by the retrieved documents.]"
+                    try:
+                        verification = self.verifier.verify_grounding(answer, sources)
+                        verification_report = verification.to_dict()
+                        
+                        metrics.verification_grounding_score = verification.grounding_score
+                        metrics.verification_claim_count = len(verification.claims)
+                        metrics.verification_hallucination_count = len(verification.unsupported_claims)
+                        
+                        if not verification.is_grounded:
+                            logger.warning(
+                                f"[{query_id}] Verification failed! "
+                                f"Unsupported: {verification.unsupported_claims}"
                             )
-                        else:
-                            answer = (
-                                f"{answer}\n\n"
-                                "[System Warning: The verification module flagged the "
-                                f"following claims as potentially unsupported: "
-                                f"{', '.join(verification.unsupported_claims)}]"
-                            )
+                            if verification.corrected_answer:
+                                answer = (
+                                    f"{verification.corrected_answer}\n\n"
+                                    "[System Note: The original response was modified because "
+                                    "it contained claims unsupported by the retrieved documents.]"
+                                )
+                            else:
+                                answer = (
+                                    f"{answer}\n\n"
+                                    "[System Warning: The verification module flagged the "
+                                    f"following claims as potentially unsupported: "
+                                    f"{', '.join(verification.unsupported_claims)}]"
+                                )
+                    except GeminiRateLimitError as e:
+                        logger.warning(f"[{query_id}] Verification skipped (rate limited): {e}")
+                        verification_degraded = True
+                        verification_report = None
+                    except Exception as e:
+                        logger.warning(f"[{query_id}] Verification skipped (error): {e}")
+                        verification_degraded = True
+                        verification_report = None
         else:
             answer = "See sources below for relevant legal information."
             verification_report = None
@@ -393,10 +497,16 @@ class LegalRAGQuery:
             metrics=metrics.to_dict(),
             retrieval_mode=metrics.retrieval_mode,
             template_used=template_used if include_analysis else "",
+            status=("degraded" if verification_degraded else "ok"),
+            error_type=("verification_failed" if verification_degraded else None),
+            error_message=("Verification skipped due to a transient error." if verification_degraded else None),
         )
         
-        # --- Stage 8: Cache Store ---
-        if self.cache and include_analysis:
+        # --- Stage 8: Cache Store (only healthy responses) ---
+        # Degraded/error responses are never cached: caching them would
+        # serve stale "rate-limited" answers for the TTL window even after
+        # the provider recovers.
+        if self.cache and include_analysis and response.status == "ok":
             self.cache.put_response(
                 question,
                 {
@@ -405,7 +515,7 @@ class LegalRAGQuery:
                     "sources": response.sources,
                     "confidence": response.confidence,
                     "retrieval_mode": response.retrieval_mode,
-"template_used": response.template_used,
+                    "template_used": response.template_used,
                 },
                 top_k=top_k, namespace=namespace,
             )
@@ -446,12 +556,48 @@ class LegalRAGQuery:
             max_hops=max_hops,
         )
         
-        result = retriever.retrieve(
-            question,
-            top_k_per_hop=top_k_per_hop,
-            namespace=namespace,
-            filter=filter,
-        )
+        try:
+            result = retriever.retrieve(
+                question,
+                top_k_per_hop=top_k_per_hop,
+                namespace=namespace,
+                filter=filter,
+            )
+        except GeminiRateLimitError as e:
+            logger.warning(f"[{query_id}] Multi-hop retrieval rate limited: {e}")
+            metrics.total_latency_ms = (time.perf_counter() - total_start) * 1000
+            metrics.retrieval_mode = "multi_hop"
+            if self.metrics_collector:
+                self.metrics_collector.record(metrics)
+            return RAGResponse(
+                query=question,
+                answer="I couldn't complete the multi-step legal research right now because the AI service is temporarily rate-limited. Please try again in a moment.",
+                sources=[],
+                confidence="low",
+                verification=None,
+                retrieval_mode="multi_hop",
+                metrics=metrics.to_dict(),
+                status="degraded",
+                error_type="rate_limit",
+                error_message=str(e),
+            )
+        except Exception as e:
+            logger.error(f"[{query_id}] Multi-hop retrieval failed: {e}")
+            metrics.total_latency_ms = (time.perf_counter() - total_start) * 1000
+            if self.metrics_collector:
+                self.metrics_collector.record(metrics)
+            return RAGResponse(
+                query=question,
+                answer="I encountered an error during multi-step legal research. Please try again.",
+                sources=[],
+                confidence="low",
+                verification=None,
+                retrieval_mode="multi_hop",
+                metrics=metrics.to_dict(),
+                status="degraded",
+                error_type="retrieval_failed",
+                error_message=str(e),
+            )
         
         # Convert to standard RAGResponse format
         sources = []
@@ -470,15 +616,25 @@ class LegalRAGQuery:
         
         answer = result.answer
         verification_report = None
+        verification_degraded = False
         if verify:
             logger.info("Running post-hoc verification on multi-hop answer...")
-            verification = self.verifier.verify_grounding(answer, sources)
-            verification_report = verification.to_dict()
-            if not verification.is_grounded:
-                if verification.corrected_answer:
-                    answer = f"{verification.corrected_answer}\n\n[System Note: The original response was modified because it contained claims unsupported by the retrieved documents.]"
-                else:
-                    answer = f"{answer}\n\n[System Warning: The verification module flagged the following claims as potentially unsupported by the documents: {', '.join(verification.unsupported_claims)}]"
+            try:
+                verification = self.verifier.verify_grounding(answer, sources)
+                verification_report = verification.to_dict()
+                if not verification.is_grounded:
+                    if verification.corrected_answer:
+                        answer = f"{verification.corrected_answer}\n\n[System Note: The original response was modified because it contained claims unsupported by the retrieved documents.]"
+                    else:
+                        answer = f"{answer}\n\n[System Warning: The verification module flagged the following claims as potentially unsupported by the documents: {', '.join(verification.unsupported_claims)}]"
+            except GeminiRateLimitError as e:
+                logger.warning(f"Multi-hop verification skipped (rate limited): {e}")
+                verification_degraded = True
+                verification_report = None
+            except Exception as e:
+                logger.warning(f"Multi-hop verification skipped (error): {e}")
+                verification_degraded = True
+                verification_report = None
         
         # Record metrics
         metrics.total_latency_ms = (time.perf_counter() - total_start) * 1000
@@ -493,7 +649,10 @@ class LegalRAGQuery:
             confidence=confidence,
             verification=verification_report,
             retrieval_mode="multi_hop",
-metrics=metrics.to_dict(),
+            metrics=metrics.to_dict(),
+            status=("degraded" if verification_degraded else "ok"),
+            error_type=("verification_failed" if verification_degraded else None),
+            error_message=("Verification skipped due to a transient error." if verification_degraded else None),
         )
     
     def query_smart(
@@ -503,20 +662,125 @@ metrics=metrics.to_dict(),
         filter: Optional[Dict[str, Any]] = None,
         verify: bool = False,
         user_id: Optional[str] = None,
+        mode: Optional[str] = None,
     ) -> RAGResponse:
         """
-        Smart query that auto-routes between single-hop and multi-hop
-        based on question complexity.
+        Smart query that auto-routes between single-hop, MCTS reasoning,
+        and multi-hop based on question complexity.
+
+        Args:
+            mode: Optional explicit retrieval mode. 'graphrag' routes to
+                  GraphRAG (entity graph + PageRank) when GRAPHRAG_ENABLED.
         """
+        if mode == "graphrag":
+            if not GRAPHRAG_ENABLED:
+                logger.warning("GraphRAG mode requested but GRAPHRAG_ENABLED is False; falling back to smart routing")
+            else:
+                from rag_pipeline.graphrag import query_graphrag
+                return query_graphrag(
+                    self, question, top_k=5, namespace=namespace,
+                    filter=filter, verify=verify, user_id=user_id,
+                )
+
         complexity = self._estimate_complexity(question)
         
         if complexity == "complex":
-            logger.info("Auto-routing to multi-hop retrieval")
-            return self.query_multi_hop(question, namespace=namespace, filter=filter, verify=verify, user_id=user_id)
+            logger.info("Auto-routing to MCTS reasoning")
+            return self.query_reasoned(
+                question, namespace=namespace, filter=filter,
+                verify=verify, user_id=user_id,
+            )
         else:
             logger.info("Auto-routing to single-hop retrieval")
             return self.query(question, namespace=namespace, filter=filter, verify=verify, user_id=user_id)
-    
+
+    def query_reasoned(
+        self,
+        question: str,
+        namespace: str = "",
+        filter: Optional[Dict[str, Any]] = None,
+        verify: bool = False,
+        user_id: Optional[str] = None,
+        n_simulations: Optional[int] = None,
+    ) -> RAGResponse:
+        """
+        Query using general MCTS reasoning (query_reasoned = MCTS as the
+        algorithm for complex questions).
+
+        Uses MCTSReasoner to explore a tree of sub-questions, retrieving
+        evidence at each node and scoring with cheap proxies first, judge
+        LLM only when needed. Falls back to standard RAG on failure.
+        """
+        from rag_pipeline.mcts_reasoner import MCTSReasoner
+
+        # Adaptive budget: scale simulations with question complexity
+        complexity = self._estimate_complexity(question)
+        if n_simulations is None:
+            n_simulations = (
+                30 if complexity == "complex"
+                else (15 if complexity == "medium" else 8)
+            )
+
+        reasoner = MCTSReasoner(
+            rag_query=self,
+            judge=self.chat,
+            n_simulations=n_simulations,
+            namespace=namespace,
+            filter=filter,
+        )
+
+        try:
+            result = reasoner.reason(question, n_simulations=n_simulations)
+        except Exception as e:
+            logger.warning(
+                f"MCTS reasoning failed ({e}); falling back to standard RAG"
+            )
+            return self.query(
+                question, namespace=namespace, filter=filter,
+                verify=verify, user_id=user_id,
+            )
+
+        sources = []
+        for i, s in enumerate(result.best_path[1:], 1):
+            for ev_index, excerpt in enumerate(s.get("evidence", [])):
+                sources.append({
+                    "index": len(sources) + 1,
+                    "id": f"{s['id']}_{ev_index}",
+                    "score": s.get("average_reward", 0.0),
+                    "excerpt": excerpt[:500],
+                    "content": excerpt,
+                    "retrieved_by": ["mcts"],
+                    "case_name": s.get("issue", "MCTS reasoning step"),
+                })
+
+        confidence = "high" if result.confidence > 0.7 else \
+                     "medium" if result.confidence > 0.4 else "low"
+
+        if verify:
+            logger.info("Running post-hoc verification on MCTS answer...")
+            try:
+                verification = self.verifier.verify_grounding(result.answer, sources)
+                if verification.unsupported_claims:
+                    result.answer = (
+                        f"{result.answer}\n\n[System Warning: verified {len(verification.unsupported_claims)} "
+                        "claims as potentially unsupported by retrieved documents.]"
+                    )
+            except Exception as e:
+                logger.warning(f"MCTS verification skipped (error): {e}")
+
+        return RAGResponse(
+            query=question,
+            answer=result.answer,
+            sources=sources,
+            confidence=confidence,
+            retrieval_mode="mcts",
+            metrics={
+                "mcts": result.tree_statistics,
+                "duration_ms": result.duration_ms,
+            },
+            status="ok",
+        )
+
     def _estimate_complexity(self, question: str) -> str:
         """
         Estimate question complexity for routing decisions.

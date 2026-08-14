@@ -1,0 +1,128 @@
+name: RAGFlow Feature Activation
+
+on:
+  schedule:
+    # Run every 30 minutes like CSV ingestion
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      enrich_max:
+        description: 'Max chunks to enrich (0=all)'
+        required: false
+        default: '0'
+        type: string
+      kg_max:
+        description: 'Max docs for KG build (0=all)'
+        required: false
+        default: '0'
+        type: string
+      reset:
+        description: 'Reset all checkpoints'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  GEMINI_BACKUP_KEYS: ${{ secrets.GEMINI_BACKUP_KEYS }}
+  ELASTICSEARCH_CLOUD_ID: ${{ secrets.ELASTICSEARCH_CLOUD_ID }}
+  ELASTICSEARCH_API_KEY: ${{ secrets.ELASTICSEARCH_API_KEY }}
+  KEYWORD_BOOST_ENABLED: 'true'
+  PARENT_CHILD_ENABLED: 'true'
+  GRAPHRAG_ENABLED: 'true'
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore checkpoints from cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            data/enrich_checkpoint.json
+            data/kg_build_checkpoint.json
+            data/legal_knowledge_graph.json
+          key: ragflow-activation-state-v1
+
+      - name: Reset checkpoints (manual)
+        if: ${{ github.event.inputs.reset == 'true' }}
+        run: |
+          rm -f data/enrich_checkpoint.json data/kg_build_checkpoint.json data/legal_knowledge_graph.json
+
+      - name: Enrich Pinecone metadata (boost_terms + parent_id)
+        run: |
+          python scripts/enrich_metadata.py \
+            --datasets all \
+            --max ${{ github.event.inputs.enrich_max || '0' }}
+        shell: bash
+
+      - name: Build knowledge graph (checkpointed)
+        run: |
+          python scripts/build_kg_checkpointed.py \
+            --datasets all \
+            --max ${{ github.event.inputs.kg_max || '0' }} \
+            --save-every 10
+        shell: bash
+
+      - name: Save checkpoints to cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/enrich_checkpoint.json
+            data/kg_build_checkpoint.json
+            data/legal_knowledge_graph.json
+          key: ragflow-activation-state-v1
+
+      - name: Upload progress artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ragflow-activation-state
+          path: |
+            data/enrich_checkpoint.json
+            data/kg_build_checkpoint.json
+            data/legal_knowledge_graph.json
+            data/enrich_metadata.log
+            data/kg_build.log
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## RAGFlow Activation Summary"
+          if [ -f data/kg_build_checkpoint.json ]; then
+            echo "- KG docs processed: $(python -c 'import json;print(len(json.load(open("data/kg_build_checkpoint.json"))["processed_ids"]))' 2>/dev/null || echo '?')"
+          fi
+          if [ -f data/enrich_checkpoint.json ]; then
+            echo "- Chunks enriched: $(python -c 'import json;print(len(json.load(open("data/enrich_checkpoint.json"))["processed_ids"]))' 2>/dev/null || echo '?')"
+          fi
+          if [ -f data/legal_knowledge_graph.json ]; then
+            echo "- KG nodes: $(python -c 'import json;print(len(json.load(open("data/legal_knowledge_graph.json"))["nodes"]))' 2>/dev/null || echo '?')"
+          fi
+        shell: bash
+
+  notify-failure:
+    needs: activate
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Failure notification
+        run: |
+          echo "RAGFlow activation workflow failed. Check GitHub Actions for details."

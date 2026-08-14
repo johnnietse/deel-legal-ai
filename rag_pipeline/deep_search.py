@@ -76,11 +76,9 @@ class DeepSearchEngine:
     """Orchestrates multi-source legal deep research."""
 
     def __init__(self):
-        from rag_pipeline.rag_query import LegalRAGQuery
-        from rag_pipeline.embeddings import GeminiChat
-        from rag_pipeline.gemini_key_manager import search_key_manager
-        self.rag_query = LegalRAGQuery()
-        self.chat = GeminiChat(key_manager=search_key_manager)
+        from rag_pipeline.services import build_rag_query
+        self.rag_query = build_rag_query()
+        self.chat = self.rag_query.chat
 
     async def _search_vector(self, query: str, top_k: int = 10) -> List[UnifiedSource]:
         """Search Pinecone vector store."""
@@ -231,9 +229,13 @@ class DeepSearchEngine:
                 temperature=0.3,
                 max_tokens=2048,
             )
-            text = response.get("text", "") or response.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-            if not text:
-                text = response if isinstance(response, str) else str(response)
+            # GeminiChat.generate returns a plain string
+            if isinstance(response, str):
+                text = response
+            else:
+                text = response.get("text", "") or response.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                if not text:
+                    text = str(response)
 
             # Extract follow-up questions (lines after "Follow-up" or last 3 lines starting with "?")
             lines = text.split("\n")

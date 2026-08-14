@@ -165,7 +165,7 @@ class LegalKnowledgeGraph:
         entity_types_str = ", ".join(KG_ENTITY_TYPES)
         relation_types_str = ", ".join(KG_RELATION_TYPES)
         
-        prompt = f"""Extract legal knowledge graph triples from the following legal text.
+        prompt = f"""You are a legal knowledge extraction system. Output ONLY valid JSON.
 
 TEXT:
 {text[:3000]}
@@ -173,29 +173,18 @@ TEXT:
 ENTITY TYPES: {entity_types_str}
 RELATION TYPES: {relation_types_str}
 
-Extract triples in this JSON format:
+Extract triples as JSON:
 {{
-    "triples": [
-        {{
-            "subject": "<entity name>",
-            "subject_type": "<one of the entity types>",
-            "predicate": "<one of the relation types>",
-            "object": "<entity name>",
-            "object_type": "<one of the entity types>",
-            "confidence": <float 0.0-1.0>
-        }}
-    ]
+  "triples": [
+    {{"subject": "string", "subject_type": "string", "predicate": "string", "object": "string", "object_type": "string", "confidence": 0.0}}
+  ]
 }}
 
-Rules:
-1. Only use entity types from the provided list
-2. Only use relation types from the provided list
-3. Normalize entity names (e.g., "Sagaz test" not "the test from Sagaz")
-4. Include confidence scores reflecting certainty of the extracted relation
-5. Extract ALL meaningful legal relationships, not just the most obvious ones
-6. For cases, use the standard citation format when available
-
-Respond ONLY with the JSON object."""
+RULES:
+- ONLY use entity types: {entity_types_str}
+- ONLY use relation types: {relation_types_str}
+- Output ONLY the JSON object. NO text, NO markdown, NO reasoning.
+- If no triples found, return {{"triples": []}}"""
         
         try:
             response = self.chat.generate(

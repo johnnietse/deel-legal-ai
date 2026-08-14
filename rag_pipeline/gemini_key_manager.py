@@ -30,9 +30,17 @@ import time as _time
 import threading
 import logging
 import random
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
+
+
+class GeminiRateLimitError(RuntimeError):
+    """Raised when the Gemini pool is exhausted or rate-limited past the retry budget."""
+
+
+class PoolExhaustedError(KeyError):
+    """Raised when every key in the pool is cooling down / quota-exhausted."""
 
 
 class GeminiKeyManager:
@@ -54,8 +62,13 @@ class GeminiKeyManager:
         self._rate_limits_hit: List[int] = []         # total rate limits per key
         self._consecutive_failures: List[int] = []    # consecutive failures for circuit breaker
         self._cool_until: List[float] = []            # timestamp when key can be used again
+        self._pool_cool_until: float = 0.0            # pool-level cooldown (all keys exhausted)
+        self._all_pool_failures: int = 0              # pool trips since last success
         self._primary_env = primary_env
         self._backup_env = backup_env
+        self.pool_cooldown_seconds = float(
+            os.environ.get("GEMINI_POOL_COOLDOWN_SECONDS", "30")
+        )
         self._load_keys()
 
     def _load_keys(self):
@@ -96,21 +109,24 @@ class GeminiKeyManager:
                 raise ValueError("No Gemini API keys configured")
 
             now = _time.time()
-            
+
+            # Pool-level circuit breaker: all keys exhausted → fail fast, never sleep in lock
+            if now < self._pool_cool_until:
+                raise PoolExhaustedError(
+                    f"Gemini key pool exhausted; retry in {self._pool_cool_until - now:.0f}s"
+                )
+
             # Check if current key is in cooldown; if so, rotate
             attempts = 0
             while self._cool_until[self._current_index] > now and attempts < len(self._keys):
                 self._current_index = (self._current_index + 1) % len(self._keys)
                 attempts += 1
 
-            # If all keys are in cooldown, wait for the shortest cooldown
+            # All keys are in cooldown → pool exhausted. No sleeping under the lock.
             if self._cool_until[self._current_index] > now:
-                shortest_wait = min(max(0.0, c - now) for c in self._cool_until)
-                logger.warning(
-                    f"All {len(self._keys)} keys in cooldown. Waiting {shortest_wait:.1f}s."
+                raise PoolExhaustedError(
+                    f"All {len(self._keys)} Gemini keys are in cooldown"
                 )
-                # Sleep outside the lock to avoid blocking other threads
-                _time.sleep(shortest_wait)
 
             self._last_used[self._current_index] = _time.time()
             return self._keys[self._current_index]
@@ -188,6 +204,16 @@ class GeminiKeyManager:
                 f"Key {old_idx + 1}: {self._rate_limits_hit[old_idx]} total rate limits."
             )
 
+            # Pool-level circuit breaker: if every key is now cooling, cooldown the whole pool
+            if all(c > _time.time() for c in self._cool_until):
+                self._pool_cool_until = _time.time() + self.pool_cooldown_seconds
+                self._all_pool_failures += 1
+                logger.warning(
+                    f"All {len(self._keys)} keys rate limited. "
+                    f"Tripping pool cooldown for {self.pool_cooldown_seconds}s "
+                    f"(pool failures: {self._all_pool_failures})."
+                )
+
             return self._keys[self._current_index]
 
     def check_cooldown(self) -> float:
@@ -204,10 +230,37 @@ class GeminiKeyManager:
     def report_success(self):
         """Report a successful API call — resets consecutive failure counter."""
         with self._lock:
+            self._pool_cool_until = 0.0
+            self._all_pool_failures = 0
             if self._keys and self._current_index < len(self._consecutive_failures):
                 self._consecutive_failures[self._current_index] = 0
                 if self._rate_limits_hit[self._current_index] > 0:
                     self._rate_limits_hit[self._current_index] -= 1
+
+    def check_pool_available(self) -> bool:
+        """True if the pool is not currently in a cooldown trip."""
+        with self._lock:
+            return _time.time() >= self._pool_cool_until
+
+    def get_stats(self) -> Dict[str, Any]:
+        """Return pool state for observability (never key material)."""
+        with self._lock:
+            now = _time.time()
+            return {
+                "key_count": len(self._keys),
+                "current_index": self._current_index + 1,
+                "per_key": [
+                    {
+                        "index": i + 1,
+                        "rate_limits_hit": self._rate_limits_hit[i],
+                        "consecutive_failures": self._consecutive_failures[i],
+                        "cool_until_remaining": max(0.0, self._cool_until[i] - now),
+                    }
+                    for i in range(len(self._keys))
+                ],
+                "pool_cooldown_remaining": max(0.0, self._pool_cool_until - now),
+                "pool_failures": self._all_pool_failures,
+            }
 
     @property
     def key_count(self) -> int:

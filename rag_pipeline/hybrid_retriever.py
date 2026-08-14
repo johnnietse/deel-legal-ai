@@ -14,8 +14,14 @@ import re
 import math
 import logging
 import hashlib
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional, Tuple, TYPE_CHECKING
 from dataclasses import dataclass, field
+
+from config import KEYWORD_BOOST_ENABLED, KEYWORD_BOOST_MULTIPLIER
+from rag_pipeline.keyword_booster import extract_boost_terms, apply_boost
+
+if TYPE_CHECKING:
+    from rag_pipeline.reranker import Reranker
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +40,43 @@ class HybridResult:
     bm25_score: float = 0.0            # raw BM25 score (0 if not retrieved)
     vector_score: float = 0.0          # raw vector similarity (0 if not retrieved)
     retrieved_by: List[str] = field(default_factory=list)  # ["bm25", "vector"]
+
+
+# ---------------------------------------------------------------------------
+# Metadata Filter Helpers
+# ---------------------------------------------------------------------------
+
+def _matches_filter(metadata: Dict[str, Any], filter: Optional[Dict[str, Any]]) -> bool:
+    """
+    Return True if a doc's metadata satisfies all filter conditions.
+
+    Supported operators:
+      - Equality:      {'court': 'ONSC'}            -> metadata['court'] == 'ONSC'
+      - $in:           {'jurisdiction': {'$in': [...]}} -> metadata['jurisdiction'] in [...]
+      - $eq:           {'court': {'$eq': 'ONSC'}}   -> metadata['court'] == 'ONSC'
+
+    A doc matches only if ALL filter keys match. A missing metadata field
+    excludes the doc, unless the filter value is None (which matches any doc).
+    """
+    if not filter:
+        return True
+    for key, value in filter.items():
+        if value is None:
+            continue
+        field_value = metadata.get(key)
+        if isinstance(value, dict):
+            if "$in" in value:
+                if field_value not in value["$in"]:
+                    return False
+            elif "$eq" in value:
+                if field_value != value["$eq"]:
+                    return False
+            else:
+                return False
+        else:
+            if field_value != value:
+                return False
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -103,12 +146,29 @@ class BM25Index:
 
     # -- Search ------------------------------------------------------------
 
-    def search(self, query: str, top_k: int = 50) -> List[Tuple[int, float]]:
+    def search(
+        self,
+        query: str,
+        top_k: int = 50,
+        filter: Optional[Dict[str, Any]] = None,
+    ) -> List[Tuple[int, float]]:
         """
         Return (doc_index, bm25_score) pairs sorted by score descending.
+
+        Args:
+            filter: Optional metadata filter; docs whose metadata does not
+                    match are excluded (see _matches_filter).
         """
         if not self._indexed:
             logger.warning("BM25 index not built; returning empty results")
+            return []
+
+        # Restrict scoring to docs that satisfy the metadata filter
+        valid_indices = [
+            i for i, doc in enumerate(self._docs)
+            if _matches_filter(doc.get("metadata", {}), filter)
+        ]
+        if not valid_indices:
             return []
 
         query_tokens = self._tokenize(query)
@@ -116,9 +176,10 @@ class BM25Index:
 
         for qt in query_tokens:
             idf = self._idf.get(qt, 0.0)
-            for idx, doc_tokens in enumerate(self._tokenized):
-                if idf == 0.0:
-                    continue
+            if idf == 0.0:
+                continue
+            for idx in valid_indices:
+                doc_tokens = self._tokenized[idx]
                 tf = doc_tokens.count(qt)
                 dl = len(doc_tokens)
                 numerator = tf * (self.k1 + 1)
@@ -135,9 +196,10 @@ class BM25Index:
         top_k: int = 50,
         id_key: str = "chunk_id",
         content_key: str = "content",
+        filter: Optional[Dict[str, Any]] = None,
     ) -> List[HybridResult]:
         """Search and return as HybridResult objects."""
-        raw = self.search(query, top_k=top_k)
+        raw = self.search(query, top_k=top_k, filter=filter)
         results = []
         for idx, score in raw:
             doc = self._docs[idx]
@@ -422,6 +484,8 @@ class HybridRetriever:
         fusion_method: str = "rrf",       # "rrf" or "weighted"
         mmr_lambda: float = 0.7,
         default_top_k: int = 5,
+        reranker: Optional["Reranker"] = None,
+        boost_enabled: bool = False,
     ):
         self.vector_store = vector_store
         self.embeddings = embeddings
@@ -430,6 +494,8 @@ class HybridRetriever:
         self.mmr_lambda = mmr_lambda
         self.default_top_k = default_top_k
         self.classifier = QueryClassifier()
+        self.reranker = reranker
+        self.boost_enabled = boost_enabled
 
     def index_chunks(self, chunks: List[Dict[str, Any]]):
         """Build BM25 index from chunks (call during ingestion)."""
@@ -516,7 +582,7 @@ class HybridRetriever:
 
         # BM25 search
         if query_type != "vector" and self.bm25._indexed:
-            bm25_results = self.bm25.search_as_results(query, top_k=fetch_k)
+            bm25_results = self.bm25.search_as_results(query, top_k=fetch_k, filter=filter)
             logger.info(f"BM25 returned {len(bm25_results)} results")
 
         # Vector search
@@ -533,6 +599,26 @@ class HybridRetriever:
             fused = reciprocal_rank_fusion([bm25_results, vector_results])
         else:
             fused = weighted_fusion(bm25_results, vector_results, bm25_weight, vector_weight)
+
+        # Step 3b: Keyword boost (RAGFlow-inspired) — optional, off by default
+        if self.boost_enabled and KEYWORD_BOOST_ENABLED and fused:
+            boost_terms = extract_boost_terms(query)
+            if boost_terms:
+                scores = [r.score for r in fused]
+                docs = [{"content": r.content, "metadata": r.metadata} for r in fused]
+                boosted = apply_boost(scores, docs, boost_terms, KEYWORD_BOOST_MULTIPLIER)
+                for r, s in zip(fused, boosted):
+                    r.score = s
+                fused.sort(key=lambda r: r.score, reverse=True)
+                logger.info(
+                    f"Keyword boost applied: {len(boost_terms)} terms, "
+                    f"multiplier={KEYWORD_BOOST_MULTIPLIER}"
+                )
+
+        # Step 3c: Cross-encoder rerank (RAGFlow-inspired) — optional, off by default
+        if self.reranker is not None and self.reranker.backend != "off":
+            fused = self.reranker.rerank(query, fused, top_k=top_k)
+            logger.info(f"Rerank applied (backend={self.reranker.backend})")
 
         # Step 4: MMR diversity reranking
         if len(fused) > top_k:

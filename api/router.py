@@ -48,6 +48,10 @@ api_router.include_router(deepsearch_router)
 from api.search import router as search_router
 api_router.include_router(search_router)
 
+# Background job endpoints: POST /rag/query/job, GET /rag/query/job/{id}
+from api.jobs import router as jobs_router
+api_router.include_router(jobs_router)
+
 
 @api_router.get("/api/endpoints", tags=["System"])
 async def list_endpoints():

@@ -103,6 +103,7 @@ class ResponseVerifier:
 
     def __init__(self, chat: Optional[GeminiChat] = None):
         self.chat = chat or GeminiChat()
+        logger.info(f"ResponseVerifier initialized with chat key_manager: {self.chat.key_manager.key_count if self.chat.key_manager else 'default'} keys")
 
     # ------------------------------------------------------------------
     # Public API

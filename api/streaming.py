@@ -94,9 +94,9 @@ async def _token_generator(question: str) -> AsyncGenerator[str, None]:
     loop = asyncio.get_event_loop()
 
     try:
-        from rag_pipeline.rag_query import LegalRAGQuery
+        from rag_pipeline.services import build_rag_query
 
-        rag = LegalRAGQuery()
+        rag = build_rag_query()
 
         def _run_query():
             return rag.query(question=question, top_k=5)
