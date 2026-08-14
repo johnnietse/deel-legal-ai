@@ -71,7 +71,6 @@ jobs:
       - name: Enrich Pinecone metadata (boost_terms + parent_id)
         run: |
           python scripts/enrich_metadata.py \
-            --datasets all \
             --max ${{ github.event.inputs.enrich_max || '0' }}
         shell: bash
 
