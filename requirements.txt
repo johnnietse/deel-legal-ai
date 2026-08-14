@@ -6,6 +6,7 @@ requests>=2.31.0
 # Data Processing
 pandas>=2.1.0
 numpy>=1.26.0
+huggingface_hub>=0.30.0
 
 # Web Scraping (RAG Pipeline)
 beautifulsoup4>=4.12.0
