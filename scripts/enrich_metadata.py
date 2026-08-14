@@ -60,17 +60,33 @@ FETCH_BATCH = 100
 UPDATE_BATCH = 50
 
 
+def _page_items(page):
+    """Extract vector items from a paginator page across SDK versions."""
+    if hasattr(page, "vectors"):
+        return page.vectors
+    if isinstance(page, dict):
+        return page.get("vectors", [])
+    if isinstance(page, (list, tuple)):
+        return page
+    return []
+
+
+def _get_field(obj, name, default=None):
+    """Read a field from a Vector model or plain dict across SDK versions."""
+    if hasattr(obj, "get"):
+        return obj.get(name, default)
+    return getattr(obj, name, default)
+
+
 def list_all_ids(index) -> list:
     """Return every vector id in the namespace."""
     ids = []
     paginator = index.list(namespace=CHUNK_NAMESPACE, limit=100)
     for page in paginator:
-        # SDK returns ListResponse objects with .vectors; older versions
-        # returned dicts. Handle both.
-        vectors = getattr(page, "vectors", None)
-        if vectors is None and isinstance(page, dict):
-            vectors = page.get("vectors", [])
-        for item in vectors:
+        for item in _page_items(page):
+            if isinstance(item, str):
+                ids.append(item)
+                continue
             vid = getattr(item, "id", None)
             if vid is None and isinstance(item, dict):
                 vid = item.get("id")
@@ -129,7 +145,7 @@ def main():
         batch_ids = to_process[i:i + FETCH_BATCH]
         try:
             fetch_resp = index.fetch(ids=batch_ids, namespace=CHUNK_NAMESPACE)
-            vectors = fetch_resp.get("vectors", {})
+            vectors = _get_field(fetch_resp, "vectors", {})
         except Exception as e:
             logger.error(f"Batch fetch failed at {i}: {e}")
             failed += len(batch_ids)
@@ -140,7 +156,7 @@ def main():
         update_list = []
         for vid, vec in vectors.items():
             try:
-                metadata = dict(vec.get("metadata", {}))
+                metadata = dict(_get_field(vec, "metadata", {}))
                 content = metadata.get("content", "")
                 if KEYWORD_BOOST_ENABLED:
                     bt = compute_boost_terms(content) or []
@@ -162,7 +178,7 @@ def main():
                     vectors=[
                         {
                             "id": vid,
-                            "values": vec.get("values"),
+                            "values": _get_field(vec, "values"),
                             "metadata": md,
                         }
                         for vid, vec, md in sub
