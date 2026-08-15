@@ -575,9 +575,10 @@ def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0
             if response.status_code == 200:
                 km.report_success()
                 return response.json()["embedding"]["values"]
-            elif response.status_code in (429, 403):
-                # Rotate to next key instead of waiting. 403 = project/model
-                # access denied on this key (permanent), 429 = rate limit.
+            elif response.status_code in (401, 403, 429):
+                # Rotate to next key instead of waiting. 401 = invalid key,
+                # 403 = project/model access denied (both permanent per-key),
+                # 429 = rate limit.
                 new_key = km.report_rate_limit()
                 logger.warning(f"Key {key_masked} {response.status_code} (attempt {attempt+1}), rotated")
                 # Small delay between key switches to be safe

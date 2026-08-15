@@ -415,6 +415,16 @@ class GeminiChat:
                         self._report_rate_limit()
                         continue
 
+                    elif response.status_code == 401:
+                        # Invalid/expired key — rotate key, retry.
+                        last_error = (
+                            f"401 Unauthenticated for model {model} "
+                            f"(key {key_masked}); rotating key"
+                        )
+                        logger.warning(last_error)
+                        self._report_rate_limit()
+                        continue
+
                     elif response.status_code == 404:
                         # Model not available for this key's project — rotate
                         # key; a different key may have the model.
