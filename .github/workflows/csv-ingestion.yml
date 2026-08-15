@@ -67,17 +67,23 @@ jobs:
         with:
           name: ingestion-progress
           path: rag_pipeline/ingestion_progress.json
+          if-no-files-found: ignore
           retention-days: 30
       
       - name: Summary
         if: always()
         run: |
-          $progress = Get-Content rag_pipeline/ingestion_progress.json | ConvertFrom-Json
-          Write-Host "## Ingestion Summary" -ForegroundColor Green
-          Write-Host "- Completed cases: $($progress.completed_case_ids.Count)"
-          Write-Host "- Total upserted: $($progress.total_upserted)"
-          Write-Host "- Total failed: $($progress.total_failed)"
-          Write-Host "- Last run: $($progress.last_run)"
+          if (Test-Path rag_pipeline/ingestion_progress.json) {
+            $progress = Get-Content rag_pipeline/ingestion_progress.json | ConvertFrom-Json
+            Write-Host "## Ingestion Summary" -ForegroundColor Green
+            Write-Host "- Completed cases: $($progress.completed_case_ids.Count)"
+            Write-Host "- Total upserted: $($progress.total_upserted)"
+            Write-Host "- Total failed: $($progress.total_failed)"
+            Write-Host "- Last run: $($progress.last_run)"
+          } else {
+            Write-Host "## Ingestion Summary" -ForegroundColor Yellow
+            Write-Host "- No progress file found — ingestion did not complete a batch."
+          }
         shell: pwsh
 
   # Optional: Notify on failure
