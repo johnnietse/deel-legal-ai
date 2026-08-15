@@ -73,6 +73,10 @@ jobs:
           rm -f data/enrich_checkpoint.json data/kg_build_checkpoint.json data/legal_knowledge_graph.json
 
       - name: Enrich Pinecone metadata (boost_terms + parent_id)
+        # Pinecone free-tier egress can 429 mid-run; metadata enrichment is
+        # now also done inline by the embedder, so a failure here must not
+        # block the knowledge-graph build below.
+        continue-on-error: true
         run: |
           python scripts/enrich_metadata.py \
             --max ${{ github.event.inputs.enrich_max || '0' }}
