@@ -148,7 +148,7 @@ class DeepSearchEngine:
                 UnifiedSource(
                     id=f"web_{hash(r.url) % 10**8}",
                     title=r.title,
-                    excerpt=r.snippet[:500],
+                    excerpt=(getattr(r, "snippet", None) or getattr(r, "excerpt", "") or "")[:500],
                     url=r.url,
                     source_type="web",
                     relevance_score=r.score,
@@ -162,9 +162,9 @@ class DeepSearchEngine:
     async def _search_legislation(self, query: str, top_k: int = 5) -> List[UnifiedSource]:
         """Search legislation in PostgreSQL."""
         try:
-            from db.database import get_session
+            from db.database import get_db
             from sqlalchemy import text
-            async for db in get_session():
+            async for db in get_db():
                 stmt = text("""
                     SELECT document_id, title, content, source
                     FROM legislation_documents
@@ -305,10 +305,10 @@ class DeepSearchEngine:
             if isinstance(result, Exception):
                 logger.error(f"{name} search raised: {result}")
 
-        case_sources = case_sources if not isinstance(case_sources, Exception) else []
-        bm25_sources = bm25_sources if not isinstance(bm25_sources, Exception) else []
-        web_sources = web_sources if not isinstance(web_sources, Exception) else []
-        leg_sources = leg_sources if not isinstance(leg_sources, Exception) else []
+        case_sources = case_sources if isinstance(case_sources, list) else []
+        bm25_sources = bm25_sources if isinstance(bm25_sources, list) else []
+        web_sources = web_sources if isinstance(web_sources, list) else []
+        leg_sources = leg_sources if isinstance(leg_sources, list) else []
 
         # Fuse and rank
         fused = fuse_and_rank_results(

@@ -51,6 +51,8 @@ class TestDeepSearchEngine:
         mocker.patch("rag_pipeline.vector_store.create_vector_store")
         mocker.patch("db.database.get_db")
         mocker.patch("requests.post")
+        mocker.patch("rag_pipeline.legal_document_ingester.generate_embedding",
+                     return_value=[0.1] * 3072)
         engine = DeepSearchEngine()
         # Should return counts even with minimal data
         result = await engine.deep_search("test")
