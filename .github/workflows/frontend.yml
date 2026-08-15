@@ -106,6 +106,7 @@ jobs:
           action: ${{ github.event_name == 'pull_request' && 'preview' || 'upload' }}
           skip_app_build: true
           skip_api_build: true
+          skip_deploy_on_missing_secrets: true
           app_location: ${{ env.FRONTEND_DIR }}/dist
           output_location: ""
           ###### Production branch config ######
