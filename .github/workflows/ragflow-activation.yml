@@ -1,9 +1,8 @@
 name: RAGFlow Feature Activation
 
 on:
-  schedule:
-    # Run every 30 minutes like CSV ingestion
-    - cron: '*/30 * * * *'
+  # Cron paused while local embedder finishes (key contention + Pinecone
+  # egress limit). Re-enable with: - cron: '*/30 * * * *'
   workflow_dispatch:
     inputs:
       enrich_max:
