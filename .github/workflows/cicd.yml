@@ -69,9 +69,7 @@ jobs:
     needs: build-and-test
     # Only run when Azure credentials are configured; otherwise skip so the
     # pipeline stays green without an AKS/Azure subscription.
-    if: >-
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') &&
-      secrets.AZURE_ACR_USERNAME != '' && secrets.AZURE_ACR_PASSWORD != ''
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.AZURE_ACR_USERNAME != '' && secrets.AZURE_ACR_PASSWORD != '' }}
     
     outputs:
       image_tag: ${{ steps.meta.outputs.tags }}
@@ -118,9 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-docker
     # Same gate as build-docker: needs real Azure credentials.
-    if: >-
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') &&
-      secrets.AZURE_CREDENTIALS != ''
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.AZURE_CREDENTIALS != '' }}
     environment: production
     
     steps:
