@@ -575,17 +575,18 @@ def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0
             if response.status_code == 200:
                 km.report_success()
                 return response.json()["embedding"]["values"]
-            elif response.status_code == 429:
-                # Rotate to next key instead of waiting
+            elif response.status_code in (429, 403):
+                # Rotate to next key instead of waiting. 403 = project/model
+                # access denied on this key (permanent), 429 = rate limit.
                 new_key = km.report_rate_limit()
-                logger.warning(f"Key {key_masked} rate limited (attempt {attempt+1}), rotated")
+                logger.warning(f"Key {key_masked} {response.status_code} (attempt {attempt+1}), rotated")
                 # Small delay between key switches to be safe
                 time.sleep(1)
                 continue
             else:
                 raise Exception(f"Embedding API error: {response.status_code} - {response.text}")
                 
-        except requests.exceptions.Timeout:
+        except http_req.exceptions.Timeout:
             logger.warning(f"Timeout (attempt {attempt + 1}/{max_retries}), retrying...")
             time.sleep(base_delay * (2 ** attempt))
         except Exception as e:

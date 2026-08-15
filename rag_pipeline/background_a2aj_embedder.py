@@ -26,6 +26,7 @@ from config import (
     LOG_FORMAT, LOG_LEVEL, GEMINI_API_KEY,
     PINECONE_API_KEY, PINECONE_INDEX_NAME,
     CHUNK_NAMESPACE, DOCUMENT_SUMMARY_NAMESPACE,
+    KEYWORD_BOOST_ENABLED, PARENT_CHILD_ENABLED,
 )
 
 logging.basicConfig(
@@ -98,6 +99,8 @@ def main():
     parser = argparse.ArgumentParser(description="Background A2AJ Embedder")
     parser.add_argument("--max", type=int, default=5000, help="Max documents to process")
     parser.add_argument("--delay", type=float, default=3.0, help="Delay between embeddings (seconds)")
+    parser.add_argument("--datasets", type=str, default=None,
+                        help="Comma-separated dataset list (default: CHRT,CIRB,FPSLREB,OHSTC,SST,SCC)")
     parser.add_argument("--resume", action="store_true", help="Resume from checkpoint")
     args = parser.parse_args()
     
@@ -105,7 +108,8 @@ def main():
     checkpoint_file = Path(__file__).parent.parent / "data" / "bg_embedder_checkpoint.json"
     
     # Datasets to process
-    datasets = ["CHRT", "CIRB", "FPSLREB", "OHSTC", "SST", "SCC"]
+    datasets = (args.datasets or "CHRT,CIRB,FPSLREB,OHSTC,SST,SCC").split(",")
+    datasets = [d.strip().upper() for d in datasets if d.strip()]
     
     # Load checkpoint if resuming
     processed_ids = set()
@@ -146,11 +150,27 @@ def main():
     from pinecone import Pinecone
     pc = Pinecone(api_key=PINECONE_API_KEY)
     index = pc.Index(PINECONE_INDEX_NAME)
-    
+
+    from rag_pipeline.legal_document_ingester import derive_parent_id, compute_boost_terms, store_parent_content
+
+    # Probe Elasticsearch once up-front. If it is down, skip parent-content
+    # storage entirely instead of paying a connection-timeout on every chunk.
+    es_available = False
+    if PARENT_CHILD_ENABLED:
+        try:
+            import urllib.request
+            req = urllib.request.urlopen("http://localhost:9200", timeout=3)
+            es_available = req.status == 200
+        except Exception:
+            es_available = False
+        logger.info(f"ParentStore: Elasticsearch {'available' if es_available else 'UNAVAILABLE'} "
+                    f"(skipping parent-content writes)")
+
     batch = []
     batch_ids = []
     upserted_count = 0
     failed_count = 0
+    seen_parents = set()
     
     for i, doc in enumerate(to_process):
         try:
@@ -158,25 +178,35 @@ def main():
             time.sleep(args.delay)
             
             emb = generate_embedding(doc.content)
+            boost_terms = compute_boost_terms(doc.content)
+            metadata = {
+                "title": doc.title[:200],
+                "case_name": doc.title[:200],
+                "content": doc.content[:1000],
+                "source": doc.source,
+                "case_type": doc.case_type,
+                "year": doc.year,
+                "jurisdiction": doc.jurisdiction,
+                "court": doc.court,
+                "citation": doc.citation,
+                "topic": doc.topic,
+                "url": doc.url,
+                "chunk_index": doc.chunk_index,
+            }
+            if boost_terms:
+                metadata["boost_terms"] = boost_terms
+            if PARENT_CHILD_ENABLED:
+                metadata["parent_id"] = derive_parent_id(doc.id)
             batch.append({
                 "id": doc.id,
                 "values": emb,
-                "metadata": {
-                    "title": doc.title[:200],
-                    "case_name": doc.title[:200],
-                    "content": doc.content[:1000],
-                    "source": doc.source,
-                    "case_type": doc.case_type,
-                    "year": doc.year,
-                    "jurisdiction": doc.jurisdiction,
-                    "court": doc.court,
-                    "citation": doc.citation,
-                    "topic": doc.topic,
-                    "url": doc.url,
-                    "chunk_index": doc.chunk_index,
-                },
+                "metadata": metadata,
             })
             batch_ids.append(doc.id)
+
+            # Store full parent content once per base doc (Elasticsearch)
+            if PARENT_CHILD_ENABLED and es_available:
+                store_parent_content(doc, seen_parents)
             
             if (i + 1) % 10 == 0:
                 logger.info(f"  Embedded {i+1}/{len(to_process)} ({upserted_count} upserted, {failed_count} failed)")
