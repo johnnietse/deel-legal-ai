@@ -294,7 +294,9 @@ class TestSearchHappyPath:
 
         _authenticate(client.app, mock_user)
         try:
-            with patch("rag_pipeline.vector_store.create_vector_store", return_value=fake_store):
+            with patch("rag_pipeline.vector_store.create_vector_store", return_value=fake_store), \
+                 patch("rag_pipeline.legal_document_ingester.generate_embedding",
+                       return_value=[0.1] * 3072):
                 response = client.post(
                     "/rag/search",
                     params={"query": "wrongful dismissal", "page": 1, "page_size": 10},
@@ -324,7 +326,9 @@ class TestSearchHappyPath:
 
         _authenticate(client.app, mock_user)
         try:
-            with patch("rag_pipeline.vector_store.create_vector_store", return_value=fake_store):
+            with patch("rag_pipeline.vector_store.create_vector_store", return_value=fake_store), \
+                 patch("rag_pipeline.legal_document_ingester.generate_embedding",
+                       return_value=[0.1] * 3072):
                 response = client.post(
                     "/rag/search",
                     params={"query": "dismissal", "page": 2, "page_size": 2},

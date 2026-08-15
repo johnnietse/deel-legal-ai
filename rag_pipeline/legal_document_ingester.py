@@ -556,7 +556,7 @@ def generate_embedding(text: str, max_retries: int = 10, base_delay: float = 2.0
     # them from ingestion. Fall back to the dedicated key only if the pool is empty.
     km = km or key_manager
     if not km._keys:
-        km = search_key_manager
+        km = key_manager
 
     for attempt in range(max_retries):
         # Check global cooldown

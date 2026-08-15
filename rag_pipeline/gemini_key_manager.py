@@ -219,11 +219,13 @@ class GeminiKeyManager:
     def check_cooldown(self) -> float:
         """
         Check if the current key is in cooldown.
-        
+
         Returns:
             Seconds remaining in cooldown (0 if not in cooldown).
         """
         with self._lock:
+            if not self._keys:
+                return 0.0
             remaining = self._cool_until[self._current_index] - _time.time()
             return max(0.0, remaining)
 
