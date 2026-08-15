@@ -15,7 +15,7 @@ on:
         description: 'Max retries per batch'
         required: false
         default: '3'
-reset_progress:
+      reset_progress:
         description: 'Reset progress and start fresh'
         required: false
         default: 'false'
@@ -54,7 +54,6 @@ jobs:
       - name: Run CSV Ingestion
         id: ingestion
         run: |
-<<<<<<< HEAD
           python rag_pipeline/csv_ingestion_wrapper.py `
             --batch-size ${{ github.event.inputs.batch_size || '20' }} `
             --max-retries ${{ github.event.inputs.max_retries || '3' }} `
