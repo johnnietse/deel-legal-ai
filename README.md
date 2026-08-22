@@ -1,4 +1,4 @@
-# ⚖️ Deel Lab Legal AI System — Enterprise Edition
+# ⚖️ Legal AI System — Enterprise Edition
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
@@ -77,7 +77,7 @@ Based on [ByteDance's internal RAG guideline](rag_pipeline/Byte_Dance_RAG_Guidel
 
 ## 🏗️ System Architecture
 
-The Deel Legal AI platform is built on a modern, decoupled microservices architecture designed for high availability and scalable inference.
+The Legal AI platform is built on a modern, decoupled microservices architecture designed for high availability and scalable inference.
 
 ### High-Level System Flow
 ```mermaid
@@ -159,7 +159,7 @@ sequenceDiagram
 
 ```bash
 # Clone repository
-git clone https://github.com/johnnietse/deel-legal-ai.git
+git clone https://github.com/johnnietse/legal-ai.git
 cd legal-ai-system
 
 # Create virtual environment
@@ -330,7 +330,7 @@ The system provides a comprehensive REST API powered by FastAPI, featuring inter
 ### Directory Tree
 
 ```text
-Law_AI_Deel/
+Law_AI/
 ├── rag_pipeline/                  # RAG pipeline components
 │   ├── canlii_scraper.py          # CanLII web scraper
 │   ├── document_processor.py      # PDF extraction, chunking + SemanticChunker (v3)
